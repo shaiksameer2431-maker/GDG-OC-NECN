@@ -23,11 +23,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 className="w-full h-full object-contain"
               />
             </button>
-            <div className="text-left">
-              <h3 className="text-sm font-bold text-slate-900 tracking-tight">
+            <div className="text-left min-w-0">
+              <h3 className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight truncate">
                 NECN CLOUD CHAMPIONS
               </h3>
-              <p className="text-[11px] text-slate-500 whitespace-nowrap">
+              <p className="text-[10px] sm:text-[11px] text-slate-500 truncate max-w-[210px] sm:max-w-none">
                 GDG On Campus • Narayana Engineering College, Nellore
               </p>
             </div>

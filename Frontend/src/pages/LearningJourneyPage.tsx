@@ -262,8 +262,14 @@ export const LearningJourneyPage: React.FC<LearningJourneyPageProps> = ({
 
       {/* COURSE PROOF SUBMISSION MODAL */}
       {showSubmissionModal && selectedStudent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="relative max-w-lg w-full rounded-3xl bg-[#F0F4F9] shadow-[16px_16px_36px_#CAD7E8,-16px_-16px_36px_#FFFFFF] border border-white/95 p-6 space-y-4">
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-md animate-in fade-in duration-200"
+          onClick={() => setShowSubmissionModal(false)}
+        >
+          <div 
+            className="relative max-w-lg w-full max-h-[90vh] overflow-y-auto rounded-3xl bg-[#F0F4F9] shadow-[16px_16px_36px_#CAD7E8,-16px_-16px_36px_#FFFFFF] border border-white/95 p-5 sm:p-6 space-y-4"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex items-start justify-between">
               <div>
                 <h3 className="text-base font-bold text-slate-900">

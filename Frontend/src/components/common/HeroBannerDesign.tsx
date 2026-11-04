@@ -145,31 +145,31 @@ export const HeroBannerDesign: React.FC<HeroBannerDesignProps> = ({
         </div>
 
         {/* Right Action Buttons */}
-        <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto justify-center md:justify-end">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5 w-full md:w-auto justify-center md:justify-end">
           <button
             onClick={onExploreLeaderboard}
-            className="neo-btn-primary px-4 sm:px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 transition-all active:scale-95 shadow-sm"
+            className="neo-btn-primary px-4 sm:px-5 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all active:scale-95 shadow-sm w-full sm:w-auto"
           >
-            <Trophy className="w-4 h-4 text-amber-300" />
+            <Trophy className="w-4 h-4 text-amber-300 shrink-0" />
             <span>Explore Cohort Leaderboard</span>
-            <ArrowRight className="w-3.5 h-3.5 ml-0.5" />
+            <ArrowRight className="w-3.5 h-3.5 ml-0.5 shrink-0" />
           </button>
 
           <button
             onClick={onExploreJourney}
-            className="neo-btn px-4 py-2.5 rounded-xl font-bold text-xs text-slate-700 flex items-center gap-1.5 transition-all active:scale-95"
+            className="neo-btn px-4 py-2.5 rounded-xl font-bold text-xs text-slate-700 flex items-center justify-center gap-1.5 transition-all active:scale-95 w-full sm:w-auto"
           >
-            <Compass className="w-3.5 h-3.5 text-blue-600" />
+            <Compass className="w-3.5 h-3.5 text-blue-600 shrink-0" />
             <span>10-Course Curriculum</span>
           </button>
 
           <button
             onClick={handleCelebrateSwags}
-            className="neo-btn px-3.5 py-2.5 rounded-xl font-bold text-xs text-blue-700 hover:text-blue-900 flex items-center gap-1.5 transition-all active:scale-95"
+            className="neo-btn px-3.5 py-2.5 rounded-xl font-bold text-xs text-blue-700 hover:text-blue-900 flex items-center justify-center gap-1.5 transition-all active:scale-95 w-full sm:w-auto"
             title="View Swags & Rewards"
           >
-            <Gift className="w-4 h-4 text-amber-500" />
-            <span className="hidden sm:inline">Swag Rewards</span>
+            <Gift className="w-4 h-4 text-amber-500 shrink-0" />
+            <span>Swag Rewards</span>
           </button>
         </div>
 
@@ -179,8 +179,14 @@ export const HeroBannerDesign: React.FC<HeroBannerDesignProps> = ({
           INTERACTIVE SWAG CELEBRATION MODAL (APPLE GLASS + NEOMORPHISM FINISH)
           ========================================================================= */}
       {showSwagModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="relative w-full max-w-lg rounded-3xl bg-[#F0F4F9] shadow-[16px_16px_36px_#CAD7E8,-16px_-16px_36px_#FFFFFF] border border-white/95 p-6 sm:p-7 space-y-5">
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-md animate-in fade-in duration-200"
+          onClick={() => setShowSwagModal(false)}
+        >
+          <div 
+            className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-3xl bg-[#F0F4F9] shadow-[16px_16px_36px_#CAD7E8,-16px_-16px_36px_#FFFFFF] border border-white/95 p-4 sm:p-6 sm:p-7 space-y-4 sm:space-y-5"
+            onClick={(e) => e.stopPropagation()}
+          >
             
             {/* Header */}
             <div className="flex items-start justify-between">

@@ -105,7 +105,7 @@ export function App() {
       )}
 
       {/* MAIN CONTAINER */}
-      <main className="relative z-10 flex-grow max-w-6xl w-full mx-auto px-3.5 sm:px-6 pb-16">
+      <main className="relative z-10 flex-grow max-w-6xl xl:max-w-7xl w-full mx-auto px-3 sm:px-4 md:px-6 pb-16">
         <ErrorBoundary>
           {currentTab === 'overview' && (
             <OverviewPage

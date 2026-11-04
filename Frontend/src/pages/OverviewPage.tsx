@@ -29,9 +29,9 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({ stats, topStudents, 
   return (
     <div className="space-y-12 sm:space-y-16">
       {/* NATIVE REDESIGNED HERO BANNER SECTION (NOT A STATIC IMAGE - PURE INTERACTIVE DESIGN) */}
-      <section className="relative pt-20 sm:pt-24 pb-2">
+      <section className="relative pt-18 sm:pt-22 pb-2 overflow-hidden">
         {/* Soft pastel ambient gradient behind hero */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[380px] bg-gradient-to-tr from-blue-100/70 via-sky-100/50 to-amber-100/40 blur-[90px] pointer-events-none rounded-full" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[650px] h-[380px] bg-gradient-to-tr from-blue-100/70 via-sky-100/50 to-amber-100/40 blur-[90px] pointer-events-none rounded-full" />
 
         <div className="relative max-w-5xl mx-auto px-1 sm:px-2">
           <HeroBannerDesign
@@ -131,8 +131,8 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({ stats, topStudents, 
                   <RankMedal rank={2} size="md" className="absolute -bottom-3.5 inset-x-0 mx-auto" />
                 </div>
 
-                <div className="pt-2 space-y-1">
-                  <h3 className="text-base font-bold text-slate-900 truncate max-w-[200px]" title={topThree[1].fullName}>
+                <div className="pt-2 space-y-1 w-full text-center">
+                  <h3 className="text-base font-bold text-slate-900 truncate w-full px-1" title={topThree[1].fullName}>
                     {topThree[1].fullName}
                   </h3>
                   <div className="flex items-center justify-center gap-1.5">
@@ -168,8 +168,8 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({ stats, topStudents, 
                   <RankMedal rank={1} size="lg" className="absolute -bottom-4 inset-x-0 mx-auto" />
                 </div>
 
-                <div className="pt-3 space-y-1">
-                  <h3 className="text-lg font-black text-slate-900 truncate max-w-[220px]" title={topThree[0].fullName}>
+                <div className="pt-3 space-y-1 w-full text-center">
+                  <h3 className="text-lg font-black text-slate-900 truncate w-full px-1" title={topThree[0].fullName}>
                     {topThree[0].fullName}
                   </h3>
                   <div className="flex items-center justify-center gap-1.5">
@@ -205,8 +205,8 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({ stats, topStudents, 
                   <RankMedal rank={3} size="md" className="absolute -bottom-3.5 inset-x-0 mx-auto" />
                 </div>
 
-                <div className="pt-2 space-y-1">
-                  <h3 className="text-base font-bold text-slate-900 truncate max-w-[200px]" title={topThree[2].fullName}>
+                <div className="pt-2 space-y-1 w-full text-center">
+                  <h3 className="text-base font-bold text-slate-900 truncate w-full px-1" title={topThree[2].fullName}>
                     {topThree[2].fullName}
                   </h3>
                   <div className="flex items-center justify-center gap-1.5">

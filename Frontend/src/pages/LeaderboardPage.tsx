@@ -175,8 +175,14 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
       {/* STUDENT EMAIL AUTHENTICATION MODAL */}
       {authTargetStudent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="relative max-w-md w-full rounded-3xl bg-[#F0F4F9] shadow-[16px_16px_36px_#CAD7E8,-16px_-16px_36px_#FFFFFF] border border-white/95 p-6 space-y-4">
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-md animate-in fade-in duration-200"
+          onClick={() => setAuthTargetStudent(null)}
+        >
+          <div 
+            className="relative max-w-md w-full max-h-[90vh] overflow-y-auto rounded-3xl bg-[#F0F4F9] shadow-[16px_16px_36px_#CAD7E8,-16px_-16px_36px_#FFFFFF] border border-white/95 p-5 sm:p-6 space-y-4"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2 text-slate-900">
                 <div className="w-8 h-8 rounded-xl bg-blue-50 border border-blue-200 text-blue-600 flex items-center justify-center">
@@ -260,8 +266,14 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
       {/* SCORING & TIE-BREAKING RULES MODAL */}
       {showTieBreakRules && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="relative max-w-lg w-full rounded-3xl bg-[#F0F4F9] shadow-[16px_16px_36px_#CAD7E8,-16px_-16px_36px_#FFFFFF] border border-white/95 p-6 space-y-4 max-h-[85vh] overflow-y-auto">
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-md animate-in fade-in duration-200"
+          onClick={() => setShowTieBreakRules(false)}
+        >
+          <div 
+            className="relative max-w-lg w-full rounded-3xl bg-[#F0F4F9] shadow-[16px_16px_36px_#CAD7E8,-16px_-16px_36px_#FFFFFF] border border-white/95 p-5 sm:p-6 space-y-4 max-h-[88vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-xl bg-blue-50 border border-blue-200 text-blue-600 flex items-center justify-center">
@@ -426,17 +438,23 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
       {/* =========================================================================
           LEADERBOARD TABLE (PERFECTLY FITTABLE ACROSS LAPTOPS, TABLETS, DESKTOPS, MOBILES)
           ========================================================================= */}
-      <div className="rounded-3xl bg-[#F0F4F9] shadow-[10px_10px_26px_#D0DCED,-10px_-10px_26px_#FFFFFF] border border-white/90 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs border-collapse">
+      <div className="rounded-2xl sm:rounded-3xl bg-[#F0F4F9] shadow-[10px_10px_26px_#D0DCED,-10px_-10px_26px_#FFFFFF] border border-white/90 overflow-hidden">
+        {/* Mobile Swipe Hint */}
+        <div className="sm:hidden px-3.5 py-1.5 bg-blue-50/80 border-b border-blue-100 flex items-center justify-between text-[10px] text-blue-700 font-semibold select-none">
+          <span>↔ Swipe horizontally to view all columns</span>
+          <span className="font-mono text-[9px] uppercase tracking-wider">Table View</span>
+        </div>
+
+        <div className="overflow-x-auto touch-pan-x">
+          <table className="w-full text-left text-xs border-collapse min-w-[580px]">
             <thead>
-              <tr className="bg-[#E9F0F8] border-b border-slate-200/80 text-[11px] uppercase tracking-wider text-slate-600 font-bold">
-                <th className="py-4 px-4 w-16 text-center whitespace-nowrap">Rank</th>
-                <th className="py-4 px-4 whitespace-nowrap">Student</th>
-                <th className="py-4 px-4 w-32 whitespace-nowrap">Skill Badges</th>
-                <th className="py-4 px-4 w-36 whitespace-nowrap">Milestone</th>
-                <th className="py-4 px-4 w-36 whitespace-nowrap">Redemption</th>
-                <th className="py-4 px-4 w-28 text-right whitespace-nowrap">Points</th>
+              <tr className="bg-[#E9F0F8] border-b border-slate-200/80 text-[10px] sm:text-[11px] uppercase tracking-wider text-slate-600 font-bold">
+                <th className="py-3 sm:py-4 px-3 sm:px-4 w-14 sm:w-16 text-center whitespace-nowrap">Rank</th>
+                <th className="py-3 sm:py-4 px-3 sm:px-4 whitespace-nowrap">Student</th>
+                <th className="py-3 sm:py-4 px-3 sm:px-4 w-28 sm:w-32 whitespace-nowrap">Skill Badges</th>
+                <th className="py-3 sm:py-4 px-3 sm:px-4 w-32 sm:w-36 whitespace-nowrap">Milestone</th>
+                <th className="py-3 sm:py-4 px-3 sm:px-4 w-32 sm:w-36 whitespace-nowrap">Redemption</th>
+                <th className="py-3 sm:py-4 px-3 sm:px-4 w-24 sm:w-28 text-right whitespace-nowrap">Points</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200/60 font-medium">
