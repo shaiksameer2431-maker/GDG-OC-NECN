@@ -1,0 +1,102 @@
+[
+  {
+    "id": 1,
+    "courseNumber": "01",
+    "title": "The Basics of Google Cloud Compute",
+    "url": "https://www.skills.google/course_templates/754",
+    "category": "Compute & Infrastructure",
+    "iconName": "Server",
+    "estimatedHours": "4h",
+    "badgeName": "The Basics of Google Cloud Compute"
+  },
+  {
+    "id": 2,
+    "courseNumber": "02",
+    "title": "Configure Service Accounts and IAM Roles for Google Cloud",
+    "url": "https://www.skills.google/course_templates/702",
+    "category": "Security & IAM",
+    "iconName": "ShieldCheck",
+    "estimatedHours": "5h",
+    "badgeName": "Configure Service Accounts and IAM Roles for Google Cloud"
+  },
+  {
+    "id": 3,
+    "courseNumber": "03",
+    "title": "Implement Speech and Language Solutions with Pre-trained APIs",
+    "url": "https://www.skills.google/course_templates/700",
+    "category": "AI & Speech",
+    "iconName": "Mic",
+    "estimatedHours": "4h",
+    "badgeName": "Implement Speech and Language Solutions with Pre-trained APIs"
+  },
+  {
+    "id": 4,
+    "courseNumber": "04",
+    "title": "Develop AI-Powered Prototypes in Google AI Studio",
+    "url": "https://www.skills.google/course_templates/1426",
+    "category": "Generative AI",
+    "iconName": "Sparkles",
+    "estimatedHours": "3h",
+    "badgeName": "Develop AI-Powered Prototypes in Google AI Studio"
+  },
+  {
+    "id": 5,
+    "courseNumber": "05",
+    "title": "Analyze Images with the Cloud Vision API",
+    "url": "https://www.skills.google/course_templates/633",
+    "category": "Computer Vision",
+    "iconName": "Image",
+    "estimatedHours": "4h",
+    "badgeName": "Analyze Images with the Cloud Vision API"
+  },
+  {
+    "id": 6,
+    "courseNumber": "06",
+    "title": "Build a Website on Google Cloud",
+    "url": "https://www.skills.google/course_templates/638",
+    "category": "Web & Hosting",
+    "iconName": "Globe",
+    "estimatedHours": "5h",
+    "badgeName": "Build a Website on Google Cloud"
+  },
+  {
+    "id": 7,
+    "courseNumber": "07",
+    "title": "Create Your First Gemini Enterprise Application",
+    "url": "https://www.skills.google/course_templates/1586/",
+    "category": "Enterprise AI",
+    "iconName": "Bot",
+    "estimatedHours": "6h",
+    "badgeName": "Create Your First Gemini Enterprise Application"
+  },
+  {
+    "id": 8,
+    "courseNumber": "08",
+    "title": "Store, Process, and Manage Data on Google Cloud - Console",
+    "url": "https://www.skills.google/course_templates/658",
+    "category": "Data & Databases",
+    "iconName": "Database",
+    "estimatedHours": "5h",
+    "badgeName": "Store, Process, and Manage Data on Google Cloud - Console"
+  },
+  {
+    "id": 9,
+    "courseNumber": "09",
+    "title": "Using the Google Cloud Speech API",
+    "url": "https://www.skills.google/course_templates/756",
+    "category": "Audio & NLP",
+    "iconName": "Volume2",
+    "estimatedHours": "3h",
+    "badgeName": "Using the Google Cloud Speech API"
+  },
+  {
+    "id": 10,
+    "courseNumber": "10",
+    "title": "Explore Generative AI in Agent Platform",
+    "url": "https://www.skills.google/course_templates/959",
+    "category": "Autonomous Agents",
+    "iconName": "Cpu",
+    "estimatedHours": "4h",
+    "badgeName": "Explore Generative AI in Agent Platform"
+  }
+]

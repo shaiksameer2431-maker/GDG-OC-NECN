@@ -1,0 +1,171 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: #F0F4F9;
+    --text-primary: #0F172A;
+    --text-muted: #64748B;
+    --neo-light: #FFFFFF;
+    --neo-shadow: #D0DCED;
+  }
+
+  * {
+    border-color: rgba(209, 223, 236, 0.7);
+  }
+
+  body {
+    background-color: #F0F4F9;
+    color: #0F172A;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Custom subtle light scrollbar */
+  ::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #E8EEF5;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+  }
+}
+
+@layer components {
+  /* ================= NEOMORPHISM UI SYSTEM (SOFT TACTILE DESIGN) ================= */
+  
+  /* Extruded soft Neomorphic card */
+  .neo-card {
+    background: #F0F4F9;
+    box-shadow: 8px 8px 20px #D0DCED, -8px -8px 20px #FFFFFF;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 1.5rem;
+  }
+
+  /* Deep Neomorphic container for hero & main modules */
+  .neo-container {
+    background: #F0F4F9;
+    box-shadow: 12px 12px 30px #CFDCEE, -12px -12px 30px #FFFFFF;
+    border: 1.5px solid rgba(255, 255, 255, 0.9);
+    border-radius: 2rem;
+  }
+
+  /* Sunken / Inset Neomorphic element (inputs, search, wells) */
+  .neo-inset {
+    background: #EEF3F8;
+    box-shadow: inset 3px 3px 7px #CAD7E8, inset -3px -3px 7px #FFFFFF;
+    border: 1px solid rgba(209, 223, 236, 0.5);
+  }
+
+  /* Neomorphic button with tactile press */
+  .neo-btn {
+    background: #F0F4F9;
+    box-shadow: 4px 4px 10px #D0DCED, -4px -4px 10px #FFFFFF;
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .neo-btn:hover {
+    box-shadow: 2px 2px 6px #D0DCED, -2px -2px 6px #FFFFFF;
+    transform: translateY(-1px);
+  }
+  .neo-btn:active {
+    box-shadow: inset 3px 3px 6px #CAD7E8, inset -3px -3px 6px #FFFFFF;
+    transform: translateY(0);
+  }
+
+  /* Primary Accent Neomorphic button */
+  .neo-btn-primary {
+    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+    box-shadow: 4px 4px 14px rgba(37, 99, 235, 0.35), -3px -3px 10px #FFFFFF;
+    color: #FFFFFF;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .neo-btn-primary:hover {
+    box-shadow: 2px 2px 8px rgba(37, 99, 235, 0.45), -1px -1px 4px #FFFFFF;
+    transform: translateY(-1px);
+  }
+  .neo-btn-primary:active {
+    box-shadow: inset 2px 2px 5px rgba(15, 23, 42, 0.35);
+    transform: translateY(0);
+  }
+
+  /* Small Neomorphic pill / chip */
+  .neo-pill {
+    background: #F0F4F9;
+    box-shadow: 3px 3px 7px #D2DEED, -3px -3px 7px #FFFFFF;
+    border: 1px solid rgba(255, 255, 255, 0.75);
+  }
+
+  /* Pressed Neomorphic state for active filters / active nav pills */
+  .neo-pressed {
+    background: #EBF0F7;
+    box-shadow: inset 3px 3px 6px #CAD7E8, inset -3px -3px 6px #FFFFFF;
+    border: 1px solid rgba(209, 223, 236, 0.7);
+  }
+
+  /* Legacy Apple Card compatibility (upgraded with Neomorphism depth) */
+  .apple-card-outer {
+    @apply relative p-1 rounded-2xl bg-[#F0F4F9] border border-white/80 shadow-[6px_6px_18px_#D0DCED,-6px_-6px_18px_#FFFFFF] transition-all duration-300;
+  }
+  
+  .apple-card-inner {
+    @apply relative w-full h-full p-5 rounded-[calc(1rem-0.0625rem)] bg-[#F0F4F9] shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.9)];
+  }
+
+  .apple-glass {
+    @apply bg-white/85 backdrop-blur-xl border border-white/80 shadow-[6px_6px_18px_#D0DCED,-6px_-6px_18px_#FFFFFF];
+  }
+
+  .apple-pill-btn {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:pointer-events-none;
+  }
+}
+
+/* Float & gentle pulse animations */
+@keyframes floatGentle {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-7px) rotate(1deg); }
+}
+
+@keyframes floatReverse {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(7px) rotate(-1deg); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.04); }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+.anim-float-1 {
+  animation: floatGentle 5s ease-in-out infinite;
+}
+
+.anim-float-2 {
+  animation: floatReverse 6s ease-in-out infinite 0.5s;
+}
+
+.anim-float-3 {
+  animation: floatGentle 7s ease-in-out infinite 1s;
+}
+
+.anim-pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+.anim-shimmer {
+  animation: shimmer 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
