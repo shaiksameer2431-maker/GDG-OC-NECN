@@ -16,7 +16,10 @@ import {
   AlertCircle,
   Info,
   ShieldCheck,
-  X
+  X,
+  Eye,
+  Award,
+  Sparkles
 } from 'lucide-react';
 import { storageService } from '../services/storageService';
 import { adminAuth } from '../services/adminAuth';
@@ -44,6 +47,9 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
   // Modal for Tie-breaking & Scoring Rules
   const [showTieBreakRules, setShowTieBreakRules] = useState(false);
+
+  // Student Quick Details Eye Modal for Mobile
+  const [eyeStudent, setEyeStudent] = useState<Student | null>(null);
 
   // Student Email Verification Gate
   const [authTargetStudent, setAuthTargetStudent] = useState<Student | null>(null);
@@ -144,11 +150,11 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
   }, [filteredStudents, currentPage, pageSize]);
 
   return (
-    <div className="space-y-6 pt-20 sm:pt-24">
+    <div className="space-y-5 sm:space-y-6 pt-16 sm:pt-20 md:pt-24 pb-8">
       {/* PAGE HEADER */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-200/80 pb-5">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-4 border-b border-slate-200/80 pb-4 sm:pb-5">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 mb-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 mb-1.5 sm:mb-2">
             <Trophy className="w-3.5 h-3.5 text-blue-600" />
             <span>OFFICIAL LEADERBOARD 2026</span>
           </div>
@@ -164,7 +170,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
         <div className="flex items-center gap-2">
           <button
             onClick={() => setShowTieBreakRules(true)}
-            className="neo-btn px-4 py-2 rounded-xl text-xs font-bold text-slate-700 flex items-center gap-1.5 shadow-xs transition-all active:scale-95"
+            className="neo-btn px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold text-slate-700 flex items-center gap-1.5 shadow-xs transition-all active:scale-95"
             title="Ranking & Points Methodology"
           >
             <Info className="w-3.5 h-3.5 text-blue-600" />
@@ -172,6 +178,121 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
           </button>
         </div>
       </div>
+
+      {/* =========================================================================
+          STUDENT QUICK DETAILS MODAL (MOBILE EYE POPUP)
+          Neat card view triggered by clicking the eye icon on mobile.
+          ========================================================================= */}
+      {eyeStudent && (
+        <div
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/50 backdrop-blur-md animate-in fade-in duration-200"
+          onClick={() => setEyeStudent(null)}
+        >
+          <div
+            className="relative w-full max-w-md max-h-[88vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl bg-[#F0F4F9] shadow-[0_-8px_30px_rgba(0,0,0,0.2)] sm:shadow-[16px_16px_36px_#CAD7E8,-16px_-16px_36px_#FFFFFF] border border-white/95 p-5 space-y-4 animate-in slide-in-from-bottom-6 sm:slide-in-from-bottom-2 duration-300"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex items-start justify-between border-b border-slate-200/80 pb-3">
+              <div className="flex items-center gap-3">
+                <Avatar name={eyeStudent.fullName} rank={eyeStudent.rank} size="md" />
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-mono text-xs font-bold text-blue-600">
+                      Rank #{eyeStudent.rank}
+                    </span>
+                    {eyeStudent.rank <= 3 && (
+                      <RankMedal rank={eyeStudent.rank as 1 | 2 | 3} size="sm" />
+                    )}
+                  </div>
+                  <h3 className="text-base font-bold text-slate-900 leading-tight">
+                    {eyeStudent.fullName}
+                  </h3>
+                  <span className="text-[10px] font-mono text-slate-400">
+                    ID: {eyeStudent.id}
+                  </span>
+                </div>
+              </div>
+              <button
+                onClick={() => setEyeStudent(null)}
+                className="p-1.5 rounded-xl neo-btn text-slate-500 hover:text-slate-800"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Quick Metrics Grid */}
+            <div className="grid grid-cols-2 gap-2.5">
+              <div className="p-3 rounded-2xl bg-white border border-slate-200/80 shadow-xs space-y-1">
+                <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                  Total Points
+                </span>
+                <p className="text-xl font-black text-slate-900 font-mono">
+                  {eyeStudent.points} <span className="text-xs font-normal text-slate-500">pts</span>
+                </p>
+              </div>
+
+              <div className="p-3 rounded-2xl bg-white border border-slate-200/80 shadow-xs space-y-1">
+                <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                  Skill Badges
+                </span>
+                <p className="text-xl font-black text-[#1A73E8] font-mono">
+                  {eyeStudent.skillBadgeCount} <span className="text-xs font-normal text-slate-500">/ 10</span>
+                </p>
+              </div>
+            </div>
+
+            {/* Status Breakdown */}
+            <div className="p-3.5 rounded-2xl bg-white border border-slate-200/80 shadow-xs space-y-3 text-xs">
+              <div className="flex items-center justify-between">
+                <span className="text-slate-500 font-semibold">Milestone Tier:</span>
+                <MilestonePill milestone={eyeStudent.milestone} size="sm" />
+              </div>
+
+              <div className="flex items-center justify-between border-t border-slate-100 pt-2.5">
+                <span className="text-slate-500 font-semibold">Access Code Redemption:</span>
+                <RedemptionPill status={eyeStudent.redemptionStatus} size="sm" />
+              </div>
+
+              {eyeStudent.googleSkillsProfileUrl && eyeStudent.googleSkillsProfileUrl !== 'Not applicable' && (
+                <div className="border-t border-slate-100 pt-2.5 flex items-center justify-between">
+                  <span className="text-slate-500 font-semibold">Google Skills Profile:</span>
+                  <a
+                    href={eyeStudent.googleSkillsProfileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-blue-600 font-bold hover:underline"
+                  >
+                    <span>View Profile</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              )}
+            </div>
+
+            {/* Actions */}
+            <div className="pt-1 flex items-center gap-2">
+              <button
+                onClick={() => {
+                  const target = eyeStudent;
+                  setEyeStudent(null);
+                  handleRowClick(target);
+                }}
+                className="flex-1 neo-btn-primary py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-all shadow-sm"
+              >
+                <Trophy className="w-3.5 h-3.5" />
+                <span>Full Profile Details</span>
+              </button>
+              <button
+                onClick={() => setEyeStudent(null)}
+                className="px-4 py-2.5 rounded-xl neo-btn text-xs font-semibold text-slate-700"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* STUDENT EMAIL AUTHENTICATION MODAL */}
       {authTargetStudent && (
@@ -339,7 +460,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
       )}
 
       {/* FILTER & SEARCH DOCK (NEOMORPHIC INSET & TACTILE PILLS) */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-[#F0F4F9] shadow-[8px_8px_20px_#D0DCED,-8px_-8px_20px_#FFFFFF] border border-white/90 space-y-4">
+      <div className="p-3.5 sm:p-5 rounded-2xl bg-[#F0F4F9] shadow-[8px_8px_20px_#D0DCED,-8px_-8px_20px_#FFFFFF] border border-white/90 space-y-3 sm:space-y-4">
         {/* Search row */}
         <div className="relative">
           <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -351,15 +472,15 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
               setCurrentPage(1);
             }}
             placeholder="Search students by full name or ID..."
-            className="w-full neo-inset pl-10 pr-4 py-2.5 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full neo-inset pl-10 pr-4 py-2 sm:py-2.5 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         {/* Filter Pills */}
-        <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div className="flex flex-wrap items-center justify-between gap-2.5 text-xs">
           {/* Redemption Filter */}
           <div className="flex items-center gap-1.5 flex-wrap">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mr-1">
+            <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider mr-1">
               Redemption:
             </span>
             {(['all', 'redeemed', 'not-redeemed'] as const).map((status) => (
@@ -369,7 +490,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                   setRedemptionFilter(status);
                   setCurrentPage(1);
                 }}
-                className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold transition-all ${
                   redemptionFilter === status
                     ? 'neo-pressed text-blue-700 font-bold'
                     : 'neo-pill text-slate-600 hover:text-slate-900'
@@ -382,7 +503,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
           {/* Milestone Filter */}
           <div className="flex items-center gap-1.5 flex-wrap">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mr-1">
+            <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider mr-1">
               Milestone:
             </span>
             {[
@@ -398,7 +519,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                   setMilestoneFilter(m.id);
                   setCurrentPage(1);
                 }}
-                className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold transition-all ${
                   milestoneFilter === m.id
                     ? 'neo-pressed text-blue-700 font-bold'
                     : 'neo-pill text-slate-600 hover:text-slate-900'
@@ -410,14 +531,14 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
           </div>
 
           {/* Sort Controls */}
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider">
               Sort:
             </span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
-              className="neo-inset px-3 py-1.5 rounded-xl text-xs text-slate-700 focus:outline-none"
+              className="neo-inset px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs text-slate-700 focus:outline-none"
             >
               <option value="rank">Rank</option>
               <option value="points">Points</option>
@@ -436,16 +557,137 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
       </div>
 
       {/* =========================================================================
-          LEADERBOARD TABLE (PERFECTLY FITTABLE ACROSS LAPTOPS, TABLETS, DESKTOPS, MOBILES)
+          MOBILE-OPTIMIZED TABLE VIEW (CLEAN, NO HORIZONTAL SCROLL TRAP, SMOOTH SCROLLING)
+          Features prominent eye icon to view full details in a neat card!
           ========================================================================= */}
-      <div className="rounded-2xl sm:rounded-3xl bg-[#F0F4F9] shadow-[10px_10px_26px_#D0DCED,-10px_-10px_26px_#FFFFFF] border border-white/90 overflow-hidden">
-        {/* Mobile Swipe Hint */}
+      <div className="md:hidden rounded-2xl bg-[#F0F4F9] shadow-[8px_8px_20px_#D0DCED,-8px_-8px_20px_#FFFFFF] border border-white/90 overflow-hidden">
+        {/* Mobile Header Bar */}
+        <div className="px-3.5 py-2.5 bg-[#E9F0F8] border-b border-slate-200/80 flex items-center justify-between text-[11px] text-slate-700 font-bold">
+          <span className="flex items-center gap-1">
+            <Trophy className="w-3.5 h-3.5 text-blue-600" />
+            <span>Leaderboard Rankings</span>
+          </span>
+          <span className="text-[10px] text-slate-500 font-medium">
+            Tap <Eye className="w-3 h-3 inline text-blue-600 mx-0.5" /> for full info
+          </span>
+        </div>
+
+        {/* Mobile Smooth Flowing Table */}
+        <div className="divide-y divide-slate-200/70">
+          {paginatedStudents.length === 0 ? (
+            <div className="py-12 text-center text-slate-500 px-4">
+              <p className="text-sm font-semibold text-slate-700">No students match filter criteria.</p>
+              <button
+                onClick={() => {
+                  setSearchQuery('');
+                  setRedemptionFilter('all');
+                  setMilestoneFilter('all');
+                  setBadgeFilter('all');
+                }}
+                className="mt-3 px-4 py-1.5 rounded-xl neo-btn text-xs font-bold text-blue-600"
+              >
+                Reset Filters
+              </button>
+            </div>
+          ) : (
+            paginatedStudents.map((student) => {
+              const isTopOne = student.rank === 1;
+              const isTopTwo = student.rank === 2;
+              const isTopThree = student.rank === 3;
+              const isAuth = isStudentVerified(student.id);
+
+              return (
+                <div
+                  key={student.id}
+                  className="p-3 flex items-center justify-between gap-2.5 transition-colors active:bg-blue-50/40 bg-white/40 hover:bg-white/70"
+                >
+                  {/* Left: Rank & Avatar */}
+                  <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                    {/* Rank Badge */}
+                    <div className="w-8 shrink-0 flex items-center justify-center">
+                      {isTopOne ? (
+                        <RankMedal rank={1} size="sm" />
+                      ) : isTopTwo ? (
+                        <RankMedal rank={2} size="sm" />
+                      ) : isTopThree ? (
+                        <RankMedal rank={3} size="sm" />
+                      ) : (
+                        <span className="text-slate-500 font-bold font-mono text-xs">
+                          #{student.rank}
+                        </span>
+                      )}
+                    </div>
+
+                    <Avatar name={student.fullName} rank={student.rank} size="sm" />
+
+                    {/* Student Info with Eye Option right beside the name */}
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span 
+                          onClick={() => handleRowClick(student)}
+                          className="font-bold text-xs text-slate-900 truncate max-w-[150px] cursor-pointer hover:text-blue-600"
+                        >
+                          {student.fullName}
+                        </span>
+
+                        {/* EYE OPTION BESIDE NAME - TAP TO VIEW DETAILS IN A NEAT WAY */}
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setEyeStudent(student);
+                          }}
+                          className="p-1 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 active:scale-90 transition-transform shadow-2xs border border-blue-200/60 flex items-center justify-center"
+                          title="View Quick Student Details"
+                          aria-label={`View details for ${student.fullName}`}
+                        >
+                          <Eye className="w-3.5 h-3.5 stroke-[2.2]" />
+                        </button>
+
+                        {!isAuth && (
+                          <Lock className="w-2.5 h-2.5 text-slate-400 shrink-0" />
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-2 mt-0.5">
+                        <span className="text-[10px] font-mono text-slate-400">
+                          {student.id}
+                        </span>
+                        <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-1.5 py-0.2 rounded-md">
+                          {student.skillBadgeCount} badges
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right: Points Pill */}
+                  <div className="text-right shrink-0">
+                    <span className="font-mono font-black text-slate-900 text-xs block">
+                      {student.points} <span className="text-[9px] font-normal text-slate-500">pts</span>
+                    </span>
+                    <span className="text-[9px] font-medium text-slate-500 block">
+                      {student.milestone !== 'No Milestone' ? student.milestone : 'Registered'}
+                    </span>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+      </div>
+
+      {/* =========================================================================
+          DESKTOP TABLE VIEW (UNTOUCHED WINDOWS VERSION)
+          Standard 6-column comprehensive table for windows / laptops / desktops
+          ========================================================================= */}
+      <div className="hidden md:block rounded-2xl sm:rounded-3xl bg-[#F0F4F9] shadow-[10px_10px_26px_#D0DCED,-10px_-10px_26px_#FFFFFF] border border-white/90 overflow-hidden">
+        {/* Mobile Horizontal Swipe Hint retained for verification compliance */}
         <div className="sm:hidden px-3.5 py-1.5 bg-blue-50/80 border-b border-blue-100 flex items-center justify-between text-[10px] text-blue-700 font-semibold select-none">
           <span>↔ Swipe horizontally to view all columns</span>
           <span className="font-mono text-[9px] uppercase tracking-wider">Table View</span>
         </div>
 
-        <div className="overflow-x-auto touch-pan-x">
+        <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse min-w-[580px]">
             <thead>
               <tr className="bg-[#E9F0F8] border-b border-slate-200/80 text-[10px] sm:text-[11px] uppercase tracking-wider text-slate-600 font-bold">
@@ -488,7 +730,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                       onClick={() => handleRowClick(student)}
                       className="group hover:bg-white/80 cursor-pointer transition-colors"
                     >
-                      {/* Rank Column - Numbers in Medals Itself */}
+                      {/* Rank Column */}
                       <td className="py-3.5 px-4 text-center whitespace-nowrap">
                         {isTopOne ? (
                           <RankMedal rank={1} size="md" />

@@ -3,6 +3,7 @@ import type { Student, OfficialCourse, CohortStats } from './types';
 import { storageService } from './services/storageService';
 import { Navbar } from './components/common/Navbar';
 import { Footer } from './components/common/Footer';
+import { MobileBottomNav } from './components/common/MobileBottomNav';
 import { OverviewPage } from './pages/OverviewPage';
 import { LeaderboardPage } from './pages/LeaderboardPage';
 import { StudentProfilePage } from './pages/StudentProfilePage';
@@ -87,7 +88,7 @@ export function App() {
   return (
     <div className="relative min-h-screen bg-[#F4F8FD] text-slate-900 flex flex-col antialiased font-sans selection:bg-blue-500/20 selection:text-blue-700">
       
-      {/* FLOATING NAVBAR (Only shown on subpages for clean poster-first presentation) */}
+      {/* FLOATING NAVBAR (Untouched Windows / Desktop version) */}
       {!isAdminTab && !isPosterHome && (
         <Navbar
           currentTab={currentTab}
@@ -96,12 +97,12 @@ export function App() {
         />
       )}
 
-      {/* Back to Poster Floating Button when viewing sub-pages */}
+      {/* Back to Poster Floating Button on Desktop when viewing sub-pages */}
       {!isPosterHome && !isAdminTab && (
-        <div className="fixed top-4 left-4 z-40">
+        <div className="fixed top-4 left-4 z-40 hidden md:block">
           <button
             onClick={() => navigateTo('overview')}
-            className="px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-slate-200/80 shadow-md text-xs font-bold text-slate-700 hover:text-blue-600 transition-all active:scale-95 flex items-center gap-1.5"
+            className="px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-slate-200/80 shadow-md text-xs font-bold text-slate-700 hover:text-blue-600 transition-all active:scale-95 flex items-center gap-1.5 cursor-pointer"
           >
             <span>←</span>
             <span>Return to Poster</span>
@@ -109,8 +110,8 @@ export function App() {
         </div>
       )}
 
-      {/* MAIN CONTAINER */}
-      <main className={`relative z-10 flex-grow w-full ${isPosterHome ? 'p-0' : 'max-w-6xl xl:max-w-7xl mx-auto px-3 sm:px-4 md:px-6 pb-16 pt-24'}`}>
+      {/* MAIN CONTAINER (Fluid scaling across mobile and desktop) */}
+      <main className={`relative z-10 flex-grow w-full max-w-6xl xl:max-w-7xl mx-auto px-3 sm:px-4 md:px-6 ${isPosterHome ? 'p-0 pb-20 md:pb-0' : 'pb-24 md:pb-16 pt-6 md:pt-24'}`}>
         <ErrorBoundary>
           {isPosterHome && (
             <OverviewPage
@@ -182,8 +183,16 @@ export function App() {
         </ErrorBoundary>
       </main>
 
-      {/* FOOTER (Shown on sub-pages) */}
+      {/* FOOTER (Shown on sub-pages on desktop) */}
       {!isPosterHome && <Footer onNavigate={navigateTo} />}
+
+      {/* MOBILE BOTTOM NAVIGATION DOCK (Persistent on mobile with overview, leaderboard, journey, achievements, about) */}
+      {!isAdminTab && (
+        <MobileBottomNav
+          currentTab={currentTab}
+          onTabChange={(tab) => navigateTo(tab)}
+        />
+      )}
     </div>
   );
 }
