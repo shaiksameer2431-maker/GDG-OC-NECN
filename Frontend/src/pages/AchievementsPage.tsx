@@ -113,7 +113,7 @@ export const AchievementsPage: React.FC<AchievementsPageProps> = ({
             <div
               key={champ.id}
               onClick={() => onSelectStudent(champ.id)}
-              className="p-5 rounded-2xl bg-[#F0F4F9] shadow-[6px_6px_16px_#D0DCED,-6px_-6px_16px_#FFFFFF] border border-white/85 hover:-translate-y-1 hover:shadow-[8px_8px_20px_#CAD7E8,-8px_-8px_20px_#FFFFFF] cursor-pointer transition-all duration-300 group space-y-3"
+              className="p-5 rounded-2xl bg-white/85 backdrop-blur-xl shadow-[0_8px_24px_rgba(20,43,112,0.05),4px_4px_14px_#D0DCED,-4px_-4px_14px_#FFFFFF] border border-white/95 hover:-translate-y-1 cursor-pointer transition-all duration-300 group space-y-3"
             >
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-3 min-w-0">
@@ -178,7 +178,7 @@ export const AchievementsPage: React.FC<AchievementsPageProps> = ({
             return (
               <div 
                 key={tier.id} 
-                className="p-6 rounded-3xl bg-[#F0F4F9] shadow-[8px_8px_20px_#D0DCED,-8px_-8px_20px_#FFFFFF] border border-white/90 space-y-4 hover:-translate-y-1 transition-all duration-300"
+                className="p-6 rounded-3xl bg-white/85 backdrop-blur-xl shadow-[0_10px_32px_rgba(20,43,112,0.06),6px_6px_18px_#D0DCED,-6px_-6px_18px_#FFFFFF] border border-white/95 space-y-4 hover:-translate-y-1 transition-all duration-300"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>

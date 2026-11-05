@@ -67,9 +67,9 @@ export const LearningJourneyPage: React.FC<LearningJourneyPageProps> = ({
   };
 
   return (
-    <div className="space-y-8 pt-20 sm:pt-24">
+    <div className="space-y-6 sm:space-y-8 pt-16 sm:pt-20 md:pt-24 pb-12">
       {/* HEADER */}
-      <div className="border-b border-slate-200/80 pb-5 space-y-2">
+      <div className="border-b border-slate-200/80 pb-4 sm:pb-5 space-y-2">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
           <Compass className="w-3.5 h-3.5 text-blue-600" />
           <span>OFFICIAL 10-COURSE CURRICULUM</span>
@@ -82,8 +82,8 @@ export const LearningJourneyPage: React.FC<LearningJourneyPageProps> = ({
         </p>
       </div>
 
-      {/* STUDENT LOOKUP / PERSONALIZED TRACKER BOX (NEOMORPHIC CARD) */}
-      <div className="p-5 sm:p-6 rounded-3xl bg-[#F0F4F9] shadow-[8px_8px_20px_#D0DCED,-8px_-8px_20px_#FFFFFF] border border-white/90 space-y-4">
+      {/* STUDENT LOOKUP / PERSONALIZED TRACKER BOX (GLASS FLUID FINISH) */}
+      <div className="p-4 sm:p-6 rounded-3xl bg-white/85 backdrop-blur-xl shadow-[0_8px_30px_rgba(20,43,112,0.06),6px_6px_18px_#D0DCED,-6px_-6px_18px_#FFFFFF] border border-white/95 space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200/60 pb-3">
           <div className="flex items-center gap-2">
             <User className="w-4 h-4 text-blue-600" />
@@ -115,12 +115,12 @@ export const LearningJourneyPage: React.FC<LearningJourneyPageProps> = ({
           </div>
 
           {matchedStudents.length > 0 && (
-            <div className="absolute top-full left-0 right-0 mt-2 z-30 rounded-2xl bg-[#F0F4F9] shadow-[12px_12px_28px_#CAD7E8,-12px_-12px_28px_#FFFFFF] border border-white/95 p-2 space-y-1">
+            <div className="absolute top-full left-0 right-0 mt-2 z-30 rounded-2xl bg-white/95 backdrop-blur-xl shadow-[12px_12px_28px_#CAD7E8,-12px_-12px_28px_#FFFFFF] border border-white/95 p-2 space-y-1">
               {matchedStudents.map(s => (
                 <button
                   key={s.id}
                   onClick={() => handleStudentSelect(s)}
-                  className="w-full text-left p-2.5 rounded-xl hover:bg-white/90 text-xs font-semibold text-slate-800 flex items-center justify-between transition-colors"
+                  className="w-full text-left p-2.5 rounded-xl hover:bg-blue-50/70 text-xs font-semibold text-slate-800 flex items-center justify-between transition-colors"
                 >
                   <span>{s.fullName}</span>
                   <span className="text-[10px] text-slate-500 font-mono">Rank #{s.rank}</span>
@@ -132,7 +132,7 @@ export const LearningJourneyPage: React.FC<LearningJourneyPageProps> = ({
 
         {/* Selected Student Banner */}
         {selectedStudent && (
-          <div className="p-4 rounded-2xl bg-white/80 shadow-xs border border-white flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in duration-200">
+          <div className="p-4 rounded-2xl bg-white/90 backdrop-blur-md shadow-xs border border-white flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in duration-200">
             <div>
               <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 font-mono">
                 Active Student Tracker
@@ -165,15 +165,15 @@ export const LearningJourneyPage: React.FC<LearningJourneyPageProps> = ({
         )}
       </div>
 
-      {/* CURRICULUM NOTICE */}
-      <div className="p-4 rounded-2xl bg-blue-50/70 border border-blue-200 text-xs text-slate-700 flex items-start gap-3 shadow-xs">
+      {/* CURRICULUM NOTICE (GLASS FLUID CALLOUT) */}
+      <div className="p-4 rounded-2xl bg-white/75 backdrop-blur-lg border border-blue-200/70 text-xs text-slate-700 flex items-start gap-3 shadow-[0_4px_16px_rgba(26,115,232,0.06)]">
         <Sparkles className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
         <p className="leading-relaxed">
           <strong className="text-slate-900 font-bold">Curriculum Tracking Policy:</strong> The source CSV contains verified skill badge credentials and milestone achievements. Individual module statuses for newly registered students are initialized as <strong>"Not Tracked"</strong>. Students can submit laboratory completion verification links below for administrator certification.
         </p>
       </div>
 
-      {/* THE 10 OFFICIAL COURSES GRID */}
+      {/* THE 10 OFFICIAL COURSES GRID (GLASS FLUID FINISH) */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg sm:text-xl font-bold text-slate-900">
@@ -193,7 +193,7 @@ export const LearningJourneyPage: React.FC<LearningJourneyPageProps> = ({
             return (
               <div
                 key={course.id}
-                className="p-5 rounded-2xl bg-[#F0F4F9] shadow-[6px_6px_16px_#D0DCED,-6px_-6px_16px_#FFFFFF] border border-white/85 group hover:-translate-y-0.5 hover:shadow-[8px_8px_20px_#CAD7E8,-8px_-8px_20px_#FFFFFF] transition-all duration-300 space-y-4"
+                className="p-5 rounded-2xl bg-white/85 backdrop-blur-xl shadow-[0_8px_24px_rgba(20,43,112,0.05),4px_4px_14px_#D0DCED,-4px_-4px_14px_#FFFFFF] border border-white/95 group hover:-translate-y-0.5 transition-all duration-300 space-y-4"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-2.5">
@@ -210,7 +210,7 @@ export const LearningJourneyPage: React.FC<LearningJourneyPageProps> = ({
                     </div>
                   </div>
 
-                  <span className="text-[11px] font-mono text-slate-600 bg-white/80 px-2.5 py-1 rounded-lg shrink-0 border border-slate-200/80 font-medium shadow-2xs">
+                  <span className="text-[11px] font-mono text-slate-600 bg-white/90 px-2.5 py-1 rounded-lg shrink-0 border border-slate-200/80 font-medium shadow-2xs">
                     {course.estimatedHours}
                   </span>
                 </div>
@@ -263,11 +263,11 @@ export const LearningJourneyPage: React.FC<LearningJourneyPageProps> = ({
       {/* COURSE PROOF SUBMISSION MODAL */}
       {showSubmissionModal && selectedStudent && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-md animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md animate-in fade-in duration-200"
           onClick={() => setShowSubmissionModal(false)}
         >
           <div 
-            className="relative max-w-lg w-full max-h-[90vh] overflow-y-auto rounded-3xl bg-[#F0F4F9] shadow-[16px_16px_36px_#CAD7E8,-16px_-16px_36px_#FFFFFF] border border-white/95 p-5 sm:p-6 space-y-4"
+            className="relative max-w-lg w-full max-h-[90vh] overflow-y-auto rounded-3xl bg-[#F0F4F9] shadow-[16px_16px_36px_#CAD7E8,-16px_-16px_36px_#FFFFFF] border border-white/95 p-6 space-y-4"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between">
@@ -275,8 +275,8 @@ export const LearningJourneyPage: React.FC<LearningJourneyPageProps> = ({
                 <h3 className="text-base font-bold text-slate-900">
                   Submit Course Completion Proof
                 </h3>
-                <p className="text-xs text-slate-500">
-                  Student: {selectedStudent.fullName}
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Submitting verification for: <strong className="text-slate-800">{selectedStudent.fullName}</strong>
                 </p>
               </div>
               <button
@@ -287,78 +287,76 @@ export const LearningJourneyPage: React.FC<LearningJourneyPageProps> = ({
               </button>
             </div>
 
-            {submissionSuccess ? (
-              <div className="p-6 text-center space-y-2">
-                <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto" />
-                <h4 className="text-base font-bold text-slate-900">Verification Submitted!</h4>
-                <p className="text-xs text-slate-600">
-                  Your lab completion proof has been logged for administrator review.
-                </p>
+            <form onSubmit={handleVerificationSubmit} className="space-y-4 pt-2">
+              <div>
+                <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1">
+                  Selected Course Module:
+                </label>
+                <select
+                  value={submissionCourseId}
+                  onChange={(e) => setSubmissionCourseId(Number(e.target.value))}
+                  className="w-full neo-inset px-3.5 py-2.5 rounded-xl text-xs text-slate-900 focus:outline-none"
+                >
+                  {officialCourses.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.courseNumber}. {c.title}
+                    </option>
+                  ))}
+                </select>
               </div>
-            ) : (
-              <form onSubmit={handleVerificationSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1">
-                    Select Course Module:
-                  </label>
-                  <select
-                    value={submissionCourseId}
-                    onChange={(e) => setSubmissionCourseId(Number(e.target.value))}
-                    className="w-full neo-inset px-3 py-2 rounded-xl text-xs text-slate-800 focus:outline-none"
-                  >
-                    {officialCourses.map(c => (
-                      <option key={c.id} value={c.id}>
-                        Course #{c.courseNumber}: {c.title}
-                      </option>
-                    ))}
-                  </select>
-                </div>
 
-                <div>
-                  <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1">
-                    Proof URL (Google Cloud Skills Boost Badge or Profile Link):
-                  </label>
-                  <input
-                    type="url"
-                    value={proofUrl}
-                    onChange={(e) => setProofUrl(e.target.value)}
-                    placeholder="https://www.skills.google/public_profiles/..."
-                    required
-                    className="w-full neo-inset px-3 py-2 rounded-xl text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
+              <div>
+                <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1">
+                  Public Proof URL (Google Skills Profile or Badge URL):
+                </label>
+                <input
+                  type="url"
+                  required
+                  placeholder="https://www.cloudskillsboost.google/public_profiles/..."
+                  value={proofUrl}
+                  onChange={(e) => setProofUrl(e.target.value)}
+                  className="w-full neo-inset px-3.5 py-2.5 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
 
-                <div>
-                  <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1">
-                    Notes for Administrator (Optional):
-                  </label>
-                  <textarea
-                    value={submissionNotes}
-                    onChange={(e) => setSubmissionNotes(e.target.value)}
-                    rows={3}
-                    placeholder="Provide any additional context or completion date..."
-                    className="w-full neo-inset px-3 py-2 rounded-xl text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
+              <div>
+                <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1">
+                  Notes / Verification Comments (Optional):
+                </label>
+                <textarea
+                  rows={2}
+                  placeholder="Any details to help administrators confirm lab completion..."
+                  value={submissionNotes}
+                  onChange={(e) => setSubmissionNotes(e.target.value)}
+                  className="w-full neo-inset px-3.5 py-2 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
 
-                <div className="pt-2 flex items-center gap-2">
-                  <button
-                    type="submit"
-                    className="flex-1 neo-btn-primary py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 active:scale-95 transition-all shadow-sm"
-                  >
-                    <Send className="w-3.5 h-3.5" />
-                    <span>Submit for Verification</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setShowSubmissionModal(false)}
-                    className="px-4 py-2.5 rounded-xl neo-btn text-xs font-semibold text-slate-600"
-                  >
-                    Cancel
-                  </button>
+              {submissionSuccess && (
+                <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Proof submitted successfully! Administrator verification pending.</span>
                 </div>
-              </form>
-            )}
+              )}
+
+              <div className="flex items-center gap-3 pt-2">
+                <button
+                  type="submit"
+                  disabled={submissionSuccess}
+                  className="flex-1 neo-btn-primary py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 active:scale-95 transition-all shadow-sm"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  <span>Submit for Verification</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowSubmissionModal(false)}
+                  className="px-4 py-2.5 rounded-xl neo-btn text-xs font-semibold text-slate-700"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

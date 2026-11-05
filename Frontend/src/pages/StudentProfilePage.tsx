@@ -230,8 +230,8 @@ export const StudentProfilePage: React.FC<StudentProfilePageProps> = ({
         </span>
       </div>
 
-      {/* PROFILE HEADER HERO (NEOMORPHIC CARD) */}
-      <div className="rounded-3xl bg-[#F0F4F9] shadow-[10px_10px_24px_#D0DCED,-10px_-10px_24px_#FFFFFF] border border-white/90 p-5 sm:p-7">
+      {/* PROFILE HEADER HERO (GLASS FLUID CARD) */}
+      <div className="rounded-3xl bg-white/85 backdrop-blur-xl shadow-[0_10px_32px_rgba(20,43,112,0.06),8px_8px_20px_#D0DCED,-8px_-8px_20px_#FFFFFF] border border-white/95 p-5 sm:p-7">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5">
               <Avatar name={student.fullName} rank={student.rank} size="xl" />
@@ -312,10 +312,10 @@ export const StudentProfilePage: React.FC<StudentProfilePageProps> = ({
           </div>
         </div>
 
-      {/* METRICS BENTO GRID */}
+      {/* METRICS BENTO GRID (GLASS FLUID CARDS) */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {/* Metric 1: Skill Badges */}
-        <div className="p-5 rounded-2xl bg-[#F0F4F9] shadow-[6px_6px_16px_#D0DCED,-6px_-6px_16px_#FFFFFF] border border-white/85 space-y-1">
+        <div className="p-5 rounded-2xl bg-white/80 backdrop-blur-xl shadow-[0_8px_24px_rgba(20,43,112,0.05),4px_4px_14px_#D0DCED,-4px_-4px_14px_#FFFFFF] border border-white/90 space-y-1">
           <span className="text-[11px] font-mono text-slate-500 uppercase tracking-wider font-bold">
             Skill Badges
           </span>
@@ -328,7 +328,7 @@ export const StudentProfilePage: React.FC<StudentProfilePageProps> = ({
         </div>
 
         {/* Metric 2: Milestone Status */}
-        <div className="p-5 rounded-2xl bg-[#F0F4F9] shadow-[6px_6px_16px_#D0DCED,-6px_-6px_16px_#FFFFFF] border border-white/85 space-y-1">
+        <div className="p-5 rounded-2xl bg-white/80 backdrop-blur-xl shadow-[0_8px_24px_rgba(20,43,112,0.05),4px_4px_14px_#D0DCED,-4px_-4px_14px_#FFFFFF] border border-white/90 space-y-1">
           <span className="text-[11px] font-mono text-slate-500 uppercase tracking-wider font-bold">
             Current Milestone
           </span>
@@ -347,7 +347,7 @@ export const StudentProfilePage: React.FC<StudentProfilePageProps> = ({
         </div>
 
         {/* Metric 3: Redemption Status */}
-        <div className="p-5 rounded-2xl bg-[#F0F4F9] shadow-[6px_6px_16px_#D0DCED,-6px_-6px_16px_#FFFFFF] border border-white/85 space-y-1">
+        <div className="p-5 rounded-2xl bg-white/80 backdrop-blur-xl shadow-[0_8px_24px_rgba(20,43,112,0.05),4px_4px_14px_#D0DCED,-4px_-4px_14px_#FFFFFF] border border-white/90 space-y-1">
           <span className="text-[11px] font-mono text-slate-500 uppercase tracking-wider font-bold">
             Access Code
           </span>
@@ -362,7 +362,7 @@ export const StudentProfilePage: React.FC<StudentProfilePageProps> = ({
         </div>
 
         {/* Metric 4: GEAR Digital Badges */}
-        <div className="p-5 rounded-2xl bg-[#F0F4F9] shadow-[6px_6px_16px_#D0DCED,-6px_-6px_16px_#FFFFFF] border border-white/85 space-y-1">
+        <div className="p-5 rounded-2xl bg-white/80 backdrop-blur-xl shadow-[0_8px_24px_rgba(20,43,112,0.05),4px_4px_14px_#D0DCED,-4px_-4px_14px_#FFFFFF] border border-white/90 space-y-1">
           <span className="text-[11px] font-mono text-slate-500 uppercase tracking-wider font-bold">
             GEAR Digital Badges
           </span>
@@ -375,8 +375,8 @@ export const StudentProfilePage: React.FC<StudentProfilePageProps> = ({
         </div>
       </div>
 
-      {/* COMPLETED SKILL BADGES GALLERY (NEOMORPHIC CARD) */}
-      <div className="p-5 sm:p-6 rounded-3xl bg-[#F0F4F9] shadow-[8px_8px_20px_#D0DCED,-8px_-8px_20px_#FFFFFF] border border-white/90 space-y-4">
+      {/* COMPLETED SKILL BADGES GALLERY (GLASS FLUID CARD) */}
+      <div className="p-5 sm:p-6 rounded-3xl bg-white/85 backdrop-blur-xl shadow-[0_8px_30px_rgba(20,43,112,0.06),6px_6px_18px_#D0DCED,-6px_-6px_18px_#FFFFFF] border border-white/95 space-y-4">
         <div className="flex items-center justify-between border-b border-slate-200/60 pb-3">
           <div className="flex items-center gap-2">
             <Award className="w-5 h-5 text-amber-500" />
@@ -420,8 +420,8 @@ export const StudentProfilePage: React.FC<StudentProfilePageProps> = ({
         )}
       </div>
 
-      {/* 10 OFFICIAL COURSES PROGRESS TRACKER (NEOMORPHIC CARD) */}
-      <div className="p-5 sm:p-6 rounded-3xl bg-[#F0F4F9] shadow-[8px_8px_20px_#D0DCED,-8px_-8px_20px_#FFFFFF] border border-white/90 space-y-5">
+      {/* 10 OFFICIAL COURSES PROGRESS TRACKER (GLASS FLUID CARD) */}
+      <div className="p-5 sm:p-6 rounded-3xl bg-white/85 backdrop-blur-xl shadow-[0_8px_30px_rgba(20,43,112,0.06),6px_6px_18px_#D0DCED,-6px_-6px_18px_#FFFFFF] border border-white/95 space-y-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200/60 pb-3">
           <div>
             <div className="flex items-center gap-2">

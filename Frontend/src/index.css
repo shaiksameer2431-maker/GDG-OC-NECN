@@ -14,6 +14,15 @@
   *, *::before, *::after {
     box-sizing: border-box;
     border-color: rgba(209, 223, 236, 0.7);
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  button, a, input, select {
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  button:focus, button:focus-visible, a:focus, a:focus-visible {
+    outline: none !important;
   }
 
   html {
@@ -130,6 +139,15 @@
     border: 1px solid rgba(209, 223, 236, 0.7);
   }
 
+  /* Glass Fluid Premium Card Finish across the website */
+  .glass-fluid-card {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.92);
+    box-shadow: 0 10px 30px rgba(20, 43, 112, 0.05), 6px 6px 18px #D0DCED, -6px -6px 18px #FFFFFF;
+  }
+
   /* Legacy Apple Card compatibility (upgraded with Neomorphism depth) */
   .apple-card-outer {
     @apply relative p-1 rounded-2xl bg-[#F0F4F9] border border-white/80 shadow-[6px_6px_18px_#D0DCED,-6px_-6px_18px_#FFFFFF] transition-all duration-300;
@@ -148,43 +166,39 @@
   }
 }
 
-/* Float & gentle pulse animations */
-@keyframes floatGentle {
+/* Animations */
+@keyframes float1 {
   0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-7px) rotate(1deg); }
+  50% { transform: translateY(-7px) rotate(2deg); }
 }
 
-@keyframes floatReverse {
+@keyframes float2 {
   0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(7px) rotate(-1deg); }
+  50% { transform: translateY(-5px) rotate(-2deg); }
 }
 
-@keyframes pulseGlow {
-  0%, 100% { opacity: 0.5; transform: scale(1); }
-  50% { opacity: 0.85; transform: scale(1.04); }
+@keyframes float3 {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-8px) scale(1.03); }
 }
 
 @keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(200%); }
+  0% { transform: translateX(-150%) skewX(-25deg); }
+  100% { transform: translateX(250%) skewX(-25deg); }
 }
 
 .anim-float-1 {
-  animation: floatGentle 5s ease-in-out infinite;
+  animation: float1 5s ease-in-out infinite;
 }
 
 .anim-float-2 {
-  animation: floatReverse 6s ease-in-out infinite 0.5s;
+  animation: float2 6s ease-in-out infinite;
 }
 
 .anim-float-3 {
-  animation: floatGentle 7s ease-in-out infinite 1s;
-}
-
-.anim-pulse-glow {
-  animation: pulseGlow 3s ease-in-out infinite;
+  animation: float3 7s ease-in-out infinite;
 }
 
 .anim-shimmer {
-  animation: shimmer 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation: shimmer 7s ease-in-out infinite;
 }
