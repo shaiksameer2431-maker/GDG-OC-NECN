@@ -5,13 +5,11 @@ import {
   ArrowRight, 
   Gift, 
   Compass, 
-  CheckCircle2, 
-  Cloud,
-  Award,
   X,
   ExternalLink
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { PosterStage } from '../poster/PosterStage';
 
 interface HeroBannerDesignProps {
   onExploreLeaderboard: () => void;
@@ -40,79 +38,22 @@ export const HeroBannerDesign: React.FC<HeroBannerDesignProps> = ({
   return (
     <div className="relative w-full space-y-5">
       {/* =========================================================================
-          MASTER NEOMORPHIC HIGH-DEFINITION BANNER SHOWCASE
+          MASTER NEOMORPHIC 2.5D ANIMATED POSTER CANVAS
+          Zero flat background image - Reconstructed with modular interactive React components
+          Responsive media standard: w-full h-auto object-contain
           ========================================================================= */}
       <div 
-        className="relative w-full p-2.5 sm:p-4 rounded-[2rem] sm:rounded-[2.5rem] bg-[#F0F4F9] shadow-[12px_12px_30px_#CFDCEE,-12px_-12px_30px_#FFFFFF] border border-white/95 overflow-hidden transition-all duration-500 group"
+        className="relative w-full p-2 sm:p-3.5 md:p-4 rounded-[2rem] sm:rounded-[2.5rem] bg-[#F0F4F9] shadow-[12px_12px_30px_#CFDCEE,-12px_-12px_30px_#FFFFFF] border border-white/95 overflow-hidden transition-all duration-500 group"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Soft Ambient Radial Corner Accents */}
-        <div className="absolute top-0 left-0 w-56 h-56 rounded-full bg-blue-100/40 blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 right-0 w-56 h-56 rounded-full bg-amber-100/40 blur-3xl pointer-events-none" />
+        <div className="absolute top-0 left-0 w-64 h-64 rounded-full bg-blue-100/40 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-64 h-64 rounded-full bg-amber-100/40 blur-3xl pointer-events-none" />
 
-        {/* ================= HIGH FIDELITY BANNER WRAPPER ================= */}
-        <div className="relative w-full rounded-[1.6rem] sm:rounded-[2rem] overflow-hidden bg-white shadow-[inset_0_1px_2px_rgba(0,0,0,0.06),0_4px_16px_rgba(0,0,0,0.04)] border border-slate-200/70">
-          
-          {/* Pristine Full-Resolution Banner Graphic - Zero Cropping, Zero Quality Loss */}
-          <img
-            src="/official-banner-hq.jpg"
-            alt="NECN Cloud Champions - Google Cloud Learn with Communities 2026 - Narayana Engineering College, Nellore"
-            className="w-full h-auto object-contain block select-none transform transition-transform duration-700 group-hover:scale-[1.008]"
-            style={{
-              imageRendering: 'auto',
-              WebkitBackfaceVisibility: 'hidden',
-              backfaceVisibility: 'hidden',
-              transform: 'translateZ(0)'
-            }}
-            loading="eager"
-            fetchPriority="high"
-          />
-
-          {/* Light Sweep Shimmer Effect on Subtle Hover */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div className="w-1/3 h-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[-25deg] anim-shimmer" />
-          </div>
-
-          {/* Interactive Hotspot 1: Swags Trigger Area (Right Side) */}
-          <div
-            onClick={handleCelebrateSwags}
-            className="hidden md:block absolute top-[15%] right-[12%] w-[22%] h-[68%] cursor-pointer group/swag z-20"
-            title="Click to view official Google Cloud Swag kit!"
-          >
-            <div className="w-full h-full rounded-2xl transition-all duration-300 border-2 border-transparent group-hover/swag:border-blue-400/50 group-hover/swag:bg-blue-500/5 group-hover/swag:shadow-lg flex items-start justify-end p-2">
-              <span className="opacity-0 group-hover/swag:opacity-100 transition-opacity bg-blue-600 text-white font-bold text-[10px] px-2.5 py-1 rounded-full shadow-md flex items-center gap-1">
-                <Gift className="w-3 h-3 text-amber-300" />
-                <span>View Rewards</span>
-              </span>
-            </div>
-          </div>
-
-          {/* Interactive Hotspot 2: 5 Badges Pulse Indicator */}
-          <div className="hidden lg:block absolute top-[14%] right-[7%] pointer-events-none z-10">
-            <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500 shadow-xs" />
-            </span>
-          </div>
-
-          {/* Interactive Hotspot 3: 10 Badges Pulse Indicator */}
-          <div className="hidden lg:block absolute top-[44%] right-[6%] pointer-events-none z-10">
-            <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500 shadow-xs" />
-            </span>
-          </div>
-
-          {/* Interactive Hotspot 4: Win Exciting Swags Button Highlight */}
-          <div 
-            onClick={handleCelebrateSwags}
-            className="hidden md:block absolute bottom-[18%] right-[4%] w-[12%] h-[12%] cursor-pointer select-none z-30"
-            title="Click to celebrate rewards!"
-          >
-            <div className="w-full h-full rounded-full bg-transparent hover:bg-white/30 transition-all border border-transparent hover:border-white/60 active:scale-95" />
-          </div>
-
+        {/* Master Interactive 2.5D Poster Stage */}
+        <div className="relative w-full h-auto object-contain">
+          <PosterStage onCelebrateSwags={handleCelebrateSwags} />
         </div>
 
         {/* Ambient Floating 3D Google Primary Color Spheres */}
