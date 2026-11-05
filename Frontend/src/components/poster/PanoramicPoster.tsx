@@ -619,3 +619,4 @@ export const PanoramicPoster: React.FC<PanoramicPosterProps> = ({
     </div>
   );
 };
+
