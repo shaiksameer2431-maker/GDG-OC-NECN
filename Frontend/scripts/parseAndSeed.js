@@ -300,13 +300,32 @@ function getMilestoneRank(m) {
 }
 
 publicStudents.sort((a, b) => {
+  // 1. OFFICIAL COHORT REDEMPTION PRIORITY #1:
+  // In Google Cloud Learn with Communities, a student MUST redeem their official cohort
+  // access code to be eligible for the official cohort podium, swags, and ranking.
+  // Redeemed students ALWAYS rank ahead of unredeemed students!
+  const aRedeemed = a.redemptionStatus === 'Redeemed';
+  const bRedeemed = b.redemptionStatus === 'Redeemed';
+  if (aRedeemed !== bRedeemed) {
+    return aRedeemed ? -1 : 1;
+  }
+
+  // 2. Points (desc)
   if (b.points !== a.points) return b.points - a.points;
+
+  // 3. Skill Badges (desc)
   if (b.skillBadgeCount !== a.skillBadgeCount) return b.skillBadgeCount - a.skillBadgeCount;
+
+  // 4. Milestone tier (Milestone 3 > 2 > 1 > No Milestone)
   const mDiff = getMilestoneRank(b.milestone) - getMilestoneRank(a.milestone);
   if (mDiff !== 0) return mDiff;
+
+  // 5. Google Skills Profile Status ('All Good' > others)
   if ((b.googleSkillsProfileStatus === 'All Good') !== (a.googleSkillsProfileStatus === 'All Good')) {
     return b.googleSkillsProfileStatus === 'All Good' ? 1 : -1;
   }
+
+  // 6. Alphabetical by Full Name
   return a.fullName.localeCompare(b.fullName);
 });
 
@@ -317,13 +336,13 @@ publicStudents.forEach((s, idx) => {
 
 console.log('=== VERIFICATION SUMMARY ===');
 console.log(`Total students: ${publicStudents.length}`);
-console.log(`Redeemed: ${redeemedCount} (Expected: 168)`);
-console.log(`Not Redeemed: ${notRedeemedCount} (Expected: 270)`);
+console.log(`Redeemed: ${redeemedCount} (Expected: 174)`);
+console.log(`Not Redeemed: ${notRedeemedCount} (Expected: 264)`);
 console.log(`Milestones:`, milestoneDistribution);
 console.log(`Total Skill Badges Earned: ${totalBadgesSum}`);
 console.log(`Top 5 Students:`);
 publicStudents.slice(0, 5).forEach(s => {
-  console.log(`  #${s.rank} ${s.fullName} - Points: ${s.points}, Badges: ${s.skillBadgeCount}, Milestone: ${s.milestone}`);
+  console.log(`  #${s.rank} [${s.redemptionStatus}] ${s.fullName} - Points: ${s.points}, Badges: ${s.skillBadgeCount}, Milestone: ${s.milestone}`);
 });
 
 // Save to src/data
