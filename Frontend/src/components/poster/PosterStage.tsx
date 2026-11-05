@@ -150,3 +150,4 @@ export const PosterStage: React.FC<PosterStageProps> = ({ onCelebrateSwags }) =>
     </div>
   );
 };
+

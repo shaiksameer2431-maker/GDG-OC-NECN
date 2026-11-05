@@ -82,21 +82,13 @@ export function App() {
     : undefined;
 
   const isAdminTab = currentTab === 'admin' || currentTab === 'admin-portal';
+  const isPosterHome = currentTab === 'overview';
 
   return (
-    <div className="relative min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col selection:bg-blue-500/20 selection:text-blue-700 antialiased font-sans">
-      {/* SOFT AMBIENT LIGHTING MESH (White Mode Apple depth) */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        {/* Top-center soft blue glow */}
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[450px] bg-blue-100/60 blur-[120px] rounded-full" />
-        {/* Top-right soft amber glow */}
-        <div className="absolute top-20 right-[-10%] w-[500px] h-[400px] bg-amber-100/40 blur-[130px] rounded-full" />
-        {/* Bottom-left soft emerald glow */}
-        <div className="absolute bottom-20 left-[-10%] w-[550px] h-[400px] bg-emerald-100/40 blur-[130px] rounded-full" />
-      </div>
-
-      {/* FLOATING GLASS NAVBAR (Hidden when in dedicated Admin Mode for clean separation) */}
-      {!isAdminTab && (
+    <div className="relative min-h-screen bg-[#F4F8FD] text-slate-900 flex flex-col antialiased font-sans selection:bg-blue-500/20 selection:text-blue-700">
+      
+      {/* FLOATING NAVBAR (Only shown on subpages for clean poster-first presentation) */}
+      {!isAdminTab && !isPosterHome && (
         <Navbar
           currentTab={currentTab}
           onTabChange={(tab) => navigateTo(tab)}
@@ -104,10 +96,23 @@ export function App() {
         />
       )}
 
+      {/* Back to Poster Floating Button when viewing sub-pages */}
+      {!isPosterHome && !isAdminTab && (
+        <div className="fixed top-4 left-4 z-40">
+          <button
+            onClick={() => navigateTo('overview')}
+            className="px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-slate-200/80 shadow-md text-xs font-bold text-slate-700 hover:text-blue-600 transition-all active:scale-95 flex items-center gap-1.5"
+          >
+            <span>←</span>
+            <span>Return to Poster</span>
+          </button>
+        </div>
+      )}
+
       {/* MAIN CONTAINER */}
-      <main className="relative z-10 flex-grow max-w-6xl xl:max-w-7xl w-full mx-auto px-3 sm:px-4 md:px-6 pb-16">
+      <main className={`relative z-10 flex-grow w-full ${isPosterHome ? 'p-0' : 'max-w-6xl xl:max-w-7xl mx-auto px-3 sm:px-4 md:px-6 pb-16 pt-24'}`}>
         <ErrorBoundary>
-          {currentTab === 'overview' && (
+          {isPosterHome && (
             <OverviewPage
               stats={stats}
               topStudents={students}
@@ -177,8 +182,8 @@ export function App() {
         </ErrorBoundary>
       </main>
 
-      {/* FOOTER */}
-      <Footer onNavigate={navigateTo} />
+      {/* FOOTER (Shown on sub-pages) */}
+      {!isPosterHome && <Footer onNavigate={navigateTo} />}
     </div>
   );
 }

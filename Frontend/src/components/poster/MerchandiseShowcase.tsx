@@ -101,3 +101,4 @@ export const MerchandiseShowcase: React.FC<MerchandiseShowcaseProps> = ({
     </div>
   );
 };
+

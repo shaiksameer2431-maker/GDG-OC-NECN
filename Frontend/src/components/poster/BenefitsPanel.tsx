@@ -63,3 +63,4 @@ export const BenefitsPanel: React.FC = () => {
     </motion.div>
   );
 };
+

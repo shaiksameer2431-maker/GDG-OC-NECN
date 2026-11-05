@@ -90,3 +90,4 @@ export const LearningPathCard: React.FC = () => {
     </motion.div>
   );
 };
+

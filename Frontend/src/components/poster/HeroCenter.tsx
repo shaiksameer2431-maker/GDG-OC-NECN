@@ -80,3 +80,4 @@ export const HeroCenter: React.FC = () => {
     </div>
   );
 };
+

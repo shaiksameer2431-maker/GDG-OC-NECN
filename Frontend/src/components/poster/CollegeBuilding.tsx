@@ -30,3 +30,4 @@ export const CollegeBuilding: React.FC = () => {
     </motion.div>
   );
 };
+

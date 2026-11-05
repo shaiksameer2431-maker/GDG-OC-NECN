@@ -88,3 +88,4 @@ export const HeaderBranding: React.FC = () => {
     </motion.header>
   );
 };
+

@@ -47,3 +47,4 @@ export const CloudIllustrations: React.FC = () => {
     </div>
   );
 };
+
