@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import type { Student, CohortStats } from '../types';
 import { Avatar } from '../components/common/Avatar';
 import { MilestonePill, RedemptionPill } from '../components/common/BadgePill';
@@ -50,6 +50,17 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
   // Student Quick Details Eye Modal for Mobile
   const [eyeStudent, setEyeStudent] = useState<Student | null>(null);
+
+  // PREVENT BACKGROUND SCROLL WHEN EYE MODAL IS OPEN (STRICT SCROLL LOCK)
+  useEffect(() => {
+    if (eyeStudent) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalOverflow || '';
+      };
+    }
+  }, [eyeStudent]);
 
   // Student Email Verification Gate
   const [authTargetStudent, setAuthTargetStudent] = useState<Student | null>(null);
@@ -150,9 +161,9 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
   }, [filteredStudents, currentPage, pageSize]);
 
   return (
-    <div className="space-y-5 sm:space-y-6 pt-16 sm:pt-20 md:pt-24 pb-8">
+    <div className="space-y-4 sm:space-y-6 pt-16 sm:pt-20 md:pt-24 pb-12">
       {/* PAGE HEADER */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-4 border-b border-slate-200/80 pb-4 sm:pb-5">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-4 border-b border-slate-200/80 pb-3 sm:pb-5">
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 mb-1.5 sm:mb-2">
             <Trophy className="w-3.5 h-3.5 text-blue-600" />
@@ -181,15 +192,16 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
       {/* =========================================================================
           STUDENT QUICK DETAILS MODAL (MOBILE EYE POPUP)
-          Neat card view triggered by clicking the eye icon on mobile.
+          Neomorphic + Glassy Fluid Popover. Zero Background Scrolling.
+          Prominently elevated with z-[70] so action buttons are never hidden!
           ========================================================================= */}
       {eyeStudent && (
         <div
-          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/50 backdrop-blur-md animate-in fade-in duration-200"
+          className="fixed inset-0 z-[70] flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-200"
           onClick={() => setEyeStudent(null)}
         >
           <div
-            className="relative w-full max-w-md max-h-[88vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl bg-[#F0F4F9] shadow-[0_-8px_30px_rgba(0,0,0,0.2)] sm:shadow-[16px_16px_36px_#CAD7E8,-16px_-16px_36px_#FFFFFF] border border-white/95 p-5 space-y-4 animate-in slide-in-from-bottom-6 sm:slide-in-from-bottom-2 duration-300"
+            className="relative w-full max-w-sm sm:max-w-md max-h-[82vh] overflow-y-auto rounded-3xl bg-[#F0F4F9] shadow-[16px_16px_36px_#CAD7E8,-16px_-16px_36px_#FFFFFF] border border-white/95 p-5 space-y-4 animate-in zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
@@ -205,7 +217,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                       <RankMedal rank={eyeStudent.rank as 1 | 2 | 3} size="sm" />
                     )}
                   </div>
-                  <h3 className="text-base font-bold text-slate-900 leading-tight">
+                  <h3 className="text-sm sm:text-base font-extrabold text-slate-900 leading-tight">
                     {eyeStudent.fullName}
                   </h3>
                   <span className="text-[10px] font-mono text-slate-400">
@@ -215,15 +227,16 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
               </div>
               <button
                 onClick={() => setEyeStudent(null)}
-                className="p-1.5 rounded-xl neo-btn text-slate-500 hover:text-slate-800"
+                className="p-1.5 rounded-xl neo-btn text-slate-500 hover:text-slate-800 transition-colors"
+                aria-label="Close dialog"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Quick Metrics Grid */}
+            {/* Quick Metrics Grid (Neomorphic Inset Styling) */}
             <div className="grid grid-cols-2 gap-2.5">
-              <div className="p-3 rounded-2xl bg-white border border-slate-200/80 shadow-xs space-y-1">
+              <div className="p-3 rounded-2xl bg-white shadow-[inset_2px_2px_5px_#d1d9e6,inset_-2px_-2px_5px_#ffffff] border border-slate-200/50 space-y-0.5">
                 <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
                   Total Points
                 </span>
@@ -232,7 +245,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                 </p>
               </div>
 
-              <div className="p-3 rounded-2xl bg-white border border-slate-200/80 shadow-xs space-y-1">
+              <div className="p-3 rounded-2xl bg-white shadow-[inset_2px_2px_5px_#d1d9e6,inset_-2px_-2px_5px_#ffffff] border border-slate-200/50 space-y-0.5">
                 <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
                   Skill Badges
                 </span>
@@ -242,8 +255,8 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
               </div>
             </div>
 
-            {/* Status Breakdown */}
-            <div className="p-3.5 rounded-2xl bg-white border border-slate-200/80 shadow-xs space-y-3 text-xs">
+            {/* Status Breakdown (Glassy Neomorphic Card) */}
+            <div className="p-3.5 rounded-2xl bg-white shadow-[4px_4px_12px_#D0DCED,-4px_-4px_12px_#FFFFFF] border border-white/90 space-y-3 text-xs">
               <div className="flex items-center justify-between">
                 <span className="text-slate-500 font-semibold">Milestone Tier:</span>
                 <MilestonePill milestone={eyeStudent.milestone} size="sm" />
@@ -270,8 +283,8 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
               )}
             </div>
 
-            {/* Actions */}
-            <div className="pt-1 flex items-center gap-2">
+            {/* Action Buttons (Prominently visible at bottom) */}
+            <div className="pt-2 flex items-center gap-2">
               <button
                 onClick={() => {
                   const target = eyeStudent;
@@ -280,8 +293,8 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                 }}
                 className="flex-1 neo-btn-primary py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-all shadow-sm"
               >
-                <Trophy className="w-3.5 h-3.5" />
-                <span>Full Profile Details</span>
+                <Trophy className="w-3.5 h-3.5 text-amber-300" />
+                <span>View Full Student Profile</span>
               </button>
               <button
                 onClick={() => setEyeStudent(null)}
@@ -477,7 +490,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
         </div>
 
         {/* Filter Pills */}
-        <div className="flex flex-wrap items-center justify-between gap-2.5 text-xs">
+        <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
           {/* Redemption Filter */}
           <div className="flex items-center gap-1.5 flex-wrap">
             <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider mr-1">
@@ -557,18 +570,19 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
       </div>
 
       {/* =========================================================================
-          MOBILE-OPTIMIZED TABLE VIEW (CLEAN, NO HORIZONTAL SCROLL TRAP, SMOOTH SCROLLING)
-          Features prominent eye icon to view full details in a neat card!
+          MOBILE-OPTIMIZED TABLE VIEW
+          Every single eye icon is in a 100% disciplined straight vertical column!
+          Zero jagged layout. Zero scroll stops in middle.
           ========================================================================= */}
       <div className="md:hidden rounded-2xl bg-[#F0F4F9] shadow-[8px_8px_20px_#D0DCED,-8px_-8px_20px_#FFFFFF] border border-white/90 overflow-hidden">
         {/* Mobile Header Bar */}
         <div className="px-3.5 py-2.5 bg-[#E9F0F8] border-b border-slate-200/80 flex items-center justify-between text-[11px] text-slate-700 font-bold">
-          <span className="flex items-center gap-1">
+          <span className="flex items-center gap-1.5">
             <Trophy className="w-3.5 h-3.5 text-blue-600" />
             <span>Leaderboard Rankings</span>
           </span>
           <span className="text-[10px] text-slate-500 font-medium">
-            Tap <Eye className="w-3 h-3 inline text-blue-600 mx-0.5" /> for full info
+            Tap <Eye className="w-3 h-3 inline text-blue-600 mx-0.5" /> for full card
           </span>
         </div>
 
@@ -599,74 +613,75 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
               return (
                 <div
                   key={student.id}
-                  className="p-3 flex items-center justify-between gap-2.5 transition-colors active:bg-blue-50/40 bg-white/40 hover:bg-white/70"
+                  className="px-3 py-2.5 flex items-center gap-2.5 transition-colors active:bg-blue-50/40 bg-white/40 hover:bg-white/70"
                 >
-                  {/* Left: Rank & Avatar */}
-                  <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                    {/* Rank Badge */}
-                    <div className="w-8 shrink-0 flex items-center justify-center">
-                      {isTopOne ? (
-                        <RankMedal rank={1} size="sm" />
-                      ) : isTopTwo ? (
-                        <RankMedal rank={2} size="sm" />
-                      ) : isTopThree ? (
-                        <RankMedal rank={3} size="sm" />
-                      ) : (
-                        <span className="text-slate-500 font-bold font-mono text-xs">
-                          #{student.rank}
-                        </span>
+                  {/* Column 1: Rank Badge (Fixed width 32px) */}
+                  <div className="w-8 shrink-0 flex items-center justify-center">
+                    {isTopOne ? (
+                      <RankMedal rank={1} size="sm" />
+                    ) : isTopTwo ? (
+                      <RankMedal rank={2} size="sm" />
+                    ) : isTopThree ? (
+                      <RankMedal rank={3} size="sm" />
+                    ) : (
+                      <span className="text-slate-500 font-bold font-mono text-xs">
+                        #{student.rank}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Column 2: Avatar (Fixed width 28px) */}
+                  <div className="shrink-0">
+                    <Avatar name={student.fullName} rank={student.rank} size="sm" />
+                  </div>
+
+                  {/* Column 3: Student Name & ID (Flex 1 min-w-0, truncating cleanly) */}
+                  <div className="flex-1 min-w-0 pr-1">
+                    <div className="flex items-center gap-1 truncate">
+                      <span 
+                        onClick={() => handleRowClick(student)}
+                        className="font-bold text-xs text-slate-900 truncate cursor-pointer hover:text-blue-600"
+                        title={student.fullName}
+                      >
+                        {student.fullName}
+                      </span>
+                      {!isAuth && (
+                        <Lock className="w-2.5 h-2.5 text-slate-400 shrink-0" />
                       )}
                     </div>
-
-                    <Avatar name={student.fullName} rank={student.rank} size="sm" />
-
-                    {/* Student Info with Eye Option right beside the name */}
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-1.5 flex-wrap">
-                        <span 
-                          onClick={() => handleRowClick(student)}
-                          className="font-bold text-xs text-slate-900 truncate max-w-[150px] cursor-pointer hover:text-blue-600"
-                        >
-                          {student.fullName}
-                        </span>
-
-                        {/* EYE OPTION BESIDE NAME - TAP TO VIEW DETAILS IN A NEAT WAY */}
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setEyeStudent(student);
-                          }}
-                          className="p-1 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 active:scale-90 transition-transform shadow-2xs border border-blue-200/60 flex items-center justify-center"
-                          title="View Quick Student Details"
-                          aria-label={`View details for ${student.fullName}`}
-                        >
-                          <Eye className="w-3.5 h-3.5 stroke-[2.2]" />
-                        </button>
-
-                        {!isAuth && (
-                          <Lock className="w-2.5 h-2.5 text-slate-400 shrink-0" />
-                        )}
-                      </div>
-
-                      <div className="flex items-center gap-2 mt-0.5">
-                        <span className="text-[10px] font-mono text-slate-400">
-                          {student.id}
-                        </span>
-                        <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-1.5 py-0.2 rounded-md">
-                          {student.skillBadgeCount} badges
-                        </span>
-                      </div>
+                    <div className="flex items-center gap-1.5 mt-0.5">
+                      <span className="text-[10px] font-mono text-slate-400 truncate">
+                        {student.id}
+                      </span>
+                      <span className="text-[9px] font-bold text-blue-600 bg-blue-50 px-1 py-0.2 rounded">
+                        {student.skillBadgeCount} badges
+                      </span>
                     </div>
                   </div>
 
-                  {/* Right: Points Pill */}
-                  <div className="text-right shrink-0">
-                    <span className="font-mono font-black text-slate-900 text-xs block">
+                  {/* Column 4: EYE BUTTON (FIXED COLUMN WIDTH 36px) - PERFECT STRAIGHT VERTICAL ALIGNMENT */}
+                  <div className="w-9 shrink-0 flex items-center justify-center">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setEyeStudent(student);
+                      }}
+                      className="w-8 h-8 rounded-xl bg-[#F0F4F9] hover:bg-blue-50 text-blue-600 shadow-[3px_3px_6px_#d1d9e6,-3px_-3px_6px_#ffffff] active:shadow-[inset_2px_2px_4px_#d1d9e6,inset_-2px_-2px_4px_#ffffff] flex items-center justify-center transition-all active:scale-90 border border-white/90"
+                      title="View Student Quick Card"
+                      aria-label={`View details for ${student.fullName}`}
+                    >
+                      <Eye className="w-4 h-4 stroke-[2.2]" />
+                    </button>
+                  </div>
+
+                  {/* Column 5: Points & Milestone (Fixed width 58px, right-aligned) */}
+                  <div className="w-14 sm:w-16 shrink-0 text-right">
+                    <span className="font-mono font-black text-slate-900 text-xs block leading-tight">
                       {student.points} <span className="text-[9px] font-normal text-slate-500">pts</span>
                     </span>
-                    <span className="text-[9px] font-medium text-slate-500 block">
-                      {student.milestone !== 'No Milestone' ? student.milestone : 'Registered'}
+                    <span className="text-[9px] font-medium text-slate-500 block truncate mt-0.5">
+                      {student.milestone !== 'No Milestone' ? student.milestone.replace('Milestone ', 'M') : 'Reg'}
                     </span>
                   </div>
                 </div>
