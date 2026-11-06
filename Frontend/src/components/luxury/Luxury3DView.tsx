@@ -183,7 +183,7 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-    camera.position.z = 11;
+    camera.position.z = 13.5;
 
     scene.add(new THREE.AmbientLight(0xffffff, 0.85));
     const dLight = new THREE.DirectionalLight(0xffffff, 1.1);
@@ -193,8 +193,9 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
     pLight.position.set(-5, -2, 5);
     scene.add(pLight);
 
-    // Group
+    // Group with generous padding preventing edge clipping
     const group = new THREE.Group();
+    group.scale.set(0.72, 0.72, 0.72);
 
     // Cloud Group
     const cloud = new THREE.Group();
@@ -269,17 +270,17 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       );
       orb.userData = {
         a: j,
-        r: 3 + Math.random() * 1.6,
-        s: 0.3 + Math.random() * 0.4,
-        y: Math.random() * 3 - 1.5,
+        r: 2.1 + Math.random() * 0.7,
+        s: 0.25 + Math.random() * 0.35,
+        y: Math.random() * 2.2 - 1.1,
       };
       scene.add(orb);
       orbs.push(orb);
     }
 
-    // Gold Orbit Ring
+    // Gold Orbit Ring (Scaled to fit comfortably)
     const orbitRing = createMesh(
-      new THREE.TorusGeometry(3.4, 0.02, 8, 120),
+      new THREE.TorusGeometry(2.8, 0.02, 8, 120),
       new THREE.MeshBasicMaterial({ color: 0xe6c36a, transparent: true, opacity: 0.6 })
     );
     orbitRing.rotation.x = 1.3;
@@ -324,8 +325,9 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
         o.position.set(Math.cos(a) * u.r, u.y + Math.sin(a * 2) * 0.4, Math.sin(a) * u.r * 0.5);
       });
 
-      camera.position.x += (mx * 3 - camera.position.x) * 0.05;
-      camera.position.y += (-my * 2 - camera.position.y) * 0.05;
+      // Smooth, constrained mouse parallax preventing any edge clipping
+      camera.position.x += (mx * 1.2 - camera.position.x) * 0.05;
+      camera.position.y += (-my * 0.9 - camera.position.y) * 0.05;
       camera.lookAt(0, 0, 0);
 
       renderer.render(scene, camera);
@@ -356,7 +358,7 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-    camera.position.z = 9;
+    camera.position.z = 13.5;
 
     scene.add(new THREE.AmbientLight(0xffffff, 0.85));
     const dLight = new THREE.DirectionalLight(0xffffff, 1.1);
@@ -367,6 +369,7 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
     scene.add(pLight);
 
     const group = new THREE.Group();
+    group.scale.set(0.72, 0.72, 0.72);
     const darkMat = createMaterial(0x111318, 0.2, 0.5);
 
     // 3D Bottle
@@ -468,15 +471,15 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
 
     scene.add(group);
 
-    // Floating particles
+    // Floating particles (Constrained to prevent edge clipping)
     const particles: THREE.Mesh[] = [];
     for (let j = 0; j < 8; j++) {
       const p = createMesh(
-        new THREE.SphereGeometry(0.25, 20, 20),
+        new THREE.SphereGeometry(0.2, 20, 20),
         createMaterial(GOOGLE_COLORS[j % 4], 0.3, 0.2),
-        Math.random() * 10 - 5,
-        Math.random() * 4 - 2,
-        -2
+        Math.random() * 5.5 - 2.75,
+        Math.random() * 3 - 1.5,
+        -1.5
       );
       p.userData = { offset: j };
       scene.add(p);
@@ -522,8 +525,9 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
         p.position.y += Math.sin(s + p.userData.offset) * 0.004;
       });
 
-      camera.position.x += (mx * 3 - camera.position.x) * 0.05;
-      camera.position.y += (-my * 2 - camera.position.y) * 0.05;
+      // Smooth, constrained parallax
+      camera.position.x += (mx * 1.2 - camera.position.x) * 0.05;
+      camera.position.y += (-my * 0.9 - camera.position.y) * 0.05;
       camera.lookAt(0, 0, 0);
 
       renderer.render(scene, camera);
@@ -554,7 +558,7 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-    camera.position.z = 9.5;
+    camera.position.z = 12.5;
 
     scene.add(new THREE.AmbientLight(0xffffff, 0.85));
     const dLight = new THREE.DirectionalLight(0xffffff, 1.1);
@@ -565,6 +569,7 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
     scene.add(pLight);
 
     const building = new THREE.Group();
+    building.scale.set(0.74, 0.74, 0.74);
     const creamMat = createMaterial(0xf0dfae, 0, 0.7);
 
     // Main blocks
@@ -612,23 +617,23 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       building.add(createMesh(new THREE.SphereGeometry(0.4 + Math.random() * 0.2, 16, 16), createMaterial(0x2f9e4f, 0, 0.8), x, -1 + h, z));
     }
 
-    // Clouds
+    // Clouds (Fluffy cloud base safely within view)
     for (let q = 0; q < 10; q++) {
       building.add(
         createMesh(
-          new THREE.SphereGeometry(0.55 + Math.random() * 0.35, 24, 24),
+          new THREE.SphereGeometry(0.5 + Math.random() * 0.3, 24, 24),
           createMaterial(0xffffff, 0, 0.3, {
             emissive: 0xaacfff,
             emissiveIntensity: 0.15,
           }),
-          -5.5 + q * 1.25,
-          -1.35,
-          1.1 + Math.random() * 0.4
+          -5.2 + q * 1.15,
+          -1.15,
+          1.1 + Math.random() * 0.3
         )
       );
     }
 
-    building.position.y = 0.15;
+    building.position.y = 0.08;
     scene.add(building);
 
     const handleResize = () => {
@@ -657,11 +662,12 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       if (!isVisible) return;
       const s = time * 0.001;
 
-      building.rotation.y = Math.sin(s * 0.4) * 0.5;
-      building.rotation.x = 0.12;
+      building.rotation.y = Math.sin(s * 0.4) * 0.4;
+      building.rotation.x = 0.1;
 
-      camera.position.x += (mx * 3 - camera.position.x) * 0.05;
-      camera.position.y += (-my * 2 - camera.position.y) * 0.05;
+      // Smooth, constrained camera parallax
+      camera.position.x += (mx * 1.0 - camera.position.x) * 0.05;
+      camera.position.y += (-my * 0.7 - camera.position.y) * 0.05;
       camera.lookAt(0, 0, 0);
 
       renderer.render(scene, camera);
@@ -733,16 +739,20 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
             </div>
 
             {/* Main Title with Dynamic Wave & Glow Animation */}
-            <h1 className="luxury-serif font-black leading-[0.95] text-[clamp(42px,7vw,92px)] tracking-tight select-none">
-              <small className="title-necn block text-[0.62em] tracking-tight text-[#1c3f94]">
+            <h1 className="luxury-serif font-black leading-[1.02] text-[clamp(34px,6.2vw,86px)] tracking-tight select-none">
+              <small className="title-necn block text-[0.58em] tracking-tight text-[#1c3f94] mb-1">
                 NECN
               </small>
-              <span className="title-cloud-champions inline-flex flex-wrap items-baseline">
-                <span className="title-cloud-segment title-segment-blue text-[#4285F4]">Cloud&nbsp;</span>
-                <span className="title-cloud-segment title-segment-red text-[#EA4335]">Ch</span>
-                <span className="title-cloud-segment title-segment-yellow text-[#FBBC04]">am</span>
-                <span className="title-cloud-segment title-segment-green text-[#34A853]">pions</span>
-              </span>
+              <div className="title-cloud-champions flex flex-wrap items-baseline gap-x-3 sm:gap-x-4">
+                <span className="title-cloud-word text-[#4285F4] whitespace-nowrap">
+                  Cloud
+                </span>
+                <span className="title-champions-word whitespace-nowrap inline-block">
+                  <span className="text-[#EA4335]">Ch</span>
+                  <span className="text-[#FBBC04]">am</span>
+                  <span className="text-[#34A853]">pions</span>
+                </span>
+              </div>
             </h1>
 
             {/* Program Pill with Pure Rotating Border (Only Border Rotates) */}
@@ -815,14 +825,8 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
             </div>
           </div>
 
-          {/* Right Column: 3D Interactive WebGL Hero Canvas with Smooth Feather Mask */}
-          <div
-            className="relative w-full h-[400px] sm:h-[500px] lg:h-[560px] flex items-center justify-center overflow-hidden"
-            style={{
-              maskImage: 'radial-gradient(ellipse at center, black 75%, transparent 100%)',
-              WebkitMaskImage: 'radial-gradient(ellipse at center, black 75%, transparent 100%)',
-            }}
-          >
+          {/* Right Column: 3D Interactive WebGL Hero Canvas */}
+          <div className="relative w-full h-[400px] sm:h-[500px] lg:h-[560px] flex items-center justify-center">
             <canvas ref={heroCanvasRef} className="w-full h-full block rounded-3xl" />
           </div>
         </div>
@@ -1082,14 +1086,8 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
           Win exciting official Google Cloud swags: bottle, tee, bag, and more. Move your mouse across the scene to explore.
         </p>
 
-        {/* 3D WebGL Swag Canvas with Smooth Feather Mask */}
-        <div
-          className="relative w-full h-[360px] sm:h-[460px] flex items-center justify-center mb-8 overflow-hidden"
-          style={{
-            maskImage: 'radial-gradient(ellipse at center, black 80%, transparent 100%)',
-            WebkitMaskImage: 'radial-gradient(ellipse at center, black 80%, transparent 100%)',
-          }}
-        >
+        {/* 3D WebGL Swag Canvas */}
+        <div className="relative w-full h-[360px] sm:h-[460px] flex items-center justify-center mb-8">
           <canvas ref={awardsCanvasRef} className="w-full h-full block rounded-3xl" />
         </div>
 
@@ -1134,14 +1132,8 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
           Official Google Cloud Learning &amp; Achievement Leaderboard for GDG On Campus, Narayana Engineering College, Nellore (Autonomous).
         </p>
 
-        {/* 3D WebGL Campus Building Canvas with Smooth Feather Mask */}
-        <div
-          className="relative w-full h-[280px] sm:h-[350px] flex items-center justify-center overflow-hidden"
-          style={{
-            maskImage: 'linear-gradient(to bottom, black 75%, transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, black 75%, transparent 100%)',
-          }}
-        >
+        {/* 3D WebGL Campus Building Canvas */}
+        <div className="relative w-full h-[280px] sm:h-[350px] flex items-center justify-center">
           <canvas ref={campusCanvasRef} className="w-full h-full block rounded-3xl" />
         </div>
       </section>
