@@ -848,13 +848,16 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       </section>
 
       {/* =========================================================================
-          SECTION 3: THE 3D INTERACTIVE PODIUM
+          SECTION 3: THE CHAMPIONS' PODIUM
           ========================================================================= */}
       <section id="leaderboard" className="max-w-[1180px] mx-auto px-5 py-16 text-center">
         <h2 className="luxury-serif text-3xl sm:text-5xl font-black mb-2 luxury-rv">
-          <span className="luxury-gold">The 3D Podium</span>
+          <span className="luxury-gold">The Champions' Podium</span>
         </h2>
-        <p className="text-slate-600 max-w-md mx-auto mb-10 text-sm luxury-rv">
+        <p className="text-slate-700 font-semibold max-w-lg mx-auto text-base sm:text-lg luxury-rv mb-2">
+          Where excellence takes the spotlight.
+        </p>
+        <p className="text-slate-500 max-w-md mx-auto mb-10 text-xs sm:text-sm luxury-rv">
           Move your mouse across the stage to rotate the 3D podium. Click any champion to view their verified profile.
         </p>
 
@@ -1113,9 +1116,36 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
         </div>
       </section>
 
-      {/* FOOTER NOTICE */}
-      <footer className="text-center py-8 px-4 text-xs text-slate-500 font-medium">
-        GDG on Campus NECN · Google Cloud Learn with Communities 2026 · Narayana Engineering College, Nellore
+      {/* =========================================================================
+          FOOTER (Built with passion. Powered by community. ☁️)
+          ========================================================================= */}
+      <footer className="relative mt-12 pt-10 pb-20 sm:pb-12 px-4 sm:px-6 text-center border-t border-amber-900/10">
+        <div className="max-w-3xl mx-auto">
+          {/* Header & Subtitle */}
+          <h3 className="text-base sm:text-lg font-bold text-[#14182b] tracking-tight">
+            Built with passion. Powered by community. ☁️
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-500 mt-1 font-normal">
+            Celebrating innovation, learning &amp; achievements.
+          </p>
+
+          {/* Thin Divider */}
+          <div className="my-5 border-t border-slate-300/60 max-w-xl mx-auto" />
+
+          {/* Details & Attribution */}
+          <div className="space-y-1 text-xs text-slate-600 font-medium leading-relaxed">
+            <p>GDG on Campus NECN · Google Cloud Learn with Communities 2026</p>
+            <p>Narayana Engineering College, Nellore</p>
+            <p className="pt-2 text-slate-700 font-semibold flex items-center justify-center gap-1.5">
+              <span>Crafted with</span>
+              <span className="text-rose-500 text-sm">❤️</span>
+              <span>by SHAIK SAMEER</span>
+            </p>
+            <p className="text-[11px] text-slate-400 pt-1 font-normal">
+              © 2026 GDG OC NECN. All rights reserved.
+            </p>
+          </div>
+        </div>
       </footer>
 
     </div>

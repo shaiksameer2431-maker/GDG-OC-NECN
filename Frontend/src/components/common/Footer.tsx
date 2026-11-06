@@ -42,13 +42,28 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           </div>
         </div>
 
-        {/* User-specified Footer Notice (Watermark Style in Soft Grey) */}
-        <div className="pt-6 flex flex-col items-center justify-center gap-1.5 select-none opacity-60">
-          <p className="text-[11px] font-normal text-slate-400 text-center tracking-normal sm:text-xs">
-            Crafted with ❤️ by SHAIK SAMEER. All Rights reserved by GDG OC NECN Learn with Communities.
+        {/* User-specified Footer Notice */}
+        <div className="pt-6 flex flex-col items-center justify-center gap-1 select-none">
+          <h3 className="text-sm sm:text-base font-bold text-[#14182b] tracking-tight">
+            Built with passion. Powered by community. ☁️
+          </h3>
+          <p className="text-xs text-slate-500 font-normal">
+            Celebrating innovation, learning &amp; achievements.
           </p>
-          <p className="text-[10px] text-slate-400 font-mono">
-            Google Cloud Learn with Communities 2026 • Narayana Engineering College, Nellore
+          <div className="my-3 border-t border-slate-200/80 w-full max-w-md mx-auto" />
+          <p className="text-xs text-slate-600 font-medium">
+            GDG on Campus NECN · Google Cloud Learn with Communities 2026
+          </p>
+          <p className="text-xs text-slate-600 font-medium">
+            Narayana Engineering College, Nellore
+          </p>
+          <p className="pt-1 text-xs text-slate-700 font-semibold flex items-center justify-center gap-1.5">
+            <span>Crafted with</span>
+            <span className="text-rose-500 text-sm">❤️</span>
+            <span>by SHAIK SAMEER</span>
+          </p>
+          <p className="text-[11px] text-slate-400 pt-1 font-normal">
+            © 2026 GDG OC NECN. All rights reserved.
           </p>
         </div>
       </div>
