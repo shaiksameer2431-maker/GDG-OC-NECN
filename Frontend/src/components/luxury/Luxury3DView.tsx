@@ -19,7 +19,6 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
   officialCourses,
   onNavigate,
 }) => {
-  const [activeSection, setActiveSection] = useState('overview');
   const [counterValue, setCounterValue] = useState(0);
   const [podiumInView, setPodiumInView] = useState(false);
 
@@ -73,22 +72,8 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
     const revealElements = document.querySelectorAll('.luxury-rv');
     revealElements.forEach((el) => observer.observe(el));
 
-    const handleScroll = () => {
-      const scrollPos = window.scrollY + window.innerHeight * 0.4;
-      const sections = ['overview', 'leaderboard', 'journey', 'awards', 'about'];
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const sec = document.getElementById(sections[i]);
-        if (sec && sec.offsetTop <= scrollPos) {
-          setActiveSection(sections[i]);
-          break;
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
       observer.disconnect();
-      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
@@ -1133,64 +1118,6 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
         GDG on Campus NECN · Google Cloud Learn with Communities 2026 · Narayana Engineering College, Nellore
       </footer>
 
-      {/* =========================================================================
-          FLOATING DOCK NAVIGATION
-          ========================================================================= */}
-      <nav
-        aria-label="Luxury 3D Dock Navigation"
-        className="fixed left-1/2 -translate-x-1/2 bottom-4 z-50 flex items-center gap-1.5 p-2 rounded-2xl bg-white/80 backdrop-blur-2xl border border-amber-300/50 shadow-[0_16px_40px_rgba(60,45,10,0.18)]"
-      >
-        <a
-          href="#overview"
-          className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all ${
-            activeSection === 'overview'
-              ? 'bg-gradient-to-br from-[#B8922D] to-[#E6C36A] text-[#1a1405] shadow-sm -translate-y-0.5'
-              : 'text-slate-600 hover:text-slate-900'
-          }`}
-        >
-          Overview
-        </a>
-        <a
-          href="#leaderboard"
-          className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all ${
-            activeSection === 'leaderboard'
-              ? 'bg-gradient-to-br from-[#B8922D] to-[#E6C36A] text-[#1a1405] shadow-sm -translate-y-0.5'
-              : 'text-slate-600 hover:text-slate-900'
-          }`}
-        >
-          Leaderboard
-        </a>
-        <a
-          href="#journey"
-          className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all ${
-            activeSection === 'journey'
-              ? 'bg-gradient-to-br from-[#B8922D] to-[#E6C36A] text-[#1a1405] shadow-sm -translate-y-0.5'
-              : 'text-slate-600 hover:text-slate-900'
-          }`}
-        >
-          Journey
-        </a>
-        <a
-          href="#awards"
-          className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all ${
-            activeSection === 'awards'
-              ? 'bg-gradient-to-br from-[#B8922D] to-[#E6C36A] text-[#1a1405] shadow-sm -translate-y-0.5'
-              : 'text-slate-600 hover:text-slate-900'
-          }`}
-        >
-          Awards
-        </a>
-        <a
-          href="#about"
-          className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all ${
-            activeSection === 'about'
-              ? 'bg-gradient-to-br from-[#B8922D] to-[#E6C36A] text-[#1a1405] shadow-sm -translate-y-0.5'
-              : 'text-slate-600 hover:text-slate-900'
-          }`}
-        >
-          About
-        </a>
-      </nav>
     </div>
   );
 };
