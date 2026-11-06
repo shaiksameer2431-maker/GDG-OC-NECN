@@ -44,6 +44,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onTabChange, stats }
   // Public navigation links
   const navLinks = [
     { id: 'overview', label: 'Overview', shortLabel: 'Overview', icon: Sparkles },
+    { id: 'luxury-3d', label: '✨ Luxury 3D', shortLabel: '✨ 3D', icon: Sparkles },
     { id: 'leaderboard', label: 'Leaderboard', shortLabel: 'Leaderboard', icon: Trophy },
     { id: 'journey', label: 'Learning Journey', shortLabel: 'Journey', icon: Compass },
     { id: 'achievements', label: 'Achievements', shortLabel: 'Achievements', icon: Award },

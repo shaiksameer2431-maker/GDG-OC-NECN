@@ -12,6 +12,7 @@ import { AchievementsPage } from './pages/AchievementsPage';
 import { AdminDashboardPage } from './pages/AdminDashboardPage';
 import { AboutPage } from './pages/AboutPage';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
+import { Luxury3DView } from './components/luxury/Luxury3DView';
 
 export function App() {
   const [currentTab, setCurrentTab] = useState<string>('overview');
@@ -84,12 +85,13 @@ export function App() {
 
   const isAdminTab = currentTab === 'admin' || currentTab === 'admin-portal';
   const isPosterHome = currentTab === 'overview';
+  const isLuxury3DTab = currentTab === 'luxury-3d' || currentTab === '3d';
 
   return (
     <div className="relative min-h-screen bg-[#F4F8FD] text-slate-900 flex flex-col antialiased font-sans selection:bg-blue-500/20 selection:text-blue-700">
       
       {/* FLOATING NAVBAR (Untouched Windows / Desktop version) */}
-      {!isAdminTab && !isPosterHome && (
+      {!isAdminTab && !isPosterHome && !isLuxury3DTab && (
         <Navbar
           currentTab={currentTab}
           onTabChange={(tab) => navigateTo(tab)}
@@ -98,7 +100,7 @@ export function App() {
       )}
 
       {/* Back to Poster Floating Button on Desktop when viewing sub-pages */}
-      {!isPosterHome && !isAdminTab && (
+      {!isPosterHome && !isLuxury3DTab && !isAdminTab && (
         <div className="fixed top-4 left-4 z-40 hidden md:block">
           <button
             onClick={() => navigateTo('overview')}
@@ -111,13 +113,24 @@ export function App() {
       )}
 
       {/* MAIN CONTAINER (Fluid scaling across mobile and desktop) */}
-      <main className={`relative z-10 flex-grow w-full max-w-6xl xl:max-w-7xl mx-auto px-3 sm:px-4 md:px-6 ${isPosterHome ? 'p-0 pb-20 md:pb-0' : 'pb-24 md:pb-16 pt-6 md:pt-24'}`}>
+      <main className={`relative z-10 flex-grow w-full max-w-6xl xl:max-w-7xl mx-auto px-3 sm:px-4 md:px-6 ${isPosterHome || isLuxury3DTab ? 'p-0 pb-20 md:pb-0' : 'pb-24 md:pb-16 pt-6 md:pt-24'}`}>
         <ErrorBoundary>
           {isPosterHome && (
             <OverviewPage
               stats={stats}
               topStudents={students}
+              officialCourses={officialCourses}
               onNavigate={navigateTo}
+            />
+          )}
+
+          {isLuxury3DTab && (
+            <Luxury3DView
+              stats={stats}
+              students={students}
+              officialCourses={officialCourses}
+              onNavigate={navigateTo}
+              onSwitchToPoster={() => navigateTo('overview')}
             />
           )}
 
@@ -184,10 +197,10 @@ export function App() {
       </main>
 
       {/* FOOTER (Shown on sub-pages on desktop) */}
-      {!isPosterHome && <Footer onNavigate={navigateTo} />}
+      {!isPosterHome && !isLuxury3DTab && <Footer onNavigate={navigateTo} />}
 
       {/* MOBILE BOTTOM NAVIGATION DOCK (Persistent on mobile with overview, leaderboard, journey, achievements, about) */}
-      {!isAdminTab && (
+      {!isAdminTab && !isLuxury3DTab && (
         <MobileBottomNav
           currentTab={currentTab}
           onTabChange={(tab) => navigateTo(tab)}

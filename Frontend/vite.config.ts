@@ -12,7 +12,8 @@ export default defineConfig({
           'vendor-react': ['react', 'react-dom'],
           'vendor-charts': ['recharts'],
           'vendor-data': ['papaparse', 'xlsx'],
-          'vendor-icons': ['lucide-react']
+          'vendor-icons': ['lucide-react'],
+          'vendor-three': ['three']
         }
       }
     }

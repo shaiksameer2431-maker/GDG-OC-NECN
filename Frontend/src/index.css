@@ -202,3 +202,177 @@
 .anim-shimmer {
   animation: shimmer 7s ease-in-out infinite;
 }
+
+/* =========================================================================
+   LUXURY 3D EXPERIENCE STYLES (Three.js WebGL & 3D Tilt Elements)
+   ========================================================================= */
+.luxury-3d-root {
+  --bg: #FBF8F1;
+  --bg2: #F0E9D8;
+  --card: rgba(255, 255, 255, 0.75);
+  --ink: #14182b;
+  --mute: #6b6f85;
+  --line: rgba(184, 146, 45, 0.35);
+  --gold: #B8922D;
+  --gold2: #E6C36A;
+  --blue: #4285F4;
+  --red: #EA4335;
+  --yel: #FBBC04;
+  --grn: #34A853;
+  --sh: 0 24px 60px rgba(60, 45, 10, 0.14);
+}
+
+.luxury-serif {
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+.luxury-script {
+  font-family: "Caveat", cursive;
+}
+
+.luxury-gold {
+  background: linear-gradient(100deg, #B8922D, #E6C36A, #B8922D, #E6C36A);
+  background-size: 250%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: luxuryShimmer 7s linear infinite;
+}
+
+@keyframes luxuryShimmer {
+  to { background-position: 250%; }
+}
+
+.luxury-tilt {
+  background: var(--card, rgba(255, 255, 255, 0.8));
+  border: 1px solid var(--line, rgba(184, 146, 45, 0.35));
+  border-radius: 24px;
+  padding: 24px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 20px 48px rgba(60, 45, 10, 0.1);
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out, box-shadow 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+
+.luxury-tilt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 0%), rgba(255, 255, 255, 0.35), transparent 55%);
+  pointer-events: none;
+}
+
+.luxury-stage {
+  perspective: 1000px;
+  display: flex;
+  justify-content: center;
+  height: 340px;
+  align-items: flex-end;
+}
+
+.luxury-si {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  transform: rotateX(14deg) rotateY(-18deg);
+  transform-style: preserve-3d;
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.luxury-pod {
+  width: clamp(84px, 22vw, 170px);
+  height: 0;
+  transition: height 1.4s cubic-bezier(0.2, 1.2, 0.3, 1);
+  border-radius: 14px 14px 0 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 14px;
+  font-weight: 900;
+  color: #1a1405;
+  box-shadow: 12px 0 0 rgba(0, 0, 0, 0.18), 0 24px 60px rgba(60, 45, 10, 0.14);
+}
+
+.luxury-pod::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -16px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.4);
+  transform-origin: bottom;
+  transform: rotateX(60deg);
+  border-radius: 14px 14px 0 0;
+}
+
+.luxury-p1 { background: linear-gradient(#f6dc8a, #b8922d); }
+.luxury-p2 { background: linear-gradient(#e4e8f0, #9aa3b5); }
+.luxury-p3 { background: linear-gradient(#e2a977, #a8683a); }
+
+.in .luxury-p1, .luxury-p1.pod-in { height: 290px; }
+.in .luxury-p2, .luxury-p2.pod-in { height: 220px; }
+.in .luxury-p3, .luxury-p3.pod-in { height: 170px; }
+
+.luxury-crown {
+  position: absolute;
+  top: -64px;
+  font-size: 38px;
+  animation: luxuryBob 2s ease-in-out infinite;
+  font-style: normal;
+}
+
+@keyframes luxuryBob {
+  50% { transform: translateY(-10px) rotate(6deg); }
+}
+
+.luxury-note {
+  background: var(--card, rgba(255, 255, 255, 0.85));
+  border: 1px solid var(--line, rgba(184, 146, 45, 0.35));
+  border-radius: 18px;
+  padding: 26px 26px 22px;
+  box-shadow: 0 20px 48px rgba(60, 45, 10, 0.1);
+  transform: rotate(-1.5deg);
+  position: relative;
+}
+
+.luxury-note::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  top: -8px;
+  height: 14px;
+  background: repeating-linear-gradient(90deg, #14182b 0 6px, transparent 6px 14px);
+  border-radius: 4px;
+  opacity: 0.7;
+}
+
+.luxury-bdg {
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-weight: 900;
+  color: #1a1405;
+  background: radial-gradient(circle at 30% 25%, #fff3c4, #B8922D);
+  box-shadow: 0 14px 34px rgba(184, 146, 45, 0.45);
+  animation: luxuryBob 3s ease-in-out infinite;
+}
+
+.luxury-rv {
+  opacity: 0;
+  transform: translateY(40px) rotateX(10deg);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.luxury-rv.in {
+  opacity: 1;
+  transform: none;
+}
