@@ -616,19 +616,19 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
     for (let q = 0; q < 10; q++) {
       building.add(
         createMesh(
-          new THREE.SphereGeometry(0.6 + Math.random() * 0.5, 24, 24),
+          new THREE.SphereGeometry(0.55 + Math.random() * 0.35, 24, 24),
           createMaterial(0xffffff, 0, 0.3, {
             emissive: 0xaacfff,
             emissiveIntensity: 0.15,
           }),
-          -6 + q * 1.3,
-          -1.6,
-          1 + Math.random()
+          -5.5 + q * 1.25,
+          -1.35,
+          1.1 + Math.random() * 0.4
         )
       );
     }
 
-    building.position.y = 0.3;
+    building.position.y = 0.15;
     scene.add(building);
 
     const handleResize = () => {
@@ -678,7 +678,7 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
   }, []);
 
   return (
-    <div className="luxury-3d-root relative w-full text-[#14182b] overflow-x-hidden selection:bg-amber-500/20 selection:text-amber-900 pb-28">
+    <div className="luxury-3d-root relative w-full text-[#14182b] overflow-x-hidden selection:bg-amber-500/20 selection:text-amber-900 pb-0">
       {/* LUXURY AMBIENT BACKGROUND */}
       <div 
         className="fixed inset-0 pointer-events-none -z-10"
@@ -732,18 +732,30 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
               Same Labs · Bigger Opportunities
             </div>
 
-            {/* Main Title */}
-            <h1 className="luxury-serif font-black leading-[0.95] text-[clamp(42px,7vw,92px)] tracking-tight">
-              <small className="block text-[0.62em] tracking-tight text-[#1c3f94]">NECN</small>
-              <span className="text-[#4285F4]">Cloud </span>
-              <span className="text-[#EA4335]">Ch</span>
-              <span className="text-[#FBBC04]">am</span>
-              <span className="text-[#34A853]">pions</span>
+            {/* Main Title with Dynamic Wave & Glow Animation */}
+            <h1 className="luxury-serif font-black leading-[0.95] text-[clamp(42px,7vw,92px)] tracking-tight select-none">
+              <small className="title-necn block text-[0.62em] tracking-tight text-[#1c3f94]">
+                NECN
+              </small>
+              <span className="title-cloud-champions inline-flex flex-wrap items-baseline">
+                <span className="title-cloud-segment title-segment-blue text-[#4285F4]">Cloud&nbsp;</span>
+                <span className="title-cloud-segment title-segment-red text-[#EA4335]">Ch</span>
+                <span className="title-cloud-segment title-segment-yellow text-[#FBBC04]">am</span>
+                <span className="title-cloud-segment title-segment-green text-[#34A853]">pions</span>
+              </span>
             </h1>
 
-            {/* Program Pill */}
-            <div className="inline-block px-5 py-2 rounded-full border border-amber-300/60 bg-white/70 backdrop-blur-md font-bold text-sm shadow-sm">
-              Google Cloud Learn with <b className="text-[#4285F4]">Communities</b> 2026
+            {/* Program Pill with Pure Rotating Border (Only Border Rotates) */}
+            <div className="rotating-border-box inline-flex items-center">
+              {/* Spinning Conic Gradient (Border only) */}
+              <div className="rotating-border-spin" aria-hidden="true" />
+
+              {/* Static Content (Stays upright, covers center so only border spins) */}
+              <div className="rotating-border-content px-5 py-2 font-bold text-xs sm:text-sm text-[#14182b] flex items-center gap-1.5 shadow-sm">
+                <span>Google Cloud Learn with</span>
+                <span className="font-extrabold text-[#4285F4]">Communities</span>
+                <span className="font-extrabold text-[#14182b]">2026</span>
+              </div>
             </div>
 
             {/* Tagline Colored Badges */}
@@ -803,8 +815,14 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
             </div>
           </div>
 
-          {/* Right Column: 3D Interactive WebGL Hero Canvas */}
-          <div className="relative w-full h-[400px] sm:h-[500px] lg:h-[560px] flex items-center justify-center">
+          {/* Right Column: 3D Interactive WebGL Hero Canvas with Smooth Feather Mask */}
+          <div
+            className="relative w-full h-[400px] sm:h-[500px] lg:h-[560px] flex items-center justify-center overflow-hidden"
+            style={{
+              maskImage: 'radial-gradient(ellipse at center, black 75%, transparent 100%)',
+              WebkitMaskImage: 'radial-gradient(ellipse at center, black 75%, transparent 100%)',
+            }}
+          >
             <canvas ref={heroCanvasRef} className="w-full h-full block rounded-3xl" />
           </div>
         </div>
@@ -1064,8 +1082,14 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
           Win exciting official Google Cloud swags: bottle, tee, bag, and more. Move your mouse across the scene to explore.
         </p>
 
-        {/* 3D WebGL Swag Canvas */}
-        <div className="relative w-full h-[360px] sm:h-[460px] flex items-center justify-center mb-8">
+        {/* 3D WebGL Swag Canvas with Smooth Feather Mask */}
+        <div
+          className="relative w-full h-[360px] sm:h-[460px] flex items-center justify-center mb-8 overflow-hidden"
+          style={{
+            maskImage: 'radial-gradient(ellipse at center, black 80%, transparent 100%)',
+            WebkitMaskImage: 'radial-gradient(ellipse at center, black 80%, transparent 100%)',
+          }}
+        >
           <canvas ref={awardsCanvasRef} className="w-full h-full block rounded-3xl" />
         </div>
 
@@ -1102,24 +1126,31 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       {/* =========================================================================
           SECTION 6: CAMPUS SHOWCASE & 3D NECN BUILDING
           ========================================================================= */}
-      <section id="about" className="max-w-[1180px] mx-auto px-5 py-16 text-center">
+      <section id="about" className="max-w-[1180px] mx-auto px-5 pt-8 pb-2 text-center">
         <h2 className="luxury-serif text-3xl sm:text-5xl font-black mb-2 luxury-rv">
           Our <span className="luxury-gold">Campus</span>
         </h2>
-        <p className="text-slate-600 max-w-xl mx-auto mb-8 text-sm luxury-rv leading-relaxed">
+        <p className="text-slate-600 max-w-xl mx-auto mb-4 text-sm luxury-rv leading-relaxed">
           Official Google Cloud Learning &amp; Achievement Leaderboard for GDG On Campus, Narayana Engineering College, Nellore (Autonomous).
         </p>
 
-        {/* 3D WebGL Campus Building Canvas */}
-        <div className="relative w-full h-[380px] sm:h-[480px] flex items-center justify-center">
+        {/* 3D WebGL Campus Building Canvas with Smooth Feather Mask */}
+        <div
+          className="relative w-full h-[280px] sm:h-[350px] flex items-center justify-center overflow-hidden"
+          style={{
+            maskImage: 'linear-gradient(to bottom, black 75%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, black 75%, transparent 100%)',
+          }}
+        >
           <canvas ref={campusCanvasRef} className="w-full h-full block rounded-3xl" />
         </div>
       </section>
 
       {/* =========================================================================
           FOOTER (Built with passion. Powered by community. ☁️)
+          Fits cleanly and concludes the page with zero dead space
           ========================================================================= */}
-      <footer className="relative mt-12 pt-10 pb-20 sm:pb-12 px-4 sm:px-6 text-center border-t border-amber-900/10">
+      <footer className="relative mt-2 pt-6 pb-6 px-4 sm:px-6 text-center border-t border-slate-300/40">
         <div className="max-w-3xl mx-auto">
           {/* Header & Subtitle */}
           <h3 className="text-base sm:text-lg font-bold text-[#14182b] tracking-tight">
@@ -1130,18 +1161,18 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
           </p>
 
           {/* Thin Divider */}
-          <div className="my-5 border-t border-slate-300/60 max-w-xl mx-auto" />
+          <div className="my-4 border-t border-slate-300/60 max-w-xl mx-auto" />
 
           {/* Details & Attribution */}
           <div className="space-y-1 text-xs text-slate-600 font-medium leading-relaxed">
             <p>GDG on Campus NECN · Google Cloud Learn with Communities 2026</p>
             <p>Narayana Engineering College, Nellore</p>
-            <p className="pt-2 text-slate-700 font-semibold flex items-center justify-center gap-1.5">
+            <p className="pt-1.5 text-slate-700 font-semibold flex items-center justify-center gap-1.5">
               <span>Crafted with</span>
               <span className="text-rose-500 text-sm">❤️</span>
               <span>by SHAIK SAMEER</span>
             </p>
-            <p className="text-[11px] text-slate-400 pt-1 font-normal">
+            <p className="text-[11px] text-slate-400 pt-0.5 font-normal">
               © 2026 GDG OC NECN. All rights reserved.
             </p>
           </div>

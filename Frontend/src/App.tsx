@@ -113,7 +113,7 @@ export function App() {
       )}
 
       {/* MAIN CONTAINER (Fluid scaling across mobile and desktop) */}
-      <main className={`relative z-10 flex-grow w-full max-w-6xl xl:max-w-7xl mx-auto px-3 sm:px-4 md:px-6 ${isPosterHome || isLuxury3DTab ? 'p-0 pb-20 md:pb-0' : 'pb-24 md:pb-16 pt-6 md:pt-24'}`}>
+      <main className={`relative z-10 flex-grow w-full max-w-6xl xl:max-w-7xl mx-auto px-3 sm:px-4 md:px-6 ${isPosterHome || isLuxury3DTab ? 'p-0 pb-0' : 'pb-24 md:pb-16 pt-6 md:pt-24'}`}>
         <ErrorBoundary>
           {isPosterHome && (
             <OverviewPage

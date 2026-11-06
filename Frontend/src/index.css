@@ -378,3 +378,117 @@
   opacity: 1;
   transform: none;
 }
+
+/* =========================================================================
+   PURE ROTATING BORDER (Conic Gradient Border Only)
+   ========================================================================= */
+.rotating-border-box {
+  position: relative;
+  display: inline-flex;
+  padding: 2px;
+  border-radius: 9999px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(66, 133, 244, 0.22);
+}
+
+.rotating-border-spin {
+  position: absolute;
+  top: -150%;
+  left: -150%;
+  width: 400%;
+  height: 400%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 120deg,
+    #4285F4 180deg,
+    #EA4335 240deg,
+    #FBBC04 300deg,
+    #34A853 360deg
+  );
+  animation: rotateBorder 4s linear infinite;
+  will-change: transform;
+}
+
+@keyframes rotateBorder {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.rotating-border-content {
+  position: relative;
+  z-index: 1;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* =========================================================================
+   ANIMATED HERO TITLE (NECN + CLOUD CHAMPIONS WAVE & GLOW)
+   ========================================================================= */
+.title-necn {
+  display: inline-block;
+  animation: necnMotion 3.8s ease-in-out infinite;
+  transform-origin: left center;
+}
+
+@keyframes necnMotion {
+  0%, 100% {
+    transform: translateY(0);
+    filter: drop-shadow(0 2px 6px rgba(28, 63, 148, 0.2));
+  }
+  50% {
+    transform: translateY(-4px);
+    filter: drop-shadow(0 6px 18px rgba(28, 63, 148, 0.4));
+  }
+}
+
+.title-cloud-champions {
+  display: inline-flex;
+  animation: championsGlow 4.5s ease-in-out infinite;
+}
+
+@keyframes championsGlow {
+  0%, 100% {
+    filter: drop-shadow(0 4px 12px rgba(66, 133, 244, 0.25));
+  }
+  50% {
+    filter: drop-shadow(0 8px 24px rgba(234, 67, 53, 0.35));
+  }
+}
+
+.title-cloud-segment {
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: letterWave 3.2s ease-in-out infinite;
+}
+
+.title-segment-blue {
+  animation-delay: 0s;
+}
+
+.title-segment-red {
+  animation-delay: 0.25s;
+}
+
+.title-segment-yellow {
+  animation-delay: 0.5s;
+}
+
+.title-segment-green {
+  animation-delay: 0.75s;
+}
+
+@keyframes letterWave {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.title-cloud-segment:hover {
+  transform: translateY(-8px) scale(1.08) !important;
+}
