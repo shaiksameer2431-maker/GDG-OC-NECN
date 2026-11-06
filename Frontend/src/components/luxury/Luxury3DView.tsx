@@ -7,7 +7,6 @@ interface Luxury3DViewProps {
   students: Student[];
   officialCourses: OfficialCourse[];
   onNavigate: (tab: string, studentId?: string) => void;
-  onSwitchToPoster?: () => void;
 }
 
 const GOOGLE_COLORS = [0x4285F4, 0xEA4335, 0xFBBC04, 0x34A853];
@@ -18,7 +17,6 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
   students,
   officialCourses,
   onNavigate,
-  onSwitchToPoster,
 }) => {
   const [activeSection, setActiveSection] = useState('overview');
   const [counterValue, setCounterValue] = useState(0);
@@ -703,19 +701,6 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
         }}
       />
 
-      {/* TOP FLOATING CONTROLS: POSTER TOGGLE */}
-      {onSwitchToPoster && (
-        <div className="fixed top-4 right-4 z-40">
-          <button
-            onClick={onSwitchToPoster}
-            className="px-4 py-2 rounded-full bg-white/90 backdrop-blur-xl border border-amber-300/60 shadow-[0_4px_16px_rgba(184,146,45,0.25)] text-xs font-bold text-slate-800 hover:text-blue-600 transition-all active:scale-95 flex items-center gap-2 cursor-pointer"
-          >
-            <span>🖼️</span>
-            <span>Switch to Poster View</span>
-          </button>
-        </div>
-      )}
-
       {/* =========================================================================
           SECTION 1: HERO & 3D CLOUD SCENE
           ========================================================================= */}
@@ -1158,3 +1143,4 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
     </div>
   );
 };
+

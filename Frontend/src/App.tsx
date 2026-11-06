@@ -99,7 +99,7 @@ export function App() {
         />
       )}
 
-      {/* Back to Poster Floating Button on Desktop when viewing sub-pages */}
+      {/* Back to Home Floating Button on Desktop when viewing sub-pages */}
       {!isPosterHome && !isLuxury3DTab && !isAdminTab && (
         <div className="fixed top-4 left-4 z-40 hidden md:block">
           <button
@@ -107,7 +107,7 @@ export function App() {
             className="px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-slate-200/80 shadow-md text-xs font-bold text-slate-700 hover:text-blue-600 transition-all active:scale-95 flex items-center gap-1.5 cursor-pointer"
           >
             <span>←</span>
-            <span>Return to Poster</span>
+            <span>Return to Overview</span>
           </button>
         </div>
       )}
@@ -130,7 +130,6 @@ export function App() {
               students={students}
               officialCourses={officialCourses}
               onNavigate={navigateTo}
-              onSwitchToPoster={() => navigateTo('overview')}
             />
           )}
 
