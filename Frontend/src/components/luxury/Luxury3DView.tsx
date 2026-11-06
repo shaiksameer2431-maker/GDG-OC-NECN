@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import type { Student, CohortStats, OfficialCourse } from '../../types';
+import { Avatar } from '../common/Avatar';
 
 interface Luxury3DViewProps {
   stats: CohortStats;
@@ -879,13 +880,29 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
             <div
               onClick={() => champion2 && onNavigate('students', champion2.id)}
               className={`luxury-pod luxury-p2 ${podiumInView ? 'pod-in' : ''} cursor-pointer group hover:brightness-105 transition-all`}
+              title={champion2 ? `Click to view verified profile of ${champion2.fullName}` : undefined}
             >
-              <b className="text-2xl sm:text-3xl text-slate-900">2</b>
-              <span className="text-[10px] sm:text-xs font-bold text-slate-800 px-2 truncate w-full text-center">
+              {/* Champion Avatar */}
+              <div className="relative mb-2 shrink-0 z-10">
+                <Avatar
+                  name={champion2 ? champion2.fullName : 'Champion #2'}
+                  rank={2}
+                  size="lg"
+                  className="shadow-xl ring-2 sm:ring-4 ring-slate-300/90 transform transition-transform group-hover:scale-105 duration-300"
+                />
+              </div>
+
+              {/* Rank Number */}
+              <b className="text-xl sm:text-2xl md:text-3xl text-slate-900 leading-none mb-1 font-black">2</b>
+
+              {/* Full Name (No Ellipsis, Clean Multi-line Wrap) */}
+              <span className="text-[11px] sm:text-xs md:text-sm font-extrabold text-slate-900 px-1 sm:px-2 text-center whitespace-normal break-words leading-tight tracking-tight">
                 {champion2 ? champion2.fullName : 'Champion #2'}
               </span>
-              <span className="text-[9px] font-mono text-slate-700 font-semibold mt-1">
-                {champion2 ? `${champion2.points} pts` : ''}
+
+              {/* Points & Badges */}
+              <span className="text-[9px] sm:text-[10px] md:text-xs font-mono text-slate-800 font-bold mt-1.5 px-2 py-0.5 rounded-full bg-slate-900/10">
+                {champion2 ? `${champion2.points} pts · 10 Badges` : ''}
               </span>
             </div>
 
@@ -893,13 +910,31 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
             <div
               onClick={() => champion1 && onNavigate('students', champion1.id)}
               className={`luxury-pod luxury-p1 ${podiumInView ? 'pod-in' : ''} cursor-pointer group hover:brightness-105 transition-all`}
+              title={champion1 ? `Click to view verified profile of ${champion1.fullName}` : undefined}
             >
-              <i className="luxury-crown">👑</i>
-              <b className="text-3xl sm:text-4xl text-[#1a1405]">1</b>
-              <span className="text-[11px] sm:text-sm font-extrabold text-[#1a1405] px-2 truncate w-full text-center">
+              {/* Floating Crown Bobbing Above Avatar */}
+              <i className="luxury-crown" aria-hidden="true">👑</i>
+
+              {/* Champion Avatar */}
+              <div className="relative mb-2 shrink-0 z-10">
+                <Avatar
+                  name={champion1 ? champion1.fullName : 'Champion #1'}
+                  rank={1}
+                  size="lg"
+                  className="shadow-2xl ring-2 sm:ring-4 ring-amber-300/90 transform transition-transform group-hover:scale-105 duration-300"
+                />
+              </div>
+
+              {/* Rank Number */}
+              <b className="text-2xl sm:text-3xl md:text-4xl text-[#1a1405] leading-none mb-1 font-black">1</b>
+
+              {/* Full Name (No Ellipsis, Clean Multi-line Wrap) */}
+              <span className="text-xs sm:text-sm md:text-base font-black text-[#1a1405] px-1 sm:px-2 text-center whitespace-normal break-words leading-tight tracking-tight">
                 {champion1 ? champion1.fullName : 'Champion #1'}
               </span>
-              <span className="text-[10px] font-mono text-[#1a1405] font-bold mt-1">
+
+              {/* Points & Badges */}
+              <span className="text-[10px] sm:text-xs font-mono text-[#1a1405] font-bold mt-1.5 px-2.5 py-0.5 rounded-full bg-[#1a1405]/10">
                 {champion1 ? `${champion1.points} pts · 10 Badges` : ''}
               </span>
             </div>
@@ -908,13 +943,29 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
             <div
               onClick={() => champion3 && onNavigate('students', champion3.id)}
               className={`luxury-pod luxury-p3 ${podiumInView ? 'pod-in' : ''} cursor-pointer group hover:brightness-105 transition-all`}
+              title={champion3 ? `Click to view verified profile of ${champion3.fullName}` : undefined}
             >
-              <b className="text-2xl sm:text-3xl text-[#1a1405]">3</b>
-              <span className="text-[10px] sm:text-xs font-bold text-[#1a1405] px-2 truncate w-full text-center">
+              {/* Champion Avatar */}
+              <div className="relative mb-2 shrink-0 z-10">
+                <Avatar
+                  name={champion3 ? champion3.fullName : 'Champion #3'}
+                  rank={3}
+                  size="lg"
+                  className="shadow-xl ring-2 sm:ring-4 ring-amber-700/70 transform transition-transform group-hover:scale-105 duration-300"
+                />
+              </div>
+
+              {/* Rank Number */}
+              <b className="text-xl sm:text-2xl md:text-3xl text-[#1a1405] leading-none mb-1 font-black">3</b>
+
+              {/* Full Name (No Ellipsis, Clean Multi-line Wrap) */}
+              <span className="text-[11px] sm:text-xs md:text-sm font-extrabold text-[#1a1405] px-1 sm:px-2 text-center whitespace-normal break-words leading-tight tracking-tight">
                 {champion3 ? champion3.fullName : 'Champion #3'}
               </span>
-              <span className="text-[9px] font-mono text-[#1a1405] font-semibold mt-1">
-                {champion3 ? `${champion3.points} pts` : ''}
+
+              {/* Points & Badges */}
+              <span className="text-[9px] sm:text-[10px] md:text-xs font-mono text-[#1a1405] font-bold mt-1.5 px-2 py-0.5 rounded-full bg-[#1a1405]/10">
+                {champion3 ? `${champion3.points} pts · 10 Badges` : ''}
               </span>
             </div>
           </div>

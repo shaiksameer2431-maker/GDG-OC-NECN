@@ -266,32 +266,33 @@
 }
 
 .luxury-stage {
-  perspective: 1000px;
+  perspective: 1200px;
   display: flex;
   justify-content: center;
-  height: 340px;
+  height: clamp(390px, 48vh, 460px);
   align-items: flex-end;
 }
 
 .luxury-si {
   display: flex;
   align-items: flex-end;
-  gap: 16px;
+  gap: clamp(10px, 2.5vw, 24px);
   transform: rotateX(14deg) rotateY(-18deg);
   transform-style: preserve-3d;
   transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .luxury-pod {
-  width: clamp(84px, 22vw, 170px);
+  width: clamp(104px, 27vw, 220px);
   height: 0;
   transition: height 1.4s cubic-bezier(0.2, 1.2, 0.3, 1);
-  border-radius: 14px 14px 0 0;
+  border-radius: 16px 16px 0 0;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 14px;
+  padding-bottom: 14px;
   font-weight: 900;
   color: #1a1405;
   box-shadow: 12px 0 0 rgba(0, 0, 0, 0.18), 0 24px 60px rgba(60, 45, 10, 0.14);
@@ -307,27 +308,28 @@
   background: rgba(255, 255, 255, 0.4);
   transform-origin: bottom;
   transform: rotateX(60deg);
-  border-radius: 14px 14px 0 0;
+  border-radius: 16px 16px 0 0;
 }
 
 .luxury-p1 { background: linear-gradient(#f6dc8a, #b8922d); }
 .luxury-p2 { background: linear-gradient(#e4e8f0, #9aa3b5); }
 .luxury-p3 { background: linear-gradient(#e2a977, #a8683a); }
 
-.in .luxury-p1, .luxury-p1.pod-in { height: 290px; }
-.in .luxury-p2, .luxury-p2.pod-in { height: 220px; }
-.in .luxury-p3, .luxury-p3.pod-in { height: 170px; }
+.in .luxury-p1, .luxury-p1.pod-in { height: 330px; }
+.in .luxury-p2, .luxury-p2.pod-in { height: 260px; }
+.in .luxury-p3, .luxury-p3.pod-in { height: 215px; }
 
 .luxury-crown {
   position: absolute;
-  top: -64px;
+  top: -54px;
   font-size: 38px;
-  animation: luxuryBob 2s ease-in-out infinite;
+  animation: luxuryBob 2.4s ease-in-out infinite;
   font-style: normal;
+  z-index: 20;
 }
 
 @keyframes luxuryBob {
-  50% { transform: translateY(-10px) rotate(6deg); }
+  50% { transform: translateY(-8px) rotate(6deg); }
 }
 
 .luxury-note {
