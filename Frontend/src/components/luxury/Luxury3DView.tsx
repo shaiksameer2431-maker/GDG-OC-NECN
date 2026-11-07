@@ -206,14 +206,9 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
 
     // Realistic Volumetric Cloud (Element 1)
     const realisticCloud = createRealisticCloud({
-      position: [-0.3, 0.85, 0],
-      scale: 1.25,
+      position: [-0.4, 0.85, 0],
+      scale: 1.12,
       speed: 1.0,
-      opacity: 0.98,
-      baseColor: '#eef4fc',
-      topColor: '#ffffff',
-      lightPosition: [4, 6, 6],
-      flatBase: true,
     });
 
     // Google Brand Colors Accent Rings encircling the cloud
