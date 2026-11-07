@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import type { Student, CohortStats, OfficialCourse } from '../../types';
 import { Avatar } from '../common/Avatar';
+import { createRealisticCloud, createCloudBed } from './3d/RealisticCloud';
 
 interface Luxury3DViewProps {
   stats: CohortStats;
@@ -180,6 +181,12 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
 
     const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.05;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.05;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
@@ -197,33 +204,28 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
     const group = new THREE.Group();
     group.scale.set(0.72, 0.72, 0.72);
 
-    // Cloud Group
-    const cloud = new THREE.Group();
-    const cloudMat = createMaterial(0xffffff, 0, 0.1, {
-      emissive: 0x6a8fd8,
-      emissiveIntensity: 0.18,
-    });
-    const cloudSpheres = [
-      [-1, -0.1, 0, 0.9],
-      [0, 0.35, 0, 1.2],
-      [1.1, -0.05, 0, 0.95],
-      [0.35, -0.35, 0.7, 0.8],
-      [-0.55, -0.3, 0.6, 0.7],
-    ];
-    cloudSpheres.forEach(([x, y, z, r]) => {
-      cloud.add(createMesh(new THREE.SphereGeometry(r, 32, 32), cloudMat, x, y, z));
+    // Realistic Volumetric Cloud (Element 1)
+    const realisticCloud = createRealisticCloud({
+      position: [-0.3, 0.85, 0],
+      scale: 1.25,
+      speed: 1.0,
+      opacity: 0.98,
+      baseColor: '#eef4fc',
+      topColor: '#ffffff',
+      lightPosition: [4, 6, 6],
+      flatBase: true,
     });
 
+    // Google Brand Colors Accent Rings encircling the cloud
     GOOGLE_COLORS.forEach((color, i) => {
       const ring = createMesh(
-        new THREE.TorusGeometry(2.1, 0.13, 16, 60, Math.PI / 2.2),
+        new THREE.TorusGeometry(2.25, 0.12, 16, 64, Math.PI / 2.15),
         createMaterial(color, 0.2, 0.25)
       );
       ring.rotation.z = (i * Math.PI) / 2;
-      cloud.add(ring);
+      realisticCloud.group.add(ring);
     });
-    cloud.position.set(-0.5, 1, 0);
-    group.add(cloud);
+    group.add(realisticCloud.group);
 
     // Laptop Group
     const laptop = new THREE.Group();
@@ -313,8 +315,8 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       if (!isVisible) return;
       const s = time * 0.001;
 
-      cloud.rotation.y = Math.sin(s * 0.6) * 0.4;
-      cloud.position.y = 1 + Math.sin(s) * 0.12;
+      realisticCloud.update(s);
+      realisticCloud.setMouseParallax(mx, my);
       laptop.position.y = -1.3 + Math.sin(s * 1.2) * 0.1;
       server.position.y = -1.8 + Math.cos(s) * 0.1;
       orbitRing.rotation.z = s * 0.2;
@@ -339,6 +341,7 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
       observer.disconnect();
+      realisticCloud.dispose();
       renderer.dispose();
     };
   }, []);
@@ -355,6 +358,9 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
 
     const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.05;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
@@ -555,6 +561,9 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
 
     const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.05;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
@@ -617,21 +626,17 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       building.add(createMesh(new THREE.SphereGeometry(0.4 + Math.random() * 0.2, 16, 16), createMaterial(0x2f9e4f, 0, 0.8), x, -1 + h, z));
     }
 
-    // Clouds (Fluffy cloud base safely within view)
-    for (let q = 0; q < 10; q++) {
-      building.add(
-        createMesh(
-          new THREE.SphereGeometry(0.5 + Math.random() * 0.3, 24, 24),
-          createMaterial(0xffffff, 0, 0.3, {
-            emissive: 0xaacfff,
-            emissiveIntensity: 0.15,
-          }),
-          -5.2 + q * 1.15,
-          -1.15,
-          1.1 + Math.random() * 0.3
-        )
-      );
-    }
+    // Realistic Volumetric Cloud Bed Variant (Element 1)
+    const cloudBed = createCloudBed({
+      width: 10.5,
+      puffCount: 16,
+      y: -1.15,
+      baseColor: '#d0e2fc',
+      topColor: '#ffffff',
+      opacity: 0.94,
+      speed: 0.7,
+    });
+    scene.add(cloudBed.group);
 
     building.position.y = 0.08;
     scene.add(building);
@@ -662,12 +667,13 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       if (!isVisible) return;
       const s = time * 0.001;
 
-      building.rotation.y = Math.sin(s * 0.4) * 0.4;
-      building.rotation.x = 0.1;
+      cloudBed.update(s);
+      cloudBed.setMouseParallax(mx, my);
 
-      // Smooth, constrained camera parallax
-      camera.position.x += (mx * 1.0 - camera.position.x) * 0.05;
-      camera.position.y += (-my * 0.7 - camera.position.y) * 0.05;
+      // The college building must stay STATIC per strict directive (no rotation, no camera parallax)
+      building.rotation.y = 0.05;
+      building.rotation.x = 0.08;
+      camera.position.set(0, 0, 12.5);
       camera.lookAt(0, 0, 0);
 
       renderer.render(scene, camera);
@@ -679,6 +685,7 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
       observer.disconnect();
+      cloudBed.dispose();
       renderer.dispose();
     };
   }, []);
