@@ -840,7 +840,7 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
   return (
     <div className="luxury-3d-root relative w-full text-[#14182b] overflow-x-hidden selection:bg-amber-500/20 selection:text-amber-900 pb-0">
       {/* LUXURY AMBIENT BACKGROUND */}
-      <div 
+      <div
         className="fixed inset-0 pointer-events-none -z-10"
         style={{
           background: 'radial-gradient(ellipse at 20% 0%, #F0E9D8, #FBF8F1 60%)',
