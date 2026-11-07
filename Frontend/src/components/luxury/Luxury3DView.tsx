@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import type { Student, CohortStats, OfficialCourse } from '../../types';
 import { Avatar } from '../common/Avatar';
-import { createRealisticCloud, createCloudBed } from './3d/RealisticCloud';
 
 interface Luxury3DViewProps {
   stats: CohortStats;
@@ -122,7 +121,12 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
   }, []);
 
   // Three.js Helper Functions
-  const createMaterial = (color: number | string, metalness = 0, roughness = 0.3, extra = {}) => {
+  const createMaterial = (
+    color: number | string,
+    metalness = 0,
+    roughness = 0.3,
+    extra: Record<string, any> = {}
+  ) => {
     return new THREE.MeshStandardMaterial({
       color: typeof color === 'string' ? new THREE.Color(color) : color,
       metalness,
@@ -169,7 +173,197 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
     return new THREE.CanvasTexture(c);
   };
 
-  // Scene 1: Hero Canvas (3D Cloud, Laptop, Server Rack, Orbs, Rings)
+  // Rounded Box Extrude Geometry
+  const rb = (w: number, h: number, d: number, r: number) => {
+    const s = new THREE.Shape();
+    const x = -w / 2;
+    const y = -h / 2;
+    s.moveTo(x + r, y);
+    s.lineTo(x + w - r, y);
+    s.quadraticCurveTo(x + w, y, x + w, y + r);
+    s.lineTo(x + w, y + h - r);
+    s.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    s.lineTo(x + r, y + h);
+    s.quadraticCurveTo(x, y + h, x, y + h - r);
+    s.lineTo(x, y + r);
+    s.quadraticCurveTo(x, y, x + r, y);
+    const g = new THREE.ExtrudeGeometry(s, {
+      depth: d,
+      bevelEnabled: true,
+      bevelThickness: r * 0.4,
+      bevelSize: r * 0.4,
+      bevelSegments: 4,
+      curveSegments: 10,
+    });
+    g.translate(0, 0, -d / 2);
+    return g;
+  };
+
+  // 3D Procedural Puff Clouds
+  const puff = (n: number, sx: number, sy: number, z: number) => {
+    const g = new THREE.Group();
+    const m = createMaterial(0xffffff, 0, 1, {
+      emissive: new THREE.Color(0x9db8e8),
+      emissiveIntensity: 0.14,
+    });
+    for (let i = 0; i < n; i++) {
+      const x = (Math.random() - 0.5) * sx * z;
+      const e = 1 - Math.abs(x) / (sx * z * 0.6);
+      const r = (0.4 + Math.random() * 0.5) * z * Math.max(e, 0.45);
+      const geo = new THREE.IcosahedronGeometry(r, 3);
+      const p = geo.attributes.position;
+      for (let k = 0; k < p.count; k++) {
+        const f = 1 + Math.sin(p.getX(k) * 6 + i) * Math.cos(p.getY(k) * 5 + i * 2) * 0.07;
+        p.setXYZ(k, p.getX(k) * f, p.getY(k) * f * 0.82, p.getZ(k) * f);
+      }
+      geo.computeVertexNormals();
+      g.add(createMesh(geo, m, x, Math.random() * sy * z * Math.max(e, 0.2), (Math.random() - 0.5) * 0.9 * z));
+    }
+    return g;
+  };
+
+  // Google Cloud 3D Multi-Layered Extruded Logo with Light-Sweep Edge Shimmer Shader
+  const logo3d = () => {
+    const c = document.createElement('canvas');
+    c.width = 1800;
+    c.height = 1440;
+    const x = c.getContext('2d')!;
+    const X = (v: number) => (v - 494) * 6;
+    const Y = (v: number) => (v - 112) * 6;
+    const R = (a: number) => (a * Math.PI) / 180;
+    const ci = (px: number, py: number, r: number) => {
+      x.beginPath();
+      x.arc(X(px), Y(py), r * 6, 0, 7);
+      x.fill();
+    };
+
+    x.fillStyle = '#FFFFFF';
+    ci(640, 225, 98);
+    ci(583, 265, 73);
+    ci(718, 258, 68);
+    ci(726, 285, 60);
+
+    x.strokeStyle = '#FF0000';
+    x.lineWidth = 300;
+    x.beginPath();
+    x.arc(X(640), Y(225), 456, R(-192), R(-44), false);
+    x.stroke();
+
+    x.strokeStyle = '#0088FF';
+    x.beginPath();
+    x.arc(X(640), Y(225), 456, R(-44), R(18), false);
+    x.stroke();
+
+    x.fillStyle = '#0088FF';
+    ci(718, 258, 70);
+    ci(726, 285, 62);
+    x.fillRect(X(648), Y(258), X(726) - X(648), Y(347) - Y(258));
+
+    x.fillStyle = '#00B039';
+    x.beginPath();
+    x.moveTo(X(572), Y(298));
+    x.lineTo(X(648), Y(298));
+    x.lineTo(X(648), Y(347));
+    x.lineTo(X(592), Y(347));
+    x.quadraticCurveTo(X(556), Y(345), X(540), Y(326));
+    x.closePath();
+    x.fill();
+
+    x.fillStyle = '#FFFFFF';
+    ci(583, 268, 30);
+    x.fillRect(X(583), Y(238), X(710) - X(583), Y(298) - Y(238));
+    ci(700, 262, 37);
+    ci(710, 269, 30);
+    ci(640, 225, 51);
+    x.fillRect(X(592), Y(208), X(650) - X(592), Y(240) - Y(208));
+    x.fillRect(X(563), Y(286), X(576) - X(563), Y(298) - Y(286));
+
+    x.strokeStyle = '#FFB400';
+    x.lineWidth = 288;
+    x.beginPath();
+    x.arc(X(583), Y(265), 306, R(-41), R(120), true);
+    x.stroke();
+
+    const t = new THREE.CanvasTexture(c);
+    t.anisotropy = 8;
+    const g = new THREE.Group();
+
+    for (let k = 0; k < 10; k++) {
+      const m = new THREE.Mesh(
+        new THREE.PlaneGeometry(3.8, 3.04),
+        new THREE.MeshBasicMaterial({
+          map: t,
+          alphaTest: 0.5,
+          color: k ? new THREE.Color().setScalar(0.62 - 0.035 * k) : 0xffffff,
+        })
+      );
+      m.position.z = -k * 0.025;
+      g.add(m);
+    }
+
+    const ed = new THREE.Mesh(
+      new THREE.PlaneGeometry(3.8, 3.04),
+      new THREE.ShaderMaterial({
+        transparent: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+        uniforms: {
+          t: { value: t },
+          u: { value: 0 },
+        },
+        vertexShader: `
+          varying vec2 v;
+          void main() {
+            v = uv;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          uniform sampler2D t;
+          uniform float u;
+          varying vec2 v;
+          void main() {
+            vec2 d = vec2(9.0 / 1800.0, 9.0 / 1440.0);
+            float a = texture2D(t, v).a;
+            float m = min(
+              min(texture2D(t, v + vec2(d.x, 0.0)).a, texture2D(t, v - vec2(d.x, 0.0)).a),
+              min(texture2D(t, v + vec2(0.0, d.y)).a, texture2D(t, v - vec2(0.0, d.y)).a)
+            );
+            float e = step(0.5, a) * (1.0 - step(0.5, m));
+            vec2 p = v - vec2(0.5);
+            float an = atan(p.y, p.x);
+            float k1 = mod(u - an, 6.2831853);
+            float k2 = mod(u + 3.14159265 - an, 6.2831853);
+            float l = max(exp(-k1 * 2.2), exp(-k2 * 2.2));
+            gl_FragColor = vec4(vec3(1.0, 0.96, 0.8) * 1.8, l * e);
+          }
+        `,
+      })
+    );
+    ed.position.z = 0.03;
+    g.add(ed);
+    g.userData.ed = ed;
+    return g;
+  };
+
+  // Tech rounded icon helper
+  const bx = (w: number, h: number, c: number, x: number, y: number) => {
+    return createMesh(
+      rb(w, h, 0.06, Math.min(w, h) * 0.18),
+      new THREE.MeshPhysicalMaterial({
+        color: c,
+        metalness: 0.1,
+        roughness: 0.3,
+        clearcoat: 1,
+        clearcoatRoughness: 0.15,
+      }),
+      x,
+      y,
+      0
+    );
+  };
+
+  // Scene 1: Hero Canvas (3D Cloud, Laptop, Server Rack, Tech Icons, Rings, Dots, Orbs)
   useEffect(() => {
     const cv = heroCanvasRef.current;
     if (!cv) return;
@@ -180,17 +374,14 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
     let my = 0;
 
     const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.05;
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.05;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-    camera.position.z = 13.5;
+    camera.position.z = 11;
 
     scene.add(new THREE.AmbientLight(0xffffff, 0.85));
     const dLight = new THREE.DirectionalLight(0xffffff, 1.1);
@@ -200,88 +391,189 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
     pLight.position.set(-5, -2, 5);
     scene.add(pLight);
 
-    // Group with generous padding preventing edge clipping
     const group = new THREE.Group();
-    group.scale.set(0.72, 0.72, 0.72);
 
-    // Realistic Volumetric Cloud (Element 1)
-    const realisticCloud = createRealisticCloud({
-      position: [-0.4, 0.85, 0],
-      scale: 1.12,
-      speed: 1.0,
-    });
+    // 1. Google Cloud 3D Logo Cloud with sweeping edge shimmer
+    const cl = logo3d();
+    cl.position.set(-0.4, 1.15, 0);
+    group.add(cl);
 
-    // Google Brand Colors Accent Rings encircling the cloud
-    GOOGLE_COLORS.forEach((color, i) => {
-      const ring = createMesh(
-        new THREE.TorusGeometry(2.25, 0.12, 16, 64, Math.PI / 2.15),
-        createMaterial(color, 0.2, 0.25)
-      );
-      ring.rotation.z = (i * Math.PI) / 2;
-      realisticCloud.group.add(ring);
-    });
-    group.add(realisticCloud.group);
-
-    // Laptop Group
-    const laptop = new THREE.Group();
-    laptop.add(createMesh(new THREE.BoxGeometry(2, 0.1, 1.3), createMaterial(0x1c3f94, 0.6, 0.2)));
-    const screen = createMesh(new THREE.BoxGeometry(2, 1.3, 0.06), createMaterial(0x0b1d4d, 0.4, 0.3), 0, 0.7, -0.62);
-    screen.rotation.x = -0.18;
-    laptop.add(screen);
-
-    const screenFront = createMesh(
+    // 2. Rounded 3D Laptop with </> Code Screen
+    const lp = new THREE.Group();
+    const lb = createMesh(rb(2, 1.3, 0.08, 0.1), createMaterial(0x1c3f94, 0.6, 0.2));
+    lb.rotation.x = Math.PI / 2;
+    lp.add(lb);
+    const sr = createMesh(rb(2, 1.3, 0.05, 0.1), createMaterial(0x0b1d4d, 0.4, 0.3), 0, 0.7, -0.62);
+    sr.rotation.x = -0.18;
+    lp.add(sr);
+    const sf = createMesh(
       new THREE.PlaneGeometry(1.8, 1.1),
       new THREE.MeshBasicMaterial({
-        map: createTextTexture('</>', 256, 160, '#1558c9', '#ffffff', 'bold 90px monospace'),
+        map: createTextTexture('</>', 1024, 640, '#1558c9', '#ffffff', 'bold 360px monospace'),
       }),
       0,
       0.7,
-      -0.58
+      -0.53
     );
-    screenFront.rotation.x = -0.18;
-    laptop.add(screenFront);
-    laptop.position.set(2, -1.3, 0.8);
-    laptop.rotation.y = -0.5;
-    group.add(laptop);
+    sf.rotation.x = -0.18;
+    lp.add(sf);
+    lp.position.set(2.3, -2.2, 0.8);
+    lp.rotation.y = -0.5;
+    group.add(lp);
 
-    // Server Group
-    const server = new THREE.Group();
+    // 3. Rounded Server Stack with LED Indicators
+    const sv = new THREE.Group();
     for (let k = 0; k < 3; k++) {
-      server.add(createMesh(new THREE.BoxGeometry(1.5, 0.38, 1.1), createMaterial(0x2b6be6, 0.5, 0.2), 0, k * 0.46, 0));
+      sv.add(
+        createMesh(
+          rb(1.5, 0.34, 1.1, 0.08),
+          new THREE.MeshPhysicalMaterial({
+            color: 0x2b6be6,
+            metalness: 0.3,
+            roughness: 0.25,
+            clearcoat: 1,
+          }),
+          0,
+          k * 0.46,
+          0
+        )
+      );
       for (let q = 0; q < 3; q++) {
-        server.add(
-          createMesh(new THREE.SphereGeometry(0.04, 8, 8), new THREE.MeshBasicMaterial({ color: 0xffffff }), -0.5 + q * 0.18, k * 0.46, 0.56)
+        sv.add(
+          createMesh(
+            new THREE.SphereGeometry(0.04, 16, 16),
+            new THREE.MeshBasicMaterial({ color: 0xffffff }),
+            -0.5 + q * 0.18,
+            k * 0.46,
+            0.6
+          )
         );
       }
     }
-    server.position.set(-2.4, -1.8, 0.9);
-    server.rotation.y = 0.5;
-    group.add(server);
+    sv.position.set(-2.5, -2.1, 0.9);
+    sv.rotation.y = 0.5;
+    group.add(sv);
 
-    // Floating Orbs
+    // 4. Floating Orbs in Google Colors
     const orbs: THREE.Mesh[] = [];
-    for (let j = 0; j < 9; j++) {
-      const orb = createMesh(
+    for (let j = 0; j < 4; j++) {
+      const o = createMesh(
         new THREE.SphereGeometry(0.2 + Math.random() * 0.2, 24, 24),
         createMaterial(GOOGLE_COLORS[j % 4], 0.3, 0.2)
       );
-      orb.userData = {
+      o.userData = {
         a: j,
-        r: 2.1 + Math.random() * 0.7,
-        s: 0.25 + Math.random() * 0.35,
-        y: Math.random() * 2.2 - 1.1,
+        r: 3 + Math.random() * 1.6,
+        s: 0.3 + Math.random() * 0.4,
+        y: Math.random() * 3 - 1.5,
       };
-      scene.add(orb);
-      orbs.push(orb);
+      group.add(o);
+      orbs.push(o);
     }
 
-    // Gold Orbit Ring (Scaled to fit comfortably)
-    const orbitRing = createMesh(
-      new THREE.TorusGeometry(2.8, 0.02, 8, 120),
-      new THREE.MeshBasicMaterial({ color: 0xe6c36a, transparent: true, opacity: 0.6 })
-    );
-    orbitRing.rotation.x = 1.3;
-    scene.add(orbitRing);
+    // 5. Orbital Concentric Rings
+    const rings: THREE.Mesh[] = [];
+    const ringConfigs: [number, number, number][] = [
+      [2.9, 6.3, 0.5],
+      [3.2, 5, 0.45],
+      [3.55, 3.8, 0.4],
+      [3.9, 6.3, 0.25],
+    ];
+    ringConfigs.forEach((p, i) => {
+      const r = createMesh(
+        new THREE.TorusGeometry(p[0], 0.014, 8, 160, p[1]),
+        new THREE.MeshBasicMaterial({ color: 0x9aa3b8, transparent: true, opacity: p[2] }),
+        -0.4,
+        1.15,
+        -0.3
+      );
+      r.rotation.z = i;
+      group.add(r);
+      rings.push(r);
+    });
+
+    // 6. 17 Floating Dots in Brand Google Colors
+    const dots: THREE.Mesh[] = [];
+    const dotConfigs: [number, number, number, number][] = [
+      [471, 23, 0xe31b23, 5],
+      [553, 21, 0xffd000, 10],
+      [765, 35, 0x2d8cff, 17],
+      [631, 79, 0x6cbf00, 8],
+      [796, 85, 0xe31b23, 5],
+      [791, 169, 0x6cbf00, 9],
+      [913, 217, 0xffd000, 13],
+      [410, 219, 0xe31b23, 11],
+      [483, 219, 0x2d8cff, 6],
+      [348, 283, 0xffd000, 5],
+      [524, 353, 0xffd000, 9],
+      [765, 357, 0x2d8cff, 9],
+      [727, 393, 0xffd000, 5],
+      [508, 433, 0xe31b23, 9],
+      [623, 474, 0x2d8cff, 14],
+      [792, 453, 0x6cbf00, 19],
+      [864, 430, 0xe31b23, 13],
+    ];
+    dotConfigs.forEach((p, i) => {
+      const d = createMesh(
+        new THREE.CircleGeometry(p[3] * 0.0136, 64),
+        new THREE.MeshBasicMaterial({ color: p[2] }),
+        (p[0] - 650) * 0.0085,
+        -(p[1] - 270) * 0.012 + 0.3,
+        ((i % 5) - 2) * 0.4
+      );
+      d.userData = { y: d.position.y, s: 0.6 + (i % 4) * 0.25, p: i };
+      group.add(d);
+      dots.push(d);
+    });
+
+    // 7. Tech Icons
+    const icons: THREE.Group[] = [];
+
+    // pl (plus icon)
+    const pl = new THREE.Group();
+    pl.add(bx(0.6, 0.2, 0x4285f4, 0, 0));
+    pl.add(bx(0.2, 0.6, 0x4285f4, 0, 0));
+    const plPins: [number, number, number][] = [
+      [-0.27, 0.27, 0xf4b400],
+      [0.27, 0.27, 0xdb4437],
+      [-0.27, -0.27, 0xdb4437],
+      [0.27, -0.27, 0xf4b400],
+    ];
+    plPins.forEach((q) => {
+      const m = createMesh(new THREE.CylinderGeometry(0.07, 0.07, 0.08, 16), createMaterial(q[2], 0.1, 0.4), q[0], q[1], 0);
+      m.rotation.x = Math.PI / 2;
+      pl.add(m);
+    });
+    pl.position.set(-3.2, 2.3, 0.4);
+
+    // lo (layers icon)
+    const lo = new THREE.Group();
+    lo.add(bx(0.57, 0.11, 0xf4b400, 0, 0.18));
+    lo.add(bx(0.33, 0.33, 0x4285f4, -0.12, -0.07));
+    lo.add(bx(0.22, 0.19, 0x0f9d58, 0.18, 0));
+    lo.add(bx(0.22, 0.11, 0xdb4437, 0.18, -0.18));
+    lo.position.set(3.1, 2.2, 0.4);
+
+    // eq (equalizer icon)
+    const eq = new THREE.Group();
+    const eqBars: [number, number][] = [
+      [0.3, 0x4285f4],
+      [0.5, 0xf4b400],
+      [0.38, 0xdb4437],
+      [0.25, 0x0f9d58],
+    ];
+    eqBars.forEach((b, i) => {
+      eq.add(bx(0.12, b[0], b[1], -0.27 + i * 0.18, 0));
+    });
+    eq.position.set(-3.4, 0.3, 0.4);
+
+    [pl, lo, eq].forEach((o) => {
+      o.scale.setScalar(1.3);
+      o.userData = { y: o.position.y };
+      group.add(o);
+      icons.push(o);
+    });
+
     scene.add(group);
 
     const handleResize = () => {
@@ -289,6 +581,13 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       const h = cv.clientHeight || 300;
       renderer.setSize(w, h, false);
       camera.aspect = w / h;
+      if (w < 480) {
+        group.scale.setScalar(0.72);
+      } else if (w < 768) {
+        group.scale.setScalar(0.85);
+      } else {
+        group.scale.setScalar(0.96);
+      }
       camera.updateProjectionMatrix();
     };
     handleResize();
@@ -310,21 +609,30 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       if (!isVisible) return;
       const s = time * 0.001;
 
-      realisticCloud.update(s);
-      realisticCloud.setMouseParallax(mx, my);
-      laptop.position.y = -1.3 + Math.sin(s * 1.2) * 0.1;
-      server.position.y = -1.8 + Math.cos(s) * 0.1;
-      orbitRing.rotation.z = s * 0.2;
-
+      if (cl.userData.ed?.material?.uniforms?.u) {
+        cl.userData.ed.material.uniforms.u.value = s * 1.4;
+      }
+      lp.position.y = -2.2 + Math.sin(s * 1.2) * 0.1;
+      sv.position.y = -2.1 + Math.cos(s) * 0.1;
+      rings.forEach((r, i) => {
+        r.rotation.z = s * (0.12 + i * 0.07) * (i % 2 ? -1 : 1);
+      });
+      dots.forEach((d) => {
+        d.position.y = d.userData.y + Math.sin(s * d.userData.s + d.userData.p) * 0.12;
+      });
+      icons.forEach((c, i) => {
+        c.rotation.y = Math.sin(s * 0.8 + i) * 0.4;
+        c.position.y = c.userData.y + Math.sin(s + i * 2) * 0.08;
+      });
       orbs.forEach((o) => {
         const u = o.userData;
         const a = u.a + s * u.s;
         o.position.set(Math.cos(a) * u.r, u.y + Math.sin(a * 2) * 0.4, Math.sin(a) * u.r * 0.5);
       });
 
-      // Smooth, constrained mouse parallax preventing any edge clipping
-      camera.position.x += (mx * 1.2 - camera.position.x) * 0.05;
-      camera.position.y += (-my * 0.9 - camera.position.y) * 0.05;
+      // Smooth mouse parallax
+      camera.position.x += (mx * 2.5 - camera.position.x) * 0.05;
+      camera.position.y += (-my * 1.8 - camera.position.y) * 0.05;
       camera.lookAt(0, 0, 0);
 
       renderer.render(scene, camera);
@@ -336,12 +644,11 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
       observer.disconnect();
-      realisticCloud.dispose();
       renderer.dispose();
     };
   }, []);
 
-  // Scene 2: Awards & Swags Canvas (3D Bottle, T-Shirt, Bag, Badges)
+  // Scene 2: Awards & Swags Canvas (Bottle, Tee, Bag, Certificate, Labels, Medals, Particles)
   useEffect(() => {
     const cv = awardsCanvasRef.current;
     if (!cv) return;
@@ -352,14 +659,14 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
     let my = 0;
 
     const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.05;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-    camera.position.z = 13.5;
+    camera.position.z = 9.5;
 
     scene.add(new THREE.AmbientLight(0xffffff, 0.85));
     const dLight = new THREE.DirectionalLight(0xffffff, 1.1);
@@ -370,17 +677,15 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
     scene.add(pLight);
 
     const group = new THREE.Group();
-    group.scale.set(0.72, 0.72, 0.72);
     const darkMat = createMaterial(0x111318, 0.2, 0.5);
 
-    // 3D Bottle
-    const bottle = new THREE.Group();
-    bottle.add(createMesh(new THREE.CylinderGeometry(0.42, 0.42, 2, 32), createMaterial(0xffffff, 0.1, 0.15)));
-    bottle.add(createMesh(new THREE.CylinderGeometry(0.43, 0.43, 0.12, 32), createMaterial(0xc9ced8, 0.9, 0.2), 0, -1, 0));
-    bottle.add(createMesh(new THREE.CylinderGeometry(0.22, 0.3, 0.3, 24), createMaterial(0xb9bfca, 0.9, 0.2), 0, 1.15, 0));
-    bottle.add(createMesh(new THREE.TorusGeometry(0.2, 0.05, 8, 20), createMaterial(0xb9bfca, 0.9, 0.2), 0.12, 1.45, 0));
-
-    const bottleLogo = createMesh(
+    // 1. Water Bottle
+    const bt = new THREE.Group();
+    bt.add(createMesh(new THREE.CylinderGeometry(0.42, 0.42, 2, 32), createMaterial(0xffffff, 0.1, 0.15)));
+    bt.add(createMesh(new THREE.CylinderGeometry(0.43, 0.43, 0.12, 32), createMaterial(0xc9ced8, 0.9, 0.2), 0, -1, 0));
+    bt.add(createMesh(new THREE.CylinderGeometry(0.22, 0.3, 0.3, 24), createMaterial(0xb9bfca, 0.9, 0.2), 0, 1.15, 0));
+    bt.add(createMesh(new THREE.TorusGeometry(0.2, 0.05, 8, 20), createMaterial(0xb9bfca, 0.9, 0.2), 0.12, 1.45, 0));
+    const lg = createMesh(
       new THREE.PlaneGeometry(0.6, 0.6),
       new THREE.MeshBasicMaterial({
         map: createTextTexture('☁ Cloud', 128, 128, null, '#4285F4', 'bold 28px sans-serif'),
@@ -390,19 +695,61 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       0.1,
       0.43
     );
-    bottle.add(bottleLogo);
-    bottle.position.set(-3.2, 0, 0);
-    group.add(bottle);
+    bt.add(lg);
+    bt.position.set(-4.4, 0, 0);
+    group.add(bt);
 
-    // 3D T-Shirt
-    const tee = new THREE.Group();
-    tee.add(createMesh(new THREE.BoxGeometry(1.7, 2, 0.18), darkMat));
-    [-1, 1].forEach((d) => {
-      const sl = createMesh(new THREE.BoxGeometry(0.9, 0.55, 0.18), darkMat, d * 1.2, 0.72, 0);
-      sl.rotation.z = -d * 0.6;
-      tee.add(sl);
+    // 2. Cloth T-Shirt with vertex displacement and cotton bump texture
+    const te = new THREE.Group();
+    const sh = new THREE.Shape();
+    sh.moveTo(-0.55, 1.1);
+    sh.lineTo(-1.3, 0.85);
+    sh.lineTo(-1.85, 0.15);
+    sh.lineTo(-1.45, -0.15);
+    sh.lineTo(-0.97, 0.25);
+    sh.lineTo(-0.97, -1.1);
+    sh.lineTo(0.97, -1.1);
+    sh.lineTo(0.97, 0.25);
+    sh.lineTo(1.45, -0.15);
+    sh.lineTo(1.85, 0.15);
+    sh.lineTo(1.3, 0.85);
+    sh.lineTo(0.55, 1.1);
+    sh.quadraticCurveTo(0, 0.5, -0.55, 1.1);
+
+    const tg = new THREE.ExtrudeGeometry(sh, {
+      depth: 0.1,
+      bevelEnabled: true,
+      bevelThickness: 0.06,
+      bevelSize: 0.06,
+      bevelSegments: 4,
+      curveSegments: 20,
     });
-    tee.add(
+    const tp = tg.attributes.position;
+    for (let v = 0; v < tp.count; v++) {
+      tp.setZ(v, tp.getZ(v) + Math.sin(tp.getX(v) * 4 + tp.getY(v) * 2.5) * 0.03);
+    }
+    tg.computeVertexNormals();
+
+    const nz = document.createElement('canvas');
+    nz.width = nz.height = 64;
+    const nx = nz.getContext('2d')!;
+    for (let a = 0; a < 64; a++) {
+      for (let b = 0; b < 64; b++) {
+        const gv = 110 + Math.random() * 90;
+        nx.fillStyle = `rgb(${gv},${gv},${gv})`;
+        nx.fillRect(a, b, 1, 1);
+      }
+    }
+    const nt = new THREE.CanvasTexture(nz);
+    nt.wrapS = nt.wrapT = THREE.RepeatWrapping;
+    nt.repeat.set(8, 8);
+
+    te.add(createMesh(tg, createMaterial(0x181b22, 0, 1, { bumpMap: nt, bumpScale: 0.8 }), 0, 0, 0));
+    const col = createMesh(new THREE.TorusGeometry(0.5, 0.05, 10, 28, Math.PI), createMaterial(0x0e1014, 0, 1), 0, 1.12, 0.08);
+    col.rotation.z = Math.PI;
+    te.add(col);
+
+    te.add(
       createMesh(
         new THREE.PlaneGeometry(1.3, 0.7),
         new THREE.MeshBasicMaterial({
@@ -411,17 +758,18 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
         }),
         0,
         0.3,
-        0.1
+        0.2
       )
     );
-    tee.position.set(-0.8, 0.1, 0);
-    group.add(tee);
+    te.scale.setScalar(0.8);
+    te.position.set(-2, -0.15, 0);
+    group.add(te);
 
-    // 3D Bag
-    const bag = new THREE.Group();
-    bag.add(createMesh(new THREE.BoxGeometry(1.7, 1, 0.6), darkMat));
-    bag.add(createMesh(new THREE.TorusGeometry(0.5, 0.05, 8, 24, Math.PI), createMaterial(0x222222, 0.3, 0.4), 0, 0.5, 0));
-    bag.add(
+    // 3. Tote Bag
+    const bg = new THREE.Group();
+    bg.add(createMesh(new THREE.BoxGeometry(1.7, 1, 0.6), darkMat));
+    bg.add(createMesh(new THREE.TorusGeometry(0.5, 0.05, 8, 24, Math.PI), createMaterial(0x222222, 0.3, 0.4), 0, 0.5, 0));
+    bg.add(
       createMesh(
         new THREE.PlaneGeometry(1, 0.3),
         new THREE.MeshBasicMaterial({
@@ -433,25 +781,84 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
         0.31
       )
     );
-    bag.position.set(1.8, -0.5, 0);
-    group.add(bag);
+    bg.position.set(0.6, -0.5, 0);
+    group.add(bg);
 
-    // 3D ID Card
-    const card = createMesh(new THREE.BoxGeometry(1.2, 0.75, 0.05), createMaterial(0x0e1118, 0.4, 0.3), 3.4, -0.7, 0.3);
-    card.rotation.z = 0.2;
-    group.add(card);
+    // 4. Gold Certificate of Achievement
+    const cd = new THREE.Group();
+    const ct = document.createElement('canvas');
+    ct.width = 1024;
+    ct.height = 724;
+    const cx = ct.getContext('2d')!;
+    cx.fillStyle = '#FFFDF5';
+    cx.fillRect(0, 0, 1024, 724);
+    cx.strokeStyle = '#B8922D';
+    cx.lineWidth = 14;
+    cx.strokeRect(28, 28, 968, 668);
+    cx.lineWidth = 3;
+    cx.strokeRect(52, 52, 920, 620);
+    cx.textAlign = 'center';
+    cx.fillStyle = '#14275e';
+    cx.font = 'bold 70px Georgia,serif';
+    cx.fillText('CERTIFICATE', 512, 200);
+    cx.font = '34px Georgia,serif';
+    cx.fillStyle = '#555555';
+    cx.fillText('of Achievement', 512, 260);
+    cx.fillStyle = '#4285F4';
+    cx.fillRect(312, 300, 400, 6);
+    cx.fillStyle = '#14275e';
+    cx.font = 'italic 40px Georgia,serif';
+    cx.fillText('NECN Cloud Champions', 512, 400);
+    cx.font = '28px Georgia,serif';
+    cx.fillStyle = '#555555';
+    cx.fillText('Google Cloud Learn with Communities 2026', 512, 460);
+    cx.fillStyle = '#E6C36A';
+    cx.beginPath();
+    cx.arc(512, 590, 50, 0, 7);
+    cx.fill();
+    cx.fillStyle = '#8a6a14';
+    cx.font = 'bold 46px serif';
+    cx.fillText('★', 512, 606);
 
-    // 3D Medals
-    const medals: THREE.Group[] = [];
-    [['5', 0.9], ['10', 0.9]].forEach(([num], i) => {
-      const medGroup = new THREE.Group();
-      const cylinder = createMesh(
-        new THREE.CylinderGeometry(0.6, 0.6, 0.12, 48),
-        createMaterial(0xe6c36a, 0.95, 0.2)
+    cd.add(createMesh(new THREE.BoxGeometry(2.4, 1.7, 0.04), createMaterial(0xfffdf5, 0, 0.8)));
+    cd.add(createMesh(new THREE.PlaneGeometry(2.32, 1.64), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(ct) }), 0, 0, 0.025));
+    cd.position.set(3.5, -0.1, 0);
+    group.add(cd);
+
+    // 5. Floating Labels in #B8922D
+    const labels: [string, number][] = [
+      ['Bottle', -4.4],
+      ['T-Shirt', -2],
+      ['Bag', 0.6],
+      ['Certificate', 3.5],
+    ];
+    labels.forEach((l) => {
+      group.add(
+        createMesh(
+          new THREE.PlaneGeometry(2, 0.4),
+          new THREE.MeshBasicMaterial({
+            map: createTextTexture(l[0], 512, 100, null, '#B8922D', 'bold 52px Inter,sans-serif'),
+            transparent: true,
+          }),
+          l[1],
+          -1.55,
+          0
+        )
       );
-      cylinder.rotation.x = Math.PI / 2;
+    });
 
-      const numFace = createMesh(
+    // 6. Medals
+    const md: THREE.Mesh[] = [];
+    (['5', '10'] as const).forEach((num, i) => {
+      const d = createMesh(
+        new THREE.CylinderGeometry(0.6, 0.6, 0.12, 48),
+        createMaterial(0xe6c36a, 0.95, 0.2),
+        i ? 1.4 : -1.4,
+        2.3,
+        0.6
+      );
+      d.rotation.x = Math.PI / 2;
+      const f = createMesh(
         new THREE.PlaneGeometry(0.9, 0.9),
         new THREE.MeshBasicMaterial({
           map: createTextTexture(num, 128, 128, null, '#5a4310', '900 80px serif'),
@@ -461,30 +868,27 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
         0.07,
         0
       );
-      numFace.rotation.x = -Math.PI / 2;
-      cylinder.add(numFace);
-
-      medGroup.add(cylinder);
-      medGroup.position.set(i ? 2.2 : -2, 1.7, 0.6);
-      group.add(medGroup);
-      medals.push(medGroup);
+      f.rotation.x = -Math.PI / 2;
+      d.add(f);
+      group.add(d);
+      md.push(d);
     });
 
     scene.add(group);
 
-    // Floating particles (Constrained to prevent edge clipping)
-    const particles: THREE.Mesh[] = [];
+    // 7. Background floating Google spheres
+    const ob: THREE.Mesh[] = [];
     for (let j = 0; j < 8; j++) {
-      const p = createMesh(
-        new THREE.SphereGeometry(0.2, 20, 20),
+      const o = createMesh(
+        new THREE.SphereGeometry(0.25, 20, 20),
         createMaterial(GOOGLE_COLORS[j % 4], 0.3, 0.2),
-        Math.random() * 5.5 - 2.75,
-        Math.random() * 3 - 1.5,
-        -1.5
+        Math.random() * 10 - 5,
+        Math.random() * 4 - 2,
+        -2
       );
-      p.userData = { offset: j };
-      scene.add(p);
-      particles.push(p);
+      o.userData = { offset: j };
+      scene.add(o);
+      ob.push(o);
     }
 
     const handleResize = () => {
@@ -492,6 +896,13 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       const h = cv.clientHeight || 300;
       renderer.setSize(w, h, false);
       camera.aspect = w / h;
+      if (w < 480) {
+        group.scale.setScalar(0.68);
+      } else if (w < 768) {
+        group.scale.setScalar(0.8);
+      } else {
+        group.scale.setScalar(0.92);
+      }
       camera.updateProjectionMatrix();
     };
     handleResize();
@@ -513,22 +924,21 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       if (!isVisible) return;
       const s = time * 0.001;
 
-      group.rotation.y = Math.sin(s * 0.5) * 0.45;
-      bottle.position.y = Math.sin(s) * 0.1;
-      tee.position.y = 0.1 + Math.cos(s * 1.1) * 0.1;
-      bag.position.y = -0.5 + Math.sin(s * 0.9) * 0.1;
-
-      medals.forEach((m, idx) => {
-        m.rotation.z = s * (1 + idx * 0.4);
+      group.rotation.y = Math.sin(s * 0.5) * 0.1;
+      bt.position.y = Math.sin(s) * 0.1;
+      te.position.y = -0.15 + Math.cos(s * 1.1) * 0.08;
+      cd.position.y = -0.1 + Math.sin(s * 0.8) * 0.08;
+      bg.position.y = -0.5 + Math.sin(s * 0.9) * 0.1;
+      md.forEach((d, i) => {
+        d.rotation.z = s * (1 + i * 0.4);
+      });
+      ob.forEach((o) => {
+        o.position.y += Math.sin(s + o.userData.offset) * 0.004;
       });
 
-      particles.forEach((p) => {
-        p.position.y += Math.sin(s + p.userData.offset) * 0.004;
-      });
-
-      // Smooth, constrained parallax
-      camera.position.x += (mx * 1.2 - camera.position.x) * 0.05;
-      camera.position.y += (-my * 0.9 - camera.position.y) * 0.05;
+      // Smooth mouse parallax
+      camera.position.x += (mx * 2 - camera.position.x) * 0.05;
+      camera.position.y += (-my * 1.5 - camera.position.y) * 0.05;
       camera.lookAt(0, 0, 0);
 
       renderer.render(scene, camera);
@@ -544,25 +954,24 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
     };
   }, []);
 
-  // Scene 3: Campus Building Canvas (3D NECN Model)
+  // Scene 3: Campus Building Canvas (3D NECN Model + Procedural Puff Clouds)
   useEffect(() => {
     const cv = campusCanvasRef.current;
     if (!cv) return;
 
     let animId: number;
     let isVisible = true;
-    let mx = 0;
-    let my = 0;
 
     const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.05;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-    camera.position.z = 12.5;
+    camera.position.set(0, 0, 10.2);
+    camera.lookAt(0, 0, 0);
 
     scene.add(new THREE.AmbientLight(0xffffff, 0.85));
     const dLight = new THREE.DirectionalLight(0xffffff, 1.1);
@@ -572,105 +981,112 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
     pLight.position.set(-5, -2, 5);
     scene.add(pLight);
 
-    const building = new THREE.Group();
-    building.scale.set(0.74, 0.74, 0.74);
-    const creamMat = createMaterial(0xf0dfae, 0, 0.7);
-
-    // Main blocks
-    building.add(createMesh(new THREE.BoxGeometry(7, 2.4, 1.8), creamMat, 0, 0, 0));
-    building.add(createMesh(new THREE.BoxGeometry(1.8, 2.8, 2.2), createMaterial(0xe6d196, 0, 0.7), 0, 0.1, 0.2));
-    building.add(createMesh(new THREE.BoxGeometry(7.2, 0.12, 2), createMaterial(0xb8a36a, 0, 0.6), 0, 1.25, 0));
-
-    // Windows Matrix
-    const windowMat = createMaterial(0x1c2a55, 0.6, 0.2, {
-      emissive: 0x335599,
-      emissiveIntensity: 0.5,
+    const g = new THREE.Group();
+    const wall = createMaterial(0xf2e3b8, 0, 0.85);
+    const trim = createMaterial(0xfff8e4, 0, 0.6);
+    const glass = createMaterial(0x1d3a7a, 0.5, 0.15, {
+      emissive: new THREE.Color(0x2a5cc0),
+      emissiveIntensity: 0.35,
     });
-    for (let r = 0; r < 3; r++) {
-      for (let c = -6; c <= 6; c++) {
-        if (Math.abs(c) < 2) continue;
-        building.add(createMesh(new THREE.BoxGeometry(0.34, 0.4, 0.05), windowMat, c * 0.5, -0.7 + r * 0.75, 0.91));
-      }
-    }
+    const leaf = createMaterial(0x2f9e4f, 0, 0.9);
 
-    // Narayana Banner
-    building.add(
+    g.add(createMesh(new THREE.BoxGeometry(10, 0.2, 3.6), createMaterial(0x8f9a8a, 0, 0.9), 0, -1.55, 0.7));
+    g.add(createMesh(new THREE.BoxGeometry(8, 2.7, 1.7), wall, 0, -0.1, 0));
+    g.add(createMesh(new THREE.BoxGeometry(2.6, 3.1, 2.2), wall, 0, 0.1, 0.25));
+    g.add(createMesh(new THREE.BoxGeometry(8.2, 0.14, 1.9), trim, 0, 1.3, 0));
+    g.add(createMesh(new THREE.BoxGeometry(2.8, 0.14, 2.4), trim, 0, 1.7, 0.25));
+
+    [-0.4, 0.5].forEach((y) => {
+      g.add(createMesh(new THREE.BoxGeometry(8.05, 0.06, 0.06), trim, 0, y, 0.87));
+    });
+
+    [-0.85, 0.05, 0.95].forEach((y) => {
+      for (let c = -7; c <= 7; c++) {
+        if (Math.abs(c) < 3) continue;
+        g.add(createMesh(new THREE.BoxGeometry(0.38, 0.52, 0.04), trim, c * 0.52, y, 0.87));
+        g.add(createMesh(new THREE.BoxGeometry(0.3, 0.44, 0.05), glass, c * 0.52, y, 0.89));
+      }
+    });
+
+    [0.5, 1.15].forEach((y) => {
+      [-0.8, 0, 0.8].forEach((x) => {
+        g.add(createMesh(new THREE.BoxGeometry(0.5, 0.45, 0.05), glass, x, y, 1.37));
+      });
+    });
+
+    g.add(createMesh(new THREE.BoxGeometry(0.95, 1.1, 0.05), glass, 0, -0.88, 1.37));
+    g.add(createMesh(new THREE.BoxGeometry(2.9, 0.14, 1), trim, 0, -0.2, 1.75));
+
+    [-1.2, -0.4, 0.4, 1.2].forEach((x) => {
+      g.add(createMesh(new THREE.CylinderGeometry(0.09, 0.09, 1.25, 16), trim, x, -0.83, 2.15));
+    });
+
+    [0, 1, 2].forEach((i) => {
+      g.add(createMesh(new THREE.BoxGeometry(3.2 + i * 0.5, 0.1, 0.4), createMaterial(0xd8d2c0, 0, 0.8), 0, -1.38 + i * 0.0, 2.3 + i * 0.3));
+    });
+
+    g.add(createMesh(new THREE.BoxGeometry(5.6, 0.9, 0.18), createMaterial(0x14275e, 0.3, 0.4), 0, 2.25, 0.4));
+    g.add(createMesh(new THREE.BoxGeometry(5.7, 0.04, 0.2), createMaterial(0xe6c36a, 0.9, 0.2), 0, 2.72, 0.4));
+    g.add(createMesh(new THREE.BoxGeometry(5.7, 0.04, 0.2), createMaterial(0xe6c36a, 0.9, 0.2), 0, 1.78, 0.4));
+    g.add(
       createMesh(
-        new THREE.PlaneGeometry(2.4, 0.28),
+        new THREE.PlaneGeometry(5.4, 0.8),
         new THREE.MeshBasicMaterial({
-          map: createTextTexture('NARAYANA ENGINEERING COLLEGE', 512, 64, '#c8232c', '#ffffff', 'bold 34px sans-serif'),
+          map: createTextTexture('NARAYANA ENGINEERING COLLEGE', 1024, 150, '#14275e', '#ffffff', 'bold 54px Georgia,serif'),
         }),
         0,
-        1.55,
-        0
+        2.25,
+        0.5
       )
     );
 
-    // Porch & Pillars
-    building.add(createMesh(new THREE.BoxGeometry(2.6, 0.1, 1.4), creamMat, 0, -0.7, 1.3));
     [-1, 1].forEach((d) => {
-      building.add(createMesh(new THREE.CylinderGeometry(0.08, 0.08, 1.3, 12), creamMat, d * 1.1, -0.1, 1.8));
+      [2.4, 3.4, 4.4].forEach((x, j) => {
+        const X = d * x;
+        const h = 0.6 + j * 0.1;
+        g.add(createMesh(new THREE.CylinderGeometry(0.05, 0.07, h, 8), createMaterial(0x6b4a2b), X, -1.45 + h / 2, 1.7));
+        g.add(createMesh(new THREE.SphereGeometry(0.45, 16, 16), leaf, X, -1.2 + h, 1.7));
+        g.add(createMesh(new THREE.SphereGeometry(0.32, 16, 16), leaf, X, -0.8 + h, 1.7));
+      });
+      g.add(createMesh(new THREE.BoxGeometry(1.8, 0.25, 0.35), leaf, d * 3.2, -1.35, 2.4));
     });
 
-    // Trees
-    for (let i = 0; i < 9; i++) {
-      const x = -5 + i * 1.3 + Math.random() * 0.5;
-      const z = 1.6 + Math.random() * 0.7;
-      const h = 0.5 + Math.random() * 0.5;
-      building.add(createMesh(new THREE.CylinderGeometry(0.05, 0.07, h, 8), createMaterial(0x6b4a2b), x, -1.2 + h / 2, z));
-      building.add(createMesh(new THREE.SphereGeometry(0.4 + Math.random() * 0.2, 16, 16), createMaterial(0x2f9e4f, 0, 0.8), x, -1 + h, z));
-    }
-
-    // Realistic Volumetric Cloud Bed Variant (Element 1)
-    const cloudBed = createCloudBed({
-      width: 10.5,
-      puffCount: 16,
-      y: -1.15,
-      baseColor: '#d0e2fc',
-      topColor: '#ffffff',
-      opacity: 0.94,
-      speed: 0.7,
+    // Procedural Puff Clouds at the Base
+    [-1, 1].forEach((d) => {
+      const p = puff(9, 4, 0.8, 1);
+      p.position.set(d * 4.2, -1.7, 2.6);
+      g.add(p);
     });
-    scene.add(cloudBed.group);
 
-    building.position.y = 0.08;
-    scene.add(building);
+    g.position.y = -0.2;
+    scene.add(g);
 
     const handleResize = () => {
       const w = cv.clientWidth || 300;
       const h = cv.clientHeight || 300;
       renderer.setSize(w, h, false);
       camera.aspect = w / h;
+      if (w < 480) {
+        g.scale.setScalar(0.68);
+      } else if (w < 768) {
+        g.scale.setScalar(0.82);
+      } else {
+        g.scale.setScalar(0.95);
+      }
       camera.updateProjectionMatrix();
     };
     handleResize();
     window.addEventListener('resize', handleResize);
-
-    const handleMouseMove = (e: MouseEvent) => {
-      mx = e.clientX / window.innerWidth - 0.5;
-      my = e.clientY / window.innerHeight - 0.5;
-    };
-    window.addEventListener('mousemove', handleMouseMove);
 
     const observer = new IntersectionObserver((entries) => {
       isVisible = entries[0]?.isIntersecting ?? true;
     });
     observer.observe(cv);
 
-    const render = (time: number) => {
+    // The college building must stay STATIC (no rotation, no camera parallax)
+    const render = () => {
       animId = requestAnimationFrame(render);
       if (!isVisible) return;
-      const s = time * 0.001;
-
-      cloudBed.update(s);
-      cloudBed.setMouseParallax(mx, my);
-
-      // The college building must stay STATIC per strict directive (no rotation, no camera parallax)
-      building.rotation.y = 0.05;
-      building.rotation.x = 0.08;
-      camera.position.set(0, 0, 12.5);
-      camera.lookAt(0, 0, 0);
-
       renderer.render(scene, camera);
     };
     animId = requestAnimationFrame(render);
@@ -678,9 +1094,7 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('mousemove', handleMouseMove);
       observer.disconnect();
-      cloudBed.dispose();
       renderer.dispose();
     };
   }, []);
