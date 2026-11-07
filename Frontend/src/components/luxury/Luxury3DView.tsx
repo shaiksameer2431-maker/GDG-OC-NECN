@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import type { Student, CohortStats, OfficialCourse } from '../../types';
 import { Avatar } from '../common/Avatar';
@@ -33,6 +33,41 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
   const champion1 = students[0];
   const champion2 = students[1];
   const champion3 = students[2];
+
+  // Animated Background Circuit Graphics Traces (.circ)
+  const circuitSvgHtml = useMemo(() => {
+    let html = '';
+    const rng = (seed: number) => {
+      let s = seed % 2147483647;
+      if (s <= 0) s += 2147483646;
+      return () => {
+        s = (s * 16807) % 2147483647;
+        return (s - 1) / 2147483646;
+      };
+    };
+    const rand = rng(42);
+
+    for (let i = 0; i < 28; i++) {
+      const y = 30 + rand() * 740;
+      const x = rand() < 0.5 ? -20 : 600 + rand() * 300;
+      const L = 150 + rand() * 320;
+      const dy = (rand() < 0.5 ? -1 : 1) * (30 + rand() * 60);
+      const x1 = x + L;
+      const x2 = x1 + Math.abs(dy);
+      const x3 = x2 + 80 + rand() * 220;
+      const d = `M${x.toFixed(1)} ${y.toFixed(1)}H${x1.toFixed(1)}L${x2.toFixed(1)} ${(y + dy).toFixed(1)}H${x3.toFixed(1)}`;
+      const delay = (-rand() * 8).toFixed(1);
+      const r = (2.5 + rand() * 3).toFixed(1);
+      html += `<path d="${d}" style="animation-delay:${delay}s"/><circle cx="${x3.toFixed(1)}" cy="${(y + dy).toFixed(1)}" r="${r}"/>`;
+    }
+    for (let i = 0; i < 10; i++) {
+      const cx = (rand() * 1400).toFixed(1);
+      const cy = (rand() * 800).toFixed(1);
+      const r = (12 + rand() * 26).toFixed(1);
+      html += `<circle class="bl" cx="${cx}" cy="${cy}" r="${r}"/>`;
+    }
+    return html;
+  }, []);
 
   // Animated counter up to totalStudents
   useEffect(() => {
@@ -237,29 +272,25 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       x.fill();
     };
 
-    x.fillStyle = '#FFFFFF';
-    ci(640, 225, 98);
-    ci(583, 265, 73);
-    ci(718, 258, 68);
-    ci(726, 285, 60);
-
-    x.strokeStyle = '#FF0000';
-    x.lineWidth = 300;
+    // 1. Outer colored Google brand arcs
+    x.strokeStyle = '#EA4335';
+    x.lineWidth = 295;
     x.beginPath();
     x.arc(X(640), Y(225), 456, R(-192), R(-44), false);
     x.stroke();
 
-    x.strokeStyle = '#0088FF';
+    x.strokeStyle = '#4285F4';
+    x.lineWidth = 295;
     x.beginPath();
     x.arc(X(640), Y(225), 456, R(-44), R(18), false);
     x.stroke();
 
-    x.fillStyle = '#0088FF';
+    x.fillStyle = '#4285F4';
     ci(718, 258, 70);
     ci(726, 285, 62);
     x.fillRect(X(648), Y(258), X(726) - X(648), Y(347) - Y(258));
 
-    x.fillStyle = '#00B039';
+    x.fillStyle = '#34A853';
     x.beginPath();
     x.moveTo(X(572), Y(298));
     x.lineTo(X(648), Y(298));
@@ -269,20 +300,32 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
     x.closePath();
     x.fill();
 
-    x.fillStyle = '#FFFFFF';
-    ci(583, 268, 30);
-    x.fillRect(X(583), Y(238), X(710) - X(583), Y(298) - Y(238));
-    ci(700, 262, 37);
-    ci(710, 269, 30);
-    ci(640, 225, 51);
-    x.fillRect(X(592), Y(208), X(650) - X(592), Y(240) - Y(208));
-    x.fillRect(X(563), Y(286), X(576) - X(563), Y(298) - Y(286));
-
-    x.strokeStyle = '#FFB400';
-    x.lineWidth = 288;
+    x.strokeStyle = '#FBBC04';
+    x.lineWidth = 285;
     x.beginPath();
     x.arc(X(583), Y(265), 306, R(-41), R(120), true);
     x.stroke();
+
+    // 2. SOLID PURE WHITE INTERIOR CLOUD ON TOP!
+    x.fillStyle = '#FFFFFF';
+    ci(640, 225, 52);
+    ci(583, 268, 33);
+    ci(700, 262, 38);
+    ci(710, 269, 32);
+    x.fillRect(X(583), Y(238), X(710) - X(583), Y(347) - Y(238));
+    x.fillRect(X(592), Y(208), X(650) - X(592), Y(240) - Y(208));
+    x.fillRect(X(563), Y(286), X(576) - X(563), Y(298) - Y(286));
+    x.beginPath();
+    x.moveTo(X(583), Y(272));
+    x.lineTo(X(550), Y(288));
+    x.lineTo(X(583), Y(304));
+    x.closePath();
+    x.fill();
+    x.fillRect(X(572), Y(288), X(710) - X(572), Y(347) - Y(288));
+    ci(615, 275, 36);
+    ci(660, 275, 36);
+    ci(615, 310, 36);
+    ci(660, 310, 36);
 
     const t = new THREE.CanvasTexture(c);
     t.anisotropy = 8;
@@ -375,8 +418,7 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
 
     const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.05;
+    renderer.toneMapping = THREE.NoToneMapping;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     const scene = new THREE.Scene();
@@ -395,10 +437,10 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
 
     // 1. Google Cloud 3D Logo Cloud with sweeping edge shimmer
     const cl = logo3d();
-    cl.position.set(-0.4, 1.15, 0);
+    cl.position.set(-0.25, 0.75, 0);
     group.add(cl);
 
-    // 2. Rounded 3D Laptop with </> Code Screen
+    // 2. Rounded 3D Laptop with </> Code Screen (Lowered to eliminate collisions)
     const lp = new THREE.Group();
     const lb = createMesh(rb(2, 1.3, 0.08, 0.1), createMaterial(0x1c3f94, 0.6, 0.2));
     lb.rotation.x = Math.PI / 2;
@@ -417,11 +459,11 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
     );
     sf.rotation.x = -0.18;
     lp.add(sf);
-    lp.position.set(2.3, -2.2, 0.8);
+    lp.position.set(2.8, -2.5, 0.8);
     lp.rotation.y = -0.5;
     group.add(lp);
 
-    // 3. Rounded Server Stack with LED Indicators
+    // 3. Rounded Server Stack with LED Indicators (Lowered to eliminate collisions)
     const sv = new THREE.Group();
     for (let k = 0; k < 3; k++) {
       sv.add(
@@ -450,7 +492,7 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
         );
       }
     }
-    sv.position.set(-2.5, -2.1, 0.9);
+    sv.position.set(-2.8, -2.5, 0.9);
     sv.rotation.y = 0.5;
     group.add(sv);
 
@@ -458,20 +500,20 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
     const orbs: THREE.Mesh[] = [];
     for (let j = 0; j < 4; j++) {
       const o = createMesh(
-        new THREE.SphereGeometry(0.2 + Math.random() * 0.2, 24, 24),
+        new THREE.SphereGeometry(0.22 + Math.random() * 0.2, 24, 24),
         createMaterial(GOOGLE_COLORS[j % 4], 0.3, 0.2)
       );
       o.userData = {
         a: j,
-        r: 3 + Math.random() * 1.6,
-        s: 0.3 + Math.random() * 0.4,
-        y: Math.random() * 3 - 1.5,
+        r: 3.4 + Math.random() * 1.2,
+        s: 0.3 + Math.random() * 0.3,
+        y: Math.random() * 2.5 - 0.8,
       };
       group.add(o);
       orbs.push(o);
     }
 
-    // 5. Orbital Concentric Rings
+    // 5. Orbital Concentric Rings centered with cloud
     const rings: THREE.Mesh[] = [];
     const ringConfigs: [number, number, number][] = [
       [2.9, 6.3, 0.5],
@@ -483,8 +525,8 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       const r = createMesh(
         new THREE.TorusGeometry(p[0], 0.014, 8, 160, p[1]),
         new THREE.MeshBasicMaterial({ color: 0x9aa3b8, transparent: true, opacity: p[2] }),
-        -0.4,
-        1.15,
+        -0.25,
+        0.75,
         -0.3
       );
       r.rotation.z = i;
@@ -517,8 +559,8 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       const d = createMesh(
         new THREE.CircleGeometry(p[3] * 0.0136, 64),
         new THREE.MeshBasicMaterial({ color: p[2] }),
-        (p[0] - 650) * 0.0085,
-        -(p[1] - 270) * 0.012 + 0.3,
+        (p[0] - 650) * 0.0085 - 0.25,
+        -(p[1] - 270) * 0.012 + 0.75,
         ((i % 5) - 2) * 0.4
       );
       d.userData = { y: d.position.y, s: 0.6 + (i % 4) * 0.25, p: i };
@@ -544,7 +586,7 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       m.rotation.x = Math.PI / 2;
       pl.add(m);
     });
-    pl.position.set(-3.2, 2.3, 0.4);
+    pl.position.set(-3.7, 2.3, 0.4);
 
     // lo (layers icon)
     const lo = new THREE.Group();
@@ -552,7 +594,7 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
     lo.add(bx(0.33, 0.33, 0x4285f4, -0.12, -0.07));
     lo.add(bx(0.22, 0.19, 0x0f9d58, 0.18, 0));
     lo.add(bx(0.22, 0.11, 0xdb4437, 0.18, -0.18));
-    lo.position.set(3.1, 2.2, 0.4);
+    lo.position.set(3.6, 2.2, 0.4);
 
     // eq (equalizer icon)
     const eq = new THREE.Group();
@@ -565,10 +607,10 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
     eqBars.forEach((b, i) => {
       eq.add(bx(0.12, b[0], b[1], -0.27 + i * 0.18, 0));
     });
-    eq.position.set(-3.4, 0.3, 0.4);
+    eq.position.set(-3.9, -0.3, 0.4);
 
     [pl, lo, eq].forEach((o) => {
-      o.scale.setScalar(1.3);
+      o.scale.setScalar(1.25);
       o.userData = { y: o.position.y };
       group.add(o);
       icons.push(o);
@@ -612,8 +654,8 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       if (cl.userData.ed?.material?.uniforms?.u) {
         cl.userData.ed.material.uniforms.u.value = s * 1.4;
       }
-      lp.position.y = -2.2 + Math.sin(s * 1.2) * 0.1;
-      sv.position.y = -2.1 + Math.cos(s) * 0.1;
+      lp.position.y = -2.5 + Math.sin(s * 1.2) * 0.08;
+      sv.position.y = -2.5 + Math.cos(s) * 0.08;
       rings.forEach((r, i) => {
         r.rotation.z = s * (0.12 + i * 0.07) * (i % 2 ? -1 : 1);
       });
@@ -1112,8 +1154,16 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       {/* =========================================================================
           SECTION 1: HERO & 3D CLOUD SCENE
           ========================================================================= */}
-      <section id="overview" className="max-w-[1180px] mx-auto px-5 pt-8 sm:pt-14 pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[85vh]">
+      <section id="overview" className="relative isolate max-w-[1180px] mx-auto px-5 pt-8 sm:pt-14 pb-16">
+        {/* Animated Background Circuit Graphics Traces (.circ) */}
+        <svg
+          viewBox="0 0 1400 800"
+          preserveAspectRatio="xMidYMid slice"
+          className="circ"
+          dangerouslySetInnerHTML={{ __html: circuitSvgHtml }}
+        />
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[85vh] relative z-10">
           {/* Left Hero Column */}
           <div className="space-y-4">
             {/* Partners Bar */}
