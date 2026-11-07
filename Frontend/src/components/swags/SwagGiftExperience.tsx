@@ -1155,41 +1155,54 @@ export const SwagGiftExperience: React.FC = () => {
 
     scene.add(lidGroup);
 
-    // --- 3D SATIN RIBBON & BOW (Wrapped around closed box) ---
+    // --- 3D SIMPLE & STYLISH CORNER SASH RIBBON (Preserves 100% text visibility) ---
     const ribbonGroup = new THREE.Group();
     const ribbonMat = new THREE.MeshStandardMaterial({
-      color: 0x4285f4,
-      roughness: 0.45,
-      metalness: 0.12,
+      color: 0x4285f4, // Google Blue silk satin
+      roughness: 0.38,
+      metalness: 0.15,
       transparent: true,
-      opacity: 1.0
+      opacity: 0.96
     });
 
-    const ribZ = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.06, lidD + 0.1), ribbonMat);
-    ribZ.position.y = 0.04;
-    ribbonGroup.add(ribZ);
+    // Elegant diagonal sash across top-right corner of lid (leaving all center text 100% visible)
+    const sashGeo = new THREE.BoxGeometry(4.4, 0.045, 0.62);
+    const sashMesh = new THREE.Mesh(sashGeo, ribbonMat);
+    sashMesh.position.set(2.8, 0.035, -2.5);
+    sashMesh.rotation.y = -Math.PI / 4;
+    sashMesh.castShadow = true;
+    ribbonGroup.add(sashMesh);
 
-    const ribX = new THREE.Mesh(new THREE.BoxGeometry(lidW + 0.1, 0.06, 0.72), ribbonMat);
-    ribX.position.y = 0.045;
-    ribbonGroup.add(ribX);
+    // Slim metallic gold accent stripe along the sash
+    const goldMat = new THREE.MeshStandardMaterial({
+      color: 0xfbbc04,
+      roughness: 0.28,
+      metalness: 0.65
+    });
+    const stripeGeo = new THREE.BoxGeometry(4.4, 0.05, 0.08);
+    const stripeMesh = new THREE.Mesh(stripeGeo, goldMat);
+    stripeMesh.position.set(2.8, 0.04, -2.5);
+    stripeMesh.rotation.y = -Math.PI / 4;
+    ribbonGroup.add(stripeMesh);
 
-    // 3D Ribbon Bow on top
-    const bowKnot = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.25, 0.48), new THREE.MeshStandardMaterial({ color: 0xfbbc04, roughness: 0.5 }));
-    bowKnot.position.y = 0.16;
-    ribbonGroup.add(bowKnot);
+    // Stylish luxury metallic seal clip in center of sash
+    const sealGeo = new THREE.CylinderGeometry(0.28, 0.28, 0.08, 32);
+    const sealMesh = new THREE.Mesh(sealGeo, goldMat);
+    sealMesh.position.set(2.8, 0.06, -2.5);
+    sealMesh.castShadow = true;
+    ribbonGroup.add(sealMesh);
 
-    const bowLoopGeo = new THREE.TorusGeometry(0.5, 0.12, 16, 28, Math.PI * 1.3);
-    const bowLoopL = new THREE.Mesh(bowLoopGeo, ribbonMat);
-    bowLoopL.rotation.y = Math.PI / 4;
-    bowLoopL.rotation.z = Math.PI * 0.4;
-    bowLoopL.position.set(-0.35, 0.32, 0);
-    ribbonGroup.add(bowLoopL);
+    // Minimalist ribbon tail tabs
+    const tailGeo = new THREE.BoxGeometry(0.48, 0.03, 0.85);
+    const tail1 = new THREE.Mesh(tailGeo, ribbonMat);
+    tail1.position.set(3.05, 0.05, -2.25);
+    tail1.rotation.y = -Math.PI / 6;
+    ribbonGroup.add(tail1);
 
-    const bowLoopR = new THREE.Mesh(bowLoopGeo, ribbonMat);
-    bowLoopR.rotation.y = -Math.PI / 4;
-    bowLoopR.rotation.z = -Math.PI * 0.4;
-    bowLoopR.position.set(0.35, 0.32, 0);
-    ribbonGroup.add(bowLoopR);
+    const tail2 = new THREE.Mesh(tailGeo, ribbonMat);
+    tail2.position.set(2.55, 0.05, -2.75);
+    tail2.rotation.y = -Math.PI / 3;
+    ribbonGroup.add(tail2);
 
     lidGroup.add(ribbonGroup);
 
