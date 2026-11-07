@@ -252,11 +252,11 @@ export default function CloudChampionsScene({
     g.add(sv);
     scene.add(g);
 
-    // Orbiting Google-colour spheres.
+    // Orbiting Google-colour spheres with wide safety clearance around cloud.
     const orbs: THREE.Mesh[] = [];
     for (let j = 0; j < 4; j++) {
       const o = B(new THREE.SphereGeometry(0.2 + Math.random() * 0.2, 24, 24), M(G[j % 4], 0.3, 0.2));
-      o.userData = { a: j, r: 3 + Math.random() * 1.6, s: 0.3 + Math.random() * 0.4, y: Math.random() * 3 - 1.5 };
+      o.userData = { a: j, r: 3.8 + (j % 2) * 0.8, s: 0.3 + (j % 3) * 0.15, y: -0.2 + (j % 4) * 0.8 };
       scene.add(o);
       orbs.push(o);
     }
@@ -286,8 +286,8 @@ export default function CloudChampionsScene({
       [796, 85, 0xe31b23, 5],
       [791, 169, 0x6cbf00, 9],
       [913, 217, 0xffd000, 13],
-      [410, 219, 0xe31b23, 11],
-      [483, 219, 0x2d8cff, 6],
+      [270, 219, 0xe31b23, 11],
+      [330, 219, 0x2d8cff, 6],
       [348, 283, 0xffd000, 5],
       [524, 353, 0xffd000, 9],
       [765, 357, 0x2d8cff, 9],

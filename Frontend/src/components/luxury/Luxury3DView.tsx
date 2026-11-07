@@ -213,11 +213,12 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       {/* =========================================================================
           SECTION 1: HERO & 3D CLOUD SCENE
           ========================================================================= */}
-      <section id="overview" className="relative isolate max-w-[1180px] mx-auto px-5 pt-8 sm:pt-14 pb-16 overflow-hidden">
-        {/* Decorative Circuit-Line Background Layer */}
+      <section id="overview" className="relative isolate w-full pt-8 sm:pt-14 pb-16 overflow-hidden">
+        {/* Full window-fit vector circuit-line background layer */}
         <CloudCircuitBackground />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[85vh] relative z-10">
+        <div className="max-w-[1180px] mx-auto px-5 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[85vh]">
           {/* Left Hero Column */}
           <div className="space-y-4">
             {/* Partners Bar */}
@@ -350,7 +351,8 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
             <CloudChampionsScene className="w-full h-full" />
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
       {/* =========================================================================
           SECTION 2: 3D TILT CARDS (LEARN · EARN · BUILD)
