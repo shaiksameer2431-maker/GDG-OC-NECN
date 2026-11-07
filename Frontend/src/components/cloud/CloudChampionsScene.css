@@ -39,3 +39,106 @@
   z-index: 1;
 }
 
+/* =========================================================================
+   ANIMATED CIRCUIT TRACE DATA STREAMS & PULSES
+   Continuous, unbroken paths with flowing electric signal streams
+   ========================================================================= */
+
+.circuit-trace-base {
+  stroke: #5a6a88;
+  stroke-opacity: 0.24;
+  stroke-width: 1.4;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.circuit-branch-base {
+  stroke: #667694;
+  stroke-opacity: 0.20;
+  stroke-width: 1.2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Active flowing data pulses along the circuit tracks */
+.circuit-pulse-stream {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 60 400;
+  animation: circuitStreamFlow 11s linear infinite;
+}
+
+.circuit-pulse-stream--fast {
+  animation-duration: 7.5s;
+  stroke-dasharray: 80 340;
+}
+
+.circuit-pulse-stream--slow {
+  animation-duration: 15s;
+  animation-direction: reverse;
+  stroke-dasharray: 50 460;
+}
+
+@keyframes circuitStreamFlow {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -1200;
+  }
+}
+
+/* Pulsing junction nodes */
+.circuit-node-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: circuitNodeBreathe 3.2s ease-in-out infinite;
+}
+
+.circuit-node-pulse--alt {
+  animation-delay: 1.6s;
+}
+
+.circuit-node-pulse--accent {
+  animation: circuitNodeAccent 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes circuitNodeBreathe {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 0.88;
+    transform: scale(1.35);
+  }
+}
+
+@keyframes circuitNodeAccent {
+  0% {
+    opacity: 0.55;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+}
+
+.circuit-ambient-orb {
+  animation: circuitOrbFloat 9s ease-in-out infinite alternate;
+}
+
+@keyframes circuitOrbFloat {
+  0% {
+    transform: translateY(0px);
+    opacity: 0.12;
+  }
+  100% {
+    transform: translateY(-8px);
+    opacity: 0.24;
+  }
+}

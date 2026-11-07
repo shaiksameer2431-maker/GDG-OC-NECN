@@ -25,8 +25,6 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
   const [counterValue, setCounterValue] = useState(0);
   const [podiumInView, setPodiumInView] = useState(false);
 
-  const campusCanvasRef = useRef<HTMLCanvasElement | null>(null);
-
   const stageRef = useRef<HTMLDivElement | null>(null);
   const siRef = useRef<HTMLDivElement | null>(null);
 
@@ -200,173 +198,7 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
     return g;
   };
 
-  // 3D Procedural Puff Clouds
-  const puff = (n: number, sx: number, sy: number, z: number) => {
-    const g = new THREE.Group();
-    const m = createMaterial(0xffffff, 0, 1, {
-      emissive: new THREE.Color(0x9db8e8),
-      emissiveIntensity: 0.14,
-    });
-    for (let i = 0; i < n; i++) {
-      const x = (Math.random() - 0.5) * sx * z;
-      const e = 1 - Math.abs(x) / (sx * z * 0.6);
-      const r = (0.4 + Math.random() * 0.5) * z * Math.max(e, 0.45);
-      const geo = new THREE.IcosahedronGeometry(r, 3);
-      const p = geo.attributes.position;
-      for (let k = 0; k < p.count; k++) {
-        const f = 1 + Math.sin(p.getX(k) * 6 + i) * Math.cos(p.getY(k) * 5 + i * 2) * 0.07;
-        p.setXYZ(k, p.getX(k) * f, p.getY(k) * f * 0.82, p.getZ(k) * f);
-      }
-      geo.computeVertexNormals();
-      g.add(createMesh(geo, m, x, Math.random() * sy * z * Math.max(e, 0.2), (Math.random() - 0.5) * 0.9 * z));
-    }
-    return g;
-  };
 
-  // Scene 3: Campus Building Canvas (3D NECN Model + Procedural Puff Clouds)
-  useEffect(() => {
-    const cv = campusCanvasRef.current;
-    if (!cv) return;
-
-    let animId: number;
-    let isVisible = true;
-
-    const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.05;
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-    camera.position.set(0, 0, 10.2);
-    camera.lookAt(0, 0, 0);
-
-    scene.add(new THREE.AmbientLight(0xffffff, 0.85));
-    const dLight = new THREE.DirectionalLight(0xffffff, 1.1);
-    dLight.position.set(4, 6, 6);
-    scene.add(dLight);
-    const pLight = new THREE.PointLight(0xe6c36a, 1, 30);
-    pLight.position.set(-5, -2, 5);
-    scene.add(pLight);
-
-    const g = new THREE.Group();
-    const wall = createMaterial(0xf2e3b8, 0, 0.85);
-    const trim = createMaterial(0xfff8e4, 0, 0.6);
-    const glass = createMaterial(0x1d3a7a, 0.5, 0.15, {
-      emissive: new THREE.Color(0x2a5cc0),
-      emissiveIntensity: 0.35,
-    });
-    const leaf = createMaterial(0x2f9e4f, 0, 0.9);
-
-    g.add(createMesh(new THREE.BoxGeometry(10, 0.2, 3.6), createMaterial(0x8f9a8a, 0, 0.9), 0, -1.55, 0.7));
-    g.add(createMesh(new THREE.BoxGeometry(8, 2.7, 1.7), wall, 0, -0.1, 0));
-    g.add(createMesh(new THREE.BoxGeometry(2.6, 3.1, 2.2), wall, 0, 0.1, 0.25));
-    g.add(createMesh(new THREE.BoxGeometry(8.2, 0.14, 1.9), trim, 0, 1.3, 0));
-    g.add(createMesh(new THREE.BoxGeometry(2.8, 0.14, 2.4), trim, 0, 1.7, 0.25));
-
-    [-0.4, 0.5].forEach((y) => {
-      g.add(createMesh(new THREE.BoxGeometry(8.05, 0.06, 0.06), trim, 0, y, 0.87));
-    });
-
-    [-0.85, 0.05, 0.95].forEach((y) => {
-      for (let c = -7; c <= 7; c++) {
-        if (Math.abs(c) < 3) continue;
-        g.add(createMesh(new THREE.BoxGeometry(0.38, 0.52, 0.04), trim, c * 0.52, y, 0.87));
-        g.add(createMesh(new THREE.BoxGeometry(0.3, 0.44, 0.05), glass, c * 0.52, y, 0.89));
-      }
-    });
-
-    [0.5, 1.15].forEach((y) => {
-      [-0.8, 0, 0.8].forEach((x) => {
-        g.add(createMesh(new THREE.BoxGeometry(0.5, 0.45, 0.05), glass, x, y, 1.37));
-      });
-    });
-
-    g.add(createMesh(new THREE.BoxGeometry(0.95, 1.1, 0.05), glass, 0, -0.88, 1.37));
-    g.add(createMesh(new THREE.BoxGeometry(2.9, 0.14, 1), trim, 0, -0.2, 1.75));
-
-    [-1.2, -0.4, 0.4, 1.2].forEach((x) => {
-      g.add(createMesh(new THREE.CylinderGeometry(0.09, 0.09, 1.25, 16), trim, x, -0.83, 2.15));
-    });
-
-    [0, 1, 2].forEach((i) => {
-      g.add(createMesh(new THREE.BoxGeometry(3.2 + i * 0.5, 0.1, 0.4), createMaterial(0xd8d2c0, 0, 0.8), 0, -1.38 + i * 0.0, 2.3 + i * 0.3));
-    });
-
-    g.add(createMesh(new THREE.BoxGeometry(5.6, 0.9, 0.18), createMaterial(0x14275e, 0.3, 0.4), 0, 2.25, 0.4));
-    g.add(createMesh(new THREE.BoxGeometry(5.7, 0.04, 0.2), createMaterial(0xe6c36a, 0.9, 0.2), 0, 2.72, 0.4));
-    g.add(createMesh(new THREE.BoxGeometry(5.7, 0.04, 0.2), createMaterial(0xe6c36a, 0.9, 0.2), 0, 1.78, 0.4));
-    g.add(
-      createMesh(
-        new THREE.PlaneGeometry(5.4, 0.8),
-        new THREE.MeshBasicMaterial({
-          map: createTextTexture('NARAYANA ENGINEERING COLLEGE', 1024, 150, '#14275e', '#ffffff', 'bold 54px Georgia,serif'),
-        }),
-        0,
-        2.25,
-        0.5
-      )
-    );
-
-    [-1, 1].forEach((d) => {
-      [2.4, 3.4, 4.4].forEach((x, j) => {
-        const X = d * x;
-        const h = 0.6 + j * 0.1;
-        g.add(createMesh(new THREE.CylinderGeometry(0.05, 0.07, h, 8), createMaterial(0x6b4a2b), X, -1.45 + h / 2, 1.7));
-        g.add(createMesh(new THREE.SphereGeometry(0.45, 16, 16), leaf, X, -1.2 + h, 1.7));
-        g.add(createMesh(new THREE.SphereGeometry(0.32, 16, 16), leaf, X, -0.8 + h, 1.7));
-      });
-      g.add(createMesh(new THREE.BoxGeometry(1.8, 0.25, 0.35), leaf, d * 3.2, -1.35, 2.4));
-    });
-
-    // Procedural Puff Clouds at the Base
-    [-1, 1].forEach((d) => {
-      const p = puff(9, 4, 0.8, 1);
-      p.position.set(d * 4.2, -1.7, 2.6);
-      g.add(p);
-    });
-
-    g.position.y = -0.2;
-    scene.add(g);
-
-    const handleResize = () => {
-      const w = cv.clientWidth || 300;
-      const h = cv.clientHeight || 300;
-      renderer.setSize(w, h, false);
-      camera.aspect = w / h;
-      if (w < 480) {
-        g.scale.setScalar(0.68);
-      } else if (w < 768) {
-        g.scale.setScalar(0.82);
-      } else {
-        g.scale.setScalar(0.95);
-      }
-      camera.updateProjectionMatrix();
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-
-    const observer = new IntersectionObserver((entries) => {
-      isVisible = entries[0]?.isIntersecting ?? true;
-    });
-    observer.observe(cv);
-
-    // The college building must stay STATIC (no rotation, no camera parallax)
-    const render = () => {
-      animId = requestAnimationFrame(render);
-      if (!isVisible) return;
-      renderer.render(scene, camera);
-    };
-    animId = requestAnimationFrame(render);
-
-    return () => {
-      cancelAnimationFrame(animId);
-      window.removeEventListener('resize', handleResize);
-      observer.disconnect();
-      renderer.dispose();
-    };
-  }, []);
 
   return (
     <div className="luxury-3d-root relative w-full text-[#14182b] overflow-x-hidden selection:bg-amber-500/20 selection:text-amber-900 pb-0">
@@ -767,23 +599,6 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
           SECTION 5: REWARDS & 3D SWAG SHOWCASE (Interactive 3D Gift Box)
           ========================================================================= */}
       <SwagGiftExperience />
-
-      {/* =========================================================================
-          SECTION 6: CAMPUS SHOWCASE & 3D NECN BUILDING
-          ========================================================================= */}
-      <section id="about" className="max-w-[1180px] mx-auto px-5 pt-8 pb-2 text-center">
-        <h2 className="luxury-serif text-3xl sm:text-5xl font-black mb-2 luxury-rv">
-          Our <span className="luxury-gold">Campus</span>
-        </h2>
-        <p className="text-slate-600 max-w-xl mx-auto mb-4 text-sm luxury-rv leading-relaxed">
-          Official Google Cloud Learning &amp; Achievement Leaderboard for GDG On Campus, Narayana Engineering College, Nellore (Autonomous).
-        </p>
-
-        {/* 3D WebGL Campus Building Canvas */}
-        <div className="relative w-full h-[280px] sm:h-[350px] flex items-center justify-center">
-          <canvas ref={campusCanvasRef} className="w-full h-full block rounded-3xl" />
-        </div>
-      </section>
 
       {/* =========================================================================
           FOOTER (Built with passion. Powered by community. ☁️)

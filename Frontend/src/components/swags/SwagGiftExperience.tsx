@@ -285,49 +285,173 @@ export const SwagGiftExperience: React.FC = () => {
     return new THREE.CanvasTexture(c);
   }, [drawGdgBrackets]);
 
-  // 2. T-Shirt Texture
-  const createTShirtTexture = useCallback(() => {
+  // 2a. Woven Neck Label Texture (Inside Neck Tag matching Reference Image 3)
+  const createNeckTagTexture = useCallback(() => {
     const c = document.createElement('canvas');
-    c.width = 1024;
-    c.height = 1024;
+    c.width = 512;
+    c.height = 320;
     const ctx = c.getContext('2d')!;
 
-    ctx.fillStyle = '#14151a';
-    ctx.fillRect(0, 0, 1024, 1024);
+    // Deep black woven cloth base
+    ctx.fillStyle = '#0c0d12';
+    ctx.fillRect(0, 0, 512, 320);
 
-    // Subtle cotton texture noise
-    for (let i = 0; i < 20000; i++) {
-      ctx.fillStyle = Math.random() < 0.5 ? 'rgba(255,255,255,0.018)' : 'rgba(0,0,0,0.03)';
-      ctx.fillRect(Math.random() * 1024, Math.random() * 1024, 2, 2);
+    // Fine woven textile weave
+    for (let x = 0; x < 512; x += 4) {
+      ctx.fillStyle = x % 8 === 0 ? 'rgba(255,255,255,0.045)' : 'rgba(0,0,0,0.15)';
+      ctx.fillRect(x, 0, 2, 320);
+    }
+    for (let y = 0; y < 320; y += 4) {
+      ctx.fillStyle = y % 8 === 0 ? 'rgba(255,255,255,0.045)' : 'rgba(0,0,0,0.15)';
+      ctx.fillRect(0, y, 512, 2);
     }
 
-    // Inside neck woven label
-    ctx.fillStyle = '#08080c';
-    ctx.fillRect(390, 100, 244, 140);
-    ctx.strokeStyle = '#2b2e3a';
+    // Stitched perimeter line
+    ctx.strokeStyle = '#383d4e';
     ctx.lineWidth = 4;
-    ctx.strokeRect(390, 100, 244, 140);
-    drawGdgBrackets(ctx, 512, 170, 70);
+    ctx.setLineDash([8, 6]);
+    ctx.strokeRect(12, 12, 488, 296);
+    ctx.setLineDash([]);
 
-    // Chest Print (Right chest of folded tee matching Image 3)
-    drawGdgBrackets(ctx, 680, 490, 170);
+    // Official GDG brackets logo on woven label
+    drawGdgBrackets(ctx, 256, 115, 110);
 
+    // Micro text
     ctx.fillStyle = '#FFFFFF';
     ctx.textAlign = 'center';
-    ctx.font = '900 80px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-    ctx.fillText('GDG', 680, 605);
+    ctx.font = '900 28px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillText('GDG ON CAMPUS', 256, 215);
 
-    ctx.font = '700 46px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-    ctx.fillText('On Campus', 680, 670);
+    ctx.fillStyle = '#A4ACBF';
+    ctx.font = '700 22px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillText('NECN · 100% COTTON · M', 256, 258);
 
-    ctx.font = '900 56px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-    ctx.fillText('NECN', 680, 740);
+    return new THREE.CanvasTexture(c);
+  }, [drawGdgBrackets]);
 
-    // Quad-color underline bar
-    const barW = 250;
-    const barH = 16;
-    const barX = 680 - barW / 2;
-    const barY = 785;
+  // 2b. Collar Ribbing Texture (Knitted 1x1 crewneck collar ribs)
+  const createCollarRibbingTexture = useCallback(() => {
+    const c = document.createElement('canvas');
+    c.width = 512;
+    c.height = 128;
+    const ctx = c.getContext('2d')!;
+
+    ctx.fillStyle = '#1a1b24';
+    ctx.fillRect(0, 0, 512, 128);
+
+    // Repeating knitted vertical rib lines
+    for (let x = 0; x < 512; x += 6) {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+      ctx.fillRect(x, 0, 2, 128);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+      ctx.fillRect(x + 2, 0, 2, 128);
+    }
+
+    const t = new THREE.CanvasTexture(c);
+    t.wrapS = THREE.RepeatWrapping;
+    t.wrapT = THREE.RepeatWrapping;
+    t.repeat.set(16, 1);
+    return t;
+  }, []);
+
+  // 2c. Folded T-Shirt Front Fabric & Chest Branding Texture (2048x2048 high fidelity)
+  const createTShirtTexture = useCallback(() => {
+    const c = document.createElement('canvas');
+    c.width = 2048;
+    c.height = 2048;
+    const ctx = c.getContext('2d')!;
+
+    // Deep matte black jersey cotton matching Reference Image 3
+    ctx.fillStyle = '#181920';
+    ctx.fillRect(0, 0, 2048, 2048);
+
+    // Subtle 2D combed cotton knit micro-texture
+    for (let y = 0; y < 2048; y += 4) {
+      const alpha = Math.sin(y * 0.15) * 0.015 + 0.018;
+      ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+      ctx.fillRect(0, y, 2048, 1.5);
+    }
+    for (let x = 0; x < 2048; x += 4) {
+      const alpha = Math.cos(x * 0.15) * 0.015 + 0.018;
+      ctx.fillStyle = `rgba(0, 0, 0, ${alpha * 2.2})`;
+      ctx.fillRect(x, 0, 1.5, 2048);
+    }
+    // Organic textile flecks
+    for (let i = 0; i < 35000; i++) {
+      ctx.fillStyle = Math.random() < 0.5 ? 'rgba(255,255,255,0.018)' : 'rgba(0,0,0,0.04)';
+      ctx.fillRect(Math.random() * 2048, Math.random() * 2048, 2, 2);
+    }
+
+    // Natural fabric drape & crease shading (matching physical folded garment in Image 3)
+    // 1. Crewneck opening drape shadow
+    const neckGrad = ctx.createRadialGradient(1024, 250, 100, 1024, 250, 440);
+    neckGrad.addColorStop(0, 'rgba(0, 0, 0, 0.55)');
+    neckGrad.addColorStop(0.5, 'rgba(0, 0, 0, 0.22)');
+    neckGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = neckGrad;
+    ctx.beginPath();
+    ctx.ellipse(1024, 250, 440, 260, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // 2. Diagonal soft drape folds radiating from collar to armpit/sides
+    const drawFold = (x1: number, y1: number, cx: number, cy: number, x2: number, y2: number, w: number) => {
+      ctx.save();
+      ctx.lineWidth = w;
+      ctx.lineCap = 'round';
+      // Shadow valley
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.14)';
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.quadraticCurveTo(cx, cy, x2, y2);
+      ctx.stroke();
+      // Highlight crest
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.026)';
+      ctx.beginPath();
+      ctx.moveTo(x1, y1 - 4);
+      ctx.quadraticCurveTo(cx, cy - 4, x2, y2 - 4);
+      ctx.stroke();
+      ctx.restore();
+    };
+
+    // Left chest drapes
+    drawFold(650, 360, 480, 680, 320, 1050, 40);
+    drawFold(760, 400, 560, 800, 400, 1350, 30);
+    // Right chest soft drapes (under chest print)
+    drawFold(1380, 360, 1550, 640, 1720, 920, 32);
+    // Lower horizontal body fold (bottom tuck)
+    drawFold(250, 1680, 1024, 1695, 1800, 1680, 45);
+
+    // Left & Right sleeve seam fold shadows
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.18)';
+    ctx.fillRect(0, 0, 90, 2048);
+    ctx.fillRect(1958, 0, 90, 2048);
+
+    // --- CHEST PRINT (Right chest of folded tee, exactly matching Reference Image 3) ---
+    const chestX = 1420;
+    const chestY = 980;
+
+    // Brackets Logo
+    drawGdgBrackets(ctx, chestX, chestY - 140, 280);
+
+    // "GDG"
+    ctx.fillStyle = '#FFFFFF';
+    ctx.textAlign = 'center';
+    ctx.font = '900 132px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillText('GDG', chestX, chestY + 55);
+
+    // "On Campus"
+    ctx.font = '700 78px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillText('On Campus', chestX, chestY + 165);
+
+    // "NECN"
+    ctx.font = '900 96px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillText('NECN', chestX, chestY + 280);
+
+    // Quad-color Underline Bar (Blue, Red, Yellow, Green)
+    const barW = 410;
+    const barH = 28;
+    const barX = chestX - barW / 2;
+    const barY = chestY + 345;
     const segW = barW / 4;
     [G_BLUE, G_RED, G_YELLOW, G_GREEN].forEach((col, idx) => {
       ctx.fillStyle = col;
@@ -649,19 +773,24 @@ export const SwagGiftExperience: React.FC = () => {
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     // Lighting
-    const ambLight = new THREE.AmbientLight(0xffffff, 0.72);
+    const ambLight = new THREE.AmbientLight(0xffffff, 0.88);
     scene.add(ambLight);
 
-    const keyLight = new THREE.DirectionalLight(0xfff6ea, 1.25);
-    keyLight.position.set(9, 20, 14);
+    const keyLight = new THREE.DirectionalLight(0xfff8ee, 1.25);
+    keyLight.position.set(8, 20, 14);
     keyLight.castShadow = true;
     keyLight.shadow.mapSize.width = 2048;
     keyLight.shadow.mapSize.height = 2048;
     keyLight.shadow.bias = -0.0004;
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0xdde8ff, 0.55);
-    fillLight.position.set(-12, 14, 6);
+    // Studio overhead soft light to evenly illuminate all 4 compartments
+    const studioFill = new THREE.DirectionalLight(0xffffff, 0.72);
+    studioFill.position.set(-4, 16, 8);
+    scene.add(studioFill);
+
+    const fillLight = new THREE.DirectionalLight(0xdde8ff, 0.45);
+    fillLight.position.set(-12, 12, 4);
     scene.add(fillLight);
 
     const rimLight = new THREE.DirectionalLight(0xffffff, 0.35);
@@ -747,19 +876,52 @@ export const SwagGiftExperience: React.FC = () => {
     // Interactive clickable meshes array for raycaster
     const interactiveObjects: THREE.Object3D[] = [];
 
-    // --- SWAG ITEM 1: T-SHIRT (Top-Left) ---
+    // --- SWAG ITEM 1: REALISTIC FOLDED GDG T-SHIRT (Top-Left, matching Reference Image 3) ---
     const tshirtGroup = new THREE.Group();
     tshirtGroup.userData = { swagId: 'tee', homePos: new THREE.Vector3(-1.85, -0.25, -1.9), homeRot: new THREE.Euler(0, 0, 0) };
     tshirtGroup.position.copy(tshirtGroup.userData.homePos);
 
-    const tsGeo = new THREE.BoxGeometry(4.3, 0.45, 3.7);
-    const tsBaseMat = new THREE.MeshStandardMaterial({ color: 0x14151a, roughness: 0.94 });
-    const tsMesh = new THREE.Mesh(tsGeo, tsBaseMat);
+    // 1. Folded Cotton Body Base (Soft matte black jersey cotton)
+    const tsBaseMat = new THREE.MeshStandardMaterial({
+      color: 0x14151a,
+      roughness: 0.94,
+      metalness: 0.02
+    });
+    const tsMesh = new THREE.Mesh(new THREE.BoxGeometry(4.25, 0.40, 3.65), tsBaseMat);
     tsMesh.castShadow = true;
     tsMesh.receiveShadow = true;
     tshirtGroup.add(tsMesh);
 
-    const tsTopGeo = new THREE.PlaneGeometry(4.25, 3.65);
+    // 2. Folded Left Sleeve Roll (Rounded side contour)
+    const sleeveL = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 3.45, 16), tsBaseMat);
+    sleeveL.rotation.x = Math.PI / 2;
+    sleeveL.position.set(-2.05, 0.02, 0);
+    sleeveL.castShadow = true;
+    tshirtGroup.add(sleeveL);
+
+    // 3. Folded Right Sleeve Roll (Rounded side contour)
+    const sleeveR = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 3.45, 16), tsBaseMat);
+    sleeveR.rotation.x = Math.PI / 2;
+    sleeveR.position.set(2.05, 0.02, 0);
+    sleeveR.castShadow = true;
+    tshirtGroup.add(sleeveR);
+
+    // 4. Folded Bottom Hem Roll (Double layer folded hem)
+    const hemBottom = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 4.0, 16), tsBaseMat);
+    hemBottom.rotation.z = Math.PI / 2;
+    hemBottom.position.set(0, 0.02, 1.74);
+    hemBottom.castShadow = true;
+    tshirtGroup.add(hemBottom);
+
+    // 5. Folded Shoulder Seam Roll (Top shoulder line)
+    const hemTop = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 4.0, 16), tsBaseMat);
+    hemTop.rotation.z = Math.PI / 2;
+    hemTop.position.set(0, 0.02, -1.74);
+    hemTop.castShadow = true;
+    tshirtGroup.add(hemTop);
+
+    // 6. Front Chest Surface Plane (High-Res 2048 Texture with fabric folds & chest print)
+    const tsTopGeo = new THREE.PlaneGeometry(4.2, 3.6);
     const tsTopMat = new THREE.MeshStandardMaterial({
       map: createTShirtTexture(),
       roughness: 0.92,
@@ -767,21 +929,61 @@ export const SwagGiftExperience: React.FC = () => {
     });
     const tsTop = new THREE.Mesh(tsTopGeo, tsTopMat);
     tsTop.rotation.x = -Math.PI / 2;
-    tsTop.position.y = 0.23;
+    tsTop.position.y = 0.21;
     tshirtGroup.add(tsTop);
 
-    const collarGeo = new THREE.TorusGeometry(0.72, 0.14, 16, 40, Math.PI);
-    const collarMat = new THREE.MeshStandardMaterial({ color: 0x090a0d, roughness: 0.98 });
+    // 7. Recessed Neck Cavity / Inner Back Neck Plane (Real 3D physical depth)
+    const neckWellGeo = new THREE.PlaneGeometry(1.4, 0.82);
+    const neckWellMat = new THREE.MeshStandardMaterial({
+      color: 0x0a0b0e,
+      roughness: 0.98
+    });
+    const neckWell = new THREE.Mesh(neckWellGeo, neckWellMat);
+    neckWell.rotation.x = -Math.PI / 2;
+    neckWell.position.set(0, 0.12, -1.35);
+    tshirtGroup.add(neckWell);
+
+    // 8. Woven Brand Tag sewn inside the neck opening (matching Reference Image 3)
+    const neckTagGeo = new THREE.PlaneGeometry(0.85, 0.52);
+    const neckTagMat = new THREE.MeshStandardMaterial({
+      map: createNeckTagTexture(),
+      roughness: 0.94,
+      metalness: 0.02
+    });
+    const neckTag = new THREE.Mesh(neckTagGeo, neckTagMat);
+    neckTag.rotation.x = -Math.PI / 2;
+    neckTag.position.set(0, 0.13, -1.35);
+    tshirtGroup.add(neckTag);
+
+    // 9. 3D Ribbed Crewneck Collar Trim (Curving down into chest)
+    const collarGeo = new THREE.TorusGeometry(0.72, 0.13, 16, 48, Math.PI * 0.96);
+    const collarMat = new THREE.MeshStandardMaterial({
+      map: createCollarRibbingTexture(),
+      color: 0x181a24,
+      roughness: 0.94,
+      metalness: 0.02
+    });
     const collarMesh = new THREE.Mesh(collarGeo, collarMat);
     collarMesh.rotation.x = Math.PI / 2;
-    collarMesh.rotation.z = Math.PI;
-    collarMesh.position.set(0, 0.24, -1.38);
+    collarMesh.rotation.z = 0;
+    collarMesh.position.set(0, 0.22, -1.72);
+    collarMesh.castShadow = true;
     tshirtGroup.add(collarMesh);
 
-    // Hit test target
-    tsMesh.userData = { parentGroup: tshirtGroup, swagId: 'tee' };
-    tsTop.userData = { parentGroup: tshirtGroup, swagId: 'tee' };
-    interactiveObjects.push(tsMesh, tsTop);
+    // 10. Outer Collar Stitching Ring
+    const collarStitchGeo = new THREE.TorusGeometry(0.84, 0.035, 8, 48, Math.PI * 0.96);
+    const collarStitchMat = new THREE.MeshStandardMaterial({ color: 0x222634, roughness: 0.95 });
+    const collarStitch = new THREE.Mesh(collarStitchGeo, collarStitchMat);
+    collarStitch.rotation.x = Math.PI / 2;
+    collarStitch.rotation.z = 0;
+    collarStitch.position.set(0, 0.215, -1.72);
+    tshirtGroup.add(collarStitch);
+
+    // Hit test target for raycasting
+    [tsMesh, tsTop, collarMesh, sleeveL, sleeveR, neckTag].forEach((m) => {
+      m.userData = { parentGroup: tshirtGroup, swagId: 'tee' };
+      interactiveObjects.push(m);
+    });
 
     boxGroup.add(tshirtGroup);
 
@@ -1185,7 +1387,7 @@ export const SwagGiftExperience: React.FC = () => {
       canvas.removeEventListener('click', onCanvasClick);
       renderer.dispose();
     };
-  }, [createLidTexture, createTShirtTexture, createBottleTexture, createCertificateTexture, createStickerTexture, hoveredSwagId]);
+  }, [createLidTexture, createTShirtTexture, createNeckTagTexture, createCollarRibbingTexture, createBottleTexture, createCertificateTexture, createStickerTexture, hoveredSwagId]);
 
   // Public control triggers
   const handleOpenGift = useCallback(() => {
