@@ -757,9 +757,14 @@ export const SwagGiftExperience: React.FC = () => {
     const scene = new THREE.Scene();
     const isMobile = width < 768;
 
-    const camera = new THREE.PerspectiveCamera(isMobile ? 44 : 38, width / height, 0.1, 100);
-    camera.position.set(0.6, isMobile ? 20.0 : 15.0, isMobile ? 16.0 : 12.5);
-    camera.lookAt(0.6, 0, 0.4);
+    let targetCamY = isMobile ? 23.5 : 15.0;
+    let targetCamZ = isMobile ? 19.5 : 12.5;
+    let targetCamX = isMobile ? 0.8 : 0.6;
+    let targetLookX = isMobile ? 0.8 : 0.6;
+
+    const camera = new THREE.PerspectiveCamera(isMobile ? 48 : 38, width / height, 0.1, 100);
+    camera.position.set(targetCamX, targetCamY, targetCamZ);
+    camera.lookAt(targetLookX, 0, 0.4);
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -1233,16 +1238,14 @@ export const SwagGiftExperience: React.FC = () => {
       }
     };
 
-    const onCanvasClick = (e: MouseEvent) => {
+    const handleCanvasAction = (clientX: number, clientY: number) => {
       const rect = canvas.getBoundingClientRect();
-      const clickX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      const clickY = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      const clickX = ((clientX - rect.left) / rect.width) * 2 - 1;
+      const clickY = -((clientY - rect.top) / rect.height) * 2 + 1;
 
       // If closed, click unboxes the gift
       if (!stateRef.current.isOpen) {
-        stateRef.current.isOpen = true;
-        stateRef.current.targetOpenT = 1.0;
-        setIsOpen(true);
+        handleOpenGift();
         return;
       }
 
@@ -1266,8 +1269,44 @@ export const SwagGiftExperience: React.FC = () => {
       }
     };
 
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchMoved = false;
+
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 1) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        touchMoved = false;
+      }
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 1) {
+        const dx = Math.abs(e.touches[0].clientX - touchStartX);
+        const dy = Math.abs(e.touches[0].clientY - touchStartY);
+        if (dx > 8 || dy > 8) {
+          touchMoved = true;
+        }
+      }
+    };
+
+    const onTouchEnd = (e: TouchEvent) => {
+      if (!touchMoved && e.changedTouches.length === 1) {
+        const touch = e.changedTouches[0];
+        handleCanvasAction(touch.clientX, touch.clientY);
+      }
+    };
+
+    const onCanvasClick = (e: MouseEvent) => {
+      handleCanvasAction(e.clientX, e.clientY);
+    };
+
     canvas.addEventListener('mousemove', onPointerMove);
     canvas.addEventListener('click', onCanvasClick);
+    canvas.addEventListener('touchstart', onTouchStart, { passive: true });
+    canvas.addEventListener('touchmove', onTouchMove, { passive: true });
+    canvas.addEventListener('touchend', onTouchEnd, { passive: true });
 
     // Animation loop
     let animId = 0;
@@ -1284,12 +1323,12 @@ export const SwagGiftExperience: React.FC = () => {
 
       // Positioning: Box on left, Lid on right matching Image 3!
       // In closed state (t = 0), both centered at (0, 0, 0)
-      const openBoxTargetX = isMobile ? -3.4 : -3.6;
+      const openBoxTargetX = isMobile ? -2.9 : -3.6;
       boxGroup.position.x = THREE.MathUtils.lerp(0, openBoxTargetX, t);
 
       // Lid animation: lifts up, curves right, settles down
       const lidClosedPos = new THREE.Vector3(0, 0.75, 0);
-      const lidOpenPos = new THREE.Vector3(isMobile ? 5.4 : 5.8, -0.4, 0.2);
+      const lidOpenPos = new THREE.Vector3(isMobile ? 4.7 : 5.8, -0.4, 0.2);
       const lidLiftY = Math.sin(t * Math.PI) * 4.2;
 
       lidGroup.position.x = THREE.MathUtils.lerp(lidClosedPos.x, lidOpenPos.x, t);
@@ -1373,6 +1412,8 @@ export const SwagGiftExperience: React.FC = () => {
         }
       });
 
+      camera.position.set(targetCamX, targetCamY, targetCamZ);
+      camera.lookAt(targetLookX, 0, 0.4);
       renderer.render(scene, camera);
     };
 
@@ -1383,10 +1424,28 @@ export const SwagGiftExperience: React.FC = () => {
       if (!container || !canvas) return;
       width = container.clientWidth;
       height = container.clientHeight || 750;
+      const aspect = width / height;
       const mobile = width < 768;
-      camera.fov = mobile ? 46 : 38;
-      camera.position.set(0.6, mobile ? 20.0 : 15.0, mobile ? 16.0 : 12.5);
-      camera.aspect = width / height;
+      camera.aspect = aspect;
+      if (mobile) {
+        camera.fov = 48;
+        // Total required horizontal span for open box + open lid + margin = 18.8 units
+        const reqSpan = 18.8;
+        const vFovRad = THREE.MathUtils.degToRad(camera.fov);
+        const reqDist = reqSpan / (2 * aspect * Math.tan(vFovRad / 2));
+        targetCamY = Math.max(reqDist * 0.78, 23.5);
+        targetCamZ = Math.max(reqDist * 0.62, 19.5);
+        targetCamX = 0.8;
+        targetLookX = 0.8;
+      } else {
+        camera.fov = 38;
+        targetCamY = 15.0;
+        targetCamZ = 12.5;
+        targetCamX = 0.6;
+        targetLookX = 0.6;
+      }
+      camera.position.set(targetCamX, targetCamY, targetCamZ);
+      camera.lookAt(targetLookX, 0, 0.4);
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
     };
@@ -1398,6 +1457,9 @@ export const SwagGiftExperience: React.FC = () => {
       window.removeEventListener('resize', onResize);
       canvas.removeEventListener('mousemove', onPointerMove);
       canvas.removeEventListener('click', onCanvasClick);
+      canvas.removeEventListener('touchstart', onTouchStart);
+      canvas.removeEventListener('touchmove', onTouchMove);
+      canvas.removeEventListener('touchend', onTouchEnd);
       renderer.dispose();
     };
   }, [createLidTexture, createTShirtTexture, createNeckTagTexture, createCollarRibbingTexture, createBottleTexture, createCertificateTexture, createStickerTexture, hoveredSwagId]);
@@ -1423,6 +1485,12 @@ export const SwagGiftExperience: React.FC = () => {
     }
     stateRef.current.selectedId = swag.id;
     setSelectedSwag(swag);
+    if (typeof window !== 'undefined' && window.innerWidth < 768 && containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      if (rect.top < 0 || rect.bottom > window.innerHeight) {
+        containerRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
   }, [handleOpenGift]);
 
   const handleReturnToBox = useCallback(() => {
@@ -1525,6 +1593,40 @@ export const SwagGiftExperience: React.FC = () => {
                 </button>
               ))}
             </div>
+
+            {/* Mobile-optimized Inspection Card directly below buttons for 100% visibility */}
+            {selectedSwag && (
+              <div className="sg-mobile-card sm:hidden text-left bg-[#0f1117]/95 border border-amber-300/40 rounded-2xl p-4 my-3 text-slate-100 shadow-2xl backdrop-blur-xl">
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <span className="sg-hud-badge">{selectedSwag.badge}</span>
+                  <button
+                    type="button"
+                    onClick={handleReturnToBox}
+                    className="text-xs font-bold text-amber-400 hover:text-amber-300 px-2.5 py-1 rounded-lg bg-white/10 active:scale-95 transition-all"
+                  >
+                    ✕ Close
+                  </button>
+                </div>
+                <h4 className="text-base font-bold text-white mb-0.5">{selectedSwag.name}</h4>
+                <p className="text-xs text-amber-300/90 font-medium mb-2">{selectedSwag.subtitle}</p>
+                <p className="text-xs text-slate-300 leading-relaxed mb-3">{selectedSwag.description}</p>
+                <div className="space-y-1.5 mb-3.5 border-t border-white/10 pt-2.5">
+                  {selectedSwag.specs.map((spec, i) => (
+                    <div key={i} className="text-[11px] text-slate-300 flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#4285F4] shrink-0" />
+                      <span>{spec}</span>
+                    </div>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={handleReturnToBox}
+                  className="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-98 text-white text-xs font-bold border border-white/20 transition-all text-center flex items-center justify-center gap-1.5"
+                >
+                  <span>← Return to Swag Box</span>
+                </button>
+              </div>
+            )}
             <button className="sg-secondary-button" type="button" onClick={handleCloseGift}>
               Close the Gift Box
             </button>

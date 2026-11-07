@@ -364,11 +364,20 @@ export default function CloudChampionsScene({
       scene.add(o);
     });
 
+    let targetCamZ = 11;
     const resize = () => {
       const w = Math.max(canvas.clientWidth, 1);
       const h = Math.max(canvas.clientHeight, 1);
       renderer.setSize(w, h, false);
       camera.aspect = w / h;
+
+      // Dynamic responsive camera distance: guarantees zero cropping on mobile
+      // Scene width from left servers (-3.6) to right laptop (+3.2) + margins is ~10.2 units
+      const reqWidth = 10.2;
+      const vFovRad = THREE.MathUtils.degToRad(camera.fov);
+      const visibleWidthAtZ1 = 2 * Math.tan(vFovRad / 2) * camera.aspect;
+      targetCamZ = Math.max(11, reqWidth / visibleWidthAtZ1);
+      camera.position.z = targetCamZ;
       camera.updateProjectionMatrix();
     };
 
@@ -415,6 +424,7 @@ export default function CloudChampionsScene({
       }
       camera.position.x += (mx * 3 - camera.position.x) * 0.05;
       camera.position.y += (-my * 2 - camera.position.y) * 0.05;
+      camera.position.z += (targetCamZ - camera.position.z) * 0.1;
       camera.lookAt(0, 0, 0);
       renderer.render(scene, camera);
     };

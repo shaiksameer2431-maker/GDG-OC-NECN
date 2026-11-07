@@ -218,39 +218,39 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
         <CloudCircuitBackground />
 
         <div className="max-w-[1180px] mx-auto px-5 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[85vh]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-center lg:min-h-[85vh]">
           {/* Left Hero Column */}
           <div className="space-y-4">
             {/* Partners Bar */}
-            <div className="flex items-center gap-3 sm:gap-4 flex-wrap text-xs font-bold">
+            <div className="flex items-center gap-2 sm:gap-3 flex-wrap text-xs font-bold text-slate-800">
               {/* GDG */}
-              <div className="flex items-center gap-2">
-                <svg width="34" height="20" viewBox="0 0 38 22">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-0 sm:py-0 rounded-full sm:rounded-none bg-white/80 sm:bg-transparent border border-amber-300/50 sm:border-0 shadow-2xs sm:shadow-none shrink-0">
+                <svg width="28" height="18" viewBox="0 0 38 22" className="shrink-0">
                   <path d="M10 3 2 11l8 8" stroke="#EA4335" strokeWidth="5" fill="none" strokeLinecap="round" />
                   <path d="m28 3 8 8-8 8" stroke="#34A853" strokeWidth="5" fill="none" strokeLinecap="round" />
                   <path d="m22 2-6 18" stroke="#FBBC04" strokeWidth="5" strokeLinecap="round" />
                 </svg>
-                <span>GDG On Campus</span>
+                <span className="whitespace-nowrap">GDG On Campus</span>
               </div>
-              <i className="w-px h-5 bg-amber-400/40" />
+              <i className="hidden sm:inline-block w-px h-4 bg-amber-400/40" />
               {/* Narayana */}
-              <div className="flex items-center gap-2">
-                <svg width="20" height="24" viewBox="0 0 22 26">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-0 sm:py-0 rounded-full sm:rounded-none bg-white/80 sm:bg-transparent border border-amber-300/50 sm:border-0 shadow-2xs sm:shadow-none shrink-0">
+                <svg width="18" height="22" viewBox="0 0 22 26" className="shrink-0">
                   <path d="M1 1h20v14c0 6-6 9-10 10C7 24 1 21 1 15z" fill="#1c3f94" />
                   <path d="M6 18V8l10 10V8" stroke="#fff" strokeWidth="2.4" fill="none" />
                 </svg>
-                <span className="truncate max-w-[160px] sm:max-w-none">Narayana Engineering College</span>
+                <span className="whitespace-nowrap">Narayana Engineering College</span>
               </div>
-              <i className="w-px h-5 bg-amber-400/40" />
+              <i className="hidden sm:inline-block w-px h-4 bg-amber-400/40" />
               {/* Google Cloud */}
-              <div className="flex items-center gap-2">
-                <svg width="30" height="20" viewBox="0 0 34 22">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-0 sm:py-0 rounded-full sm:rounded-none bg-white/80 sm:bg-transparent border border-amber-300/50 sm:border-0 shadow-2xs sm:shadow-none shrink-0">
+                <svg width="26" height="18" viewBox="0 0 34 22" className="shrink-0">
                   <circle cx="11" cy="13" r="7" fill="#EA4335" />
                   <circle cx="19" cy="9" r="8" fill="#4285F4" />
                   <circle cx="26" cy="14" r="6" fill="#34A853" />
                   <circle cx="16" cy="15" r="5" fill="#FBBC04" />
                 </svg>
-                <span>Google Cloud</span>
+                <span className="whitespace-nowrap">Google Cloud</span>
               </div>
             </div>
 
@@ -606,7 +606,7 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
           FOOTER (Built with passion. Powered by community. ☁️)
           Fits cleanly and concludes the page with zero dead space
           ========================================================================= */}
-      <footer className="relative mt-2 pt-6 pb-6 px-4 sm:px-6 text-center border-t border-slate-300/40">
+      <footer className="relative mt-2 pt-6 pb-28 sm:pb-8 px-4 sm:px-6 text-center border-t border-slate-300/40">
         <div className="max-w-3xl mx-auto">
           {/* Header & Subtitle */}
           <h3 className="text-base sm:text-lg font-bold text-[#14182b] tracking-tight">

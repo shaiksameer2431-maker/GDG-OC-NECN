@@ -444,12 +444,7 @@
   }
 
   .sg-hud-panel {
-    right: 12px;
-    left: 12px;
-    bottom: 12px;
-    width: auto;
-    padding: 18px;
-    border-radius: 16px;
+    display: none; /* Mobile displays the sleek interactive card below the stage so the 3D item is 100% visible */
   }
 
   .sg-hud-title {
