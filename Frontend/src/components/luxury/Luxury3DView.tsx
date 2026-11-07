@@ -214,8 +214,10 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
           SECTION 1: HERO & 3D CLOUD SCENE
           ========================================================================= */}
       <section id="overview" className="relative isolate w-full pt-8 sm:pt-14 pb-16 overflow-hidden">
-        {/* Full window-fit vector circuit-line background layer */}
-        <CloudCircuitBackground />
+        {/* Full window-fit vector circuit-line background layer (desktop/tablet only, hidden on mobile per design specs) */}
+        <div className="hidden md:block">
+          <CloudCircuitBackground />
+        </div>
 
         <div className="max-w-[1180px] mx-auto px-5 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-center lg:min-h-[85vh]">

@@ -290,7 +290,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
                 <h3 className="text-sm font-bold text-slate-900">Reset Dataset to Factory Seed?</h3>
               </div>
               <p className="text-xs text-slate-600 leading-relaxed">
-                This will restore all 438 student records to the latest 05 Nov snapshot (174 redeemed, 264 pending, 32 milestones). Any manual edits will be reverted.
+                This will restore all 438 student records to the latest 07 Nov snapshot (190 redeemed, 248 pending, 46 milestones). Any manual edits will be reverted.
               </p>
               <div className="flex items-center justify-end gap-2 pt-2">
                 <button

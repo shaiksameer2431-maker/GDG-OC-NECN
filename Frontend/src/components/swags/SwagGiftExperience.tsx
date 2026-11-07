@@ -756,11 +756,21 @@ export const SwagGiftExperience: React.FC = () => {
 
     const scene = new THREE.Scene();
     const isMobile = width < 768;
+    const aspect = width / height;
 
-    let targetCamY = isMobile ? 23.5 : 15.0;
-    let targetCamZ = isMobile ? 19.5 : 12.5;
-    let targetCamX = isMobile ? 0.8 : 0.6;
-    let targetLookX = isMobile ? 0.8 : 0.6;
+    let targetCamY = 15.0;
+    let targetCamZ = 12.5;
+    let targetCamX = 0.5;
+    let targetLookX = 0.5;
+
+    if (isMobile) {
+      const vFovRad = THREE.MathUtils.degToRad(48);
+      const reqDist = 21.2 / (2 * Math.max(aspect, 0.45) * Math.tan(vFovRad / 2));
+      targetCamY = Math.max(reqDist * 0.76, 27.0);
+      targetCamZ = Math.max(reqDist * 0.65, 23.0);
+      targetCamX = 0.2;
+      targetLookX = 0.2;
+    }
 
     const camera = new THREE.PerspectiveCamera(isMobile ? 48 : 38, width / height, 0.1, 100);
     camera.position.set(targetCamX, targetCamY, targetCamZ);
@@ -1323,12 +1333,13 @@ export const SwagGiftExperience: React.FC = () => {
 
       // Positioning: Box on left, Lid on right matching Image 3!
       // In closed state (t = 0), both centered at (0, 0, 0)
-      const openBoxTargetX = isMobile ? -2.9 : -3.6;
+      // Open state coordinates prevent collision with safe physical clearance
+      const openBoxTargetX = isMobile ? -4.9 : -4.8;
       boxGroup.position.x = THREE.MathUtils.lerp(0, openBoxTargetX, t);
 
-      // Lid animation: lifts up, curves right, settles down
+      // Lid animation: lifts up, curves right, settles down cleanly beside box
       const lidClosedPos = new THREE.Vector3(0, 0.75, 0);
-      const lidOpenPos = new THREE.Vector3(isMobile ? 4.7 : 5.8, -0.4, 0.2);
+      const lidOpenPos = new THREE.Vector3(isMobile ? 5.3 : 5.8, -0.4, 0.2);
       const lidLiftY = Math.sin(t * Math.PI) * 4.2;
 
       lidGroup.position.x = THREE.MathUtils.lerp(lidClosedPos.x, lidOpenPos.x, t);
@@ -1429,20 +1440,20 @@ export const SwagGiftExperience: React.FC = () => {
       camera.aspect = aspect;
       if (mobile) {
         camera.fov = 48;
-        // Total required horizontal span for open box + open lid + margin = 18.8 units
-        const reqSpan = 18.8;
+        // Total required horizontal span for open box + open lid + margin = 21.2 units (zero collision)
+        const reqSpan = 21.2;
         const vFovRad = THREE.MathUtils.degToRad(camera.fov);
-        const reqDist = reqSpan / (2 * aspect * Math.tan(vFovRad / 2));
-        targetCamY = Math.max(reqDist * 0.78, 23.5);
-        targetCamZ = Math.max(reqDist * 0.62, 19.5);
-        targetCamX = 0.8;
-        targetLookX = 0.8;
+        const reqDist = reqSpan / (2 * Math.max(aspect, 0.45) * Math.tan(vFovRad / 2));
+        targetCamY = Math.max(reqDist * 0.76, 27.0);
+        targetCamZ = Math.max(reqDist * 0.65, 23.0);
+        targetCamX = 0.2;
+        targetLookX = 0.2;
       } else {
         camera.fov = 38;
         targetCamY = 15.0;
         targetCamZ = 12.5;
-        targetCamX = 0.6;
-        targetLookX = 0.6;
+        targetCamX = 0.5;
+        targetLookX = 0.5;
       }
       camera.position.set(targetCamX, targetCamY, targetCamZ);
       camera.lookAt(targetLookX, 0, 0.4);

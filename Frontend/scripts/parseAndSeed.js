@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const csvFilePath = path.resolve('GDGC-NECNL [04 Nov].csv');
+const csvFilePath = path.resolve('GDGC-NECNL [07 Nov].csv');
 const rawContent = fs.readFileSync(csvFilePath, 'utf8');
 
 // The 10 official courses & badges
@@ -336,8 +336,8 @@ publicStudents.forEach((s, idx) => {
 
 console.log('=== VERIFICATION SUMMARY ===');
 console.log(`Total students: ${publicStudents.length}`);
-console.log(`Redeemed: ${redeemedCount} (Expected: 174)`);
-console.log(`Not Redeemed: ${notRedeemedCount} (Expected: 264)`);
+console.log(`Redeemed: ${redeemedCount} (Expected: 190)`);
+console.log(`Not Redeemed: ${notRedeemedCount} (Expected: 248)`);
 console.log(`Milestones:`, milestoneDistribution);
 console.log(`Total Skill Badges Earned: ${totalBadgesSum}`);
 console.log(`Top 5 Students:`);
