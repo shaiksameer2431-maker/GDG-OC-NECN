@@ -6,11 +6,11 @@ import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
 
 const STORAGE_KEYS = {
-  STUDENTS: 'necn_cloud_champions_students_v6',
-  ADMIN_VAULT: 'necn_cloud_champions_vault_v6',
-  IMPORT_LOGS: 'necn_cloud_champions_import_logs_v6',
-  ADMIN_TOKEN: 'necn_cloud_champions_admin_token_v6',
-  COURSE_PROGRESS: 'necn_cloud_champions_course_progress_v6',
+  STUDENTS: 'necn_cloud_champions_students_v7',
+  ADMIN_VAULT: 'necn_cloud_champions_vault_v7',
+  IMPORT_LOGS: 'necn_cloud_champions_import_logs_v7',
+  ADMIN_TOKEN: 'necn_cloud_champions_admin_token_v7',
+  COURSE_PROGRESS: 'necn_cloud_champions_course_progress_v7',
 };
 
 // Initial import history log
@@ -40,7 +40,7 @@ class StorageService {
   private init() {
     try {
       // Clear legacy storage versions to prevent stale caches
-      ['necn_cloud_champions_students_v1', 'necn_cloud_champions_students_v2', 'necn_cloud_champions_students_v3', 'necn_cloud_champions_students_v4', 'necn_cloud_champions_students_v5', 'necn_students'].forEach(k => {
+      ['necn_cloud_champions_students_v1', 'necn_cloud_champions_students_v2', 'necn_cloud_champions_students_v3', 'necn_cloud_champions_students_v4', 'necn_cloud_champions_students_v5', 'necn_cloud_champions_students_v6', 'necn_students'].forEach(k => {
         try { localStorage.removeItem(k); } catch {}
       });
 
@@ -595,32 +595,72 @@ class StorageService {
   }
 
   // Fetch live cohort data directly from GitHub repository (Zero delay sync)
-  public async fetchLiveGitHubData(): Promise<boolean> {
+  public async fetchLiveGitHubData(force: boolean = false): Promise<boolean> {
     try {
-      const rawUrl = `https://raw.githubusercontent.com/shaiksameer2431-maker/GDG-OC-NECN/main/Frontend/src/data/initialStudents.json?t=${Date.now()}`;
-      const res = await fetch(rawUrl, { cache: 'no-store' });
-      if (!res.ok) return false;
+      let liveStudents: Student[] | null = null;
 
-      const liveStudents = await res.json();
-      if (!Array.isArray(liveStudents) || liveStudents.length === 0) return false;
+      // Primary: GitHub Contents API with raw header (bypasses raw CDN edge caching)
+      try {
+        const apiRes = await fetch(
+          `https://api.github.com/repos/shaiksameer2431-maker/GDG-OC-NECN/contents/Frontend/src/data/initialStudents.json?ref=main`,
+          {
+            headers: {
+              'Accept': 'application/vnd.github.raw+json',
+              'User-Agent': 'GDG-NECN-LiveSync'
+            },
+            cache: 'no-store'
+          }
+        );
+        if (apiRes.ok) {
+          liveStudents = await apiRes.json();
+        }
+      } catch {}
 
+      // Fallback: raw.githubusercontent.com with cache-busting timestamp
+      if (!liveStudents || !Array.isArray(liveStudents)) {
+        const rawUrl = `https://raw.githubusercontent.com/shaiksameer2431-maker/GDG-OC-NECN/main/Frontend/src/data/initialStudents.json?t=${Date.now()}`;
+        const res = await fetch(rawUrl, { cache: 'no-store' });
+        if (res.ok) {
+          liveStudents = await res.json();
+        }
+      }
+
+      if (!liveStudents || !Array.isArray(liveStudents) || liveStudents.length === 0) return false;
+
+      // Fingerprint current vs incoming data
       const currentRedeemed = this.students.filter(s => s.redemptionStatus === 'Redeemed').length;
       const liveRedeemed = liveStudents.filter((s: Student) => s.redemptionStatus === 'Redeemed').length;
       const currentBadges = this.students.reduce((acc, s) => acc + (s.skillBadgeCount || 0), 0);
       const liveBadges = liveStudents.reduce((acc: number, s: Student) => acc + (s.skillBadgeCount || 0), 0);
+      const currentPts = this.students.reduce((acc, s) => acc + (s.points || 0), 0);
+      const livePts = liveStudents.reduce((acc: number, s: Student) => acc + (s.points || 0), 0);
 
-      if (liveRedeemed !== currentRedeemed || liveBadges !== currentBadges || liveStudents.length !== this.students.length) {
+      const hasChanged = force ||
+        liveRedeemed !== currentRedeemed ||
+        liveBadges !== currentBadges ||
+        livePts !== currentPts ||
+        liveStudents.length !== this.students.length ||
+        (liveStudents[0]?.fullName !== this.students[0]?.fullName);
+
+      if (hasChanged) {
         this.students = liveStudents;
         this.recalculateRanks();
+        this.saveStudents();
         if (typeof window !== 'undefined') {
           window.dispatchEvent(new CustomEvent('necn_live_data_synced'));
         }
         return true;
       }
       return false;
-    } catch {
+    } catch (e) {
+      console.warn('Live GitHub data sync error:', e);
       return false;
     }
+  }
+
+  // Force trigger live sync
+  public async forceSyncLive(): Promise<boolean> {
+    return this.fetchLiveGitHubData(true);
   }
 }
 
