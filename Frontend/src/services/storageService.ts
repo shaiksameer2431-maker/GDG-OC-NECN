@@ -69,6 +69,9 @@ class StorageService {
         this.importLogs = [INITIAL_IMPORT_LOG];
         this.saveLogs();
       }
+
+      // Check for live updates directly from GitHub repository in background
+      this.fetchLiveGitHubData();
     } catch (e) {
       console.error('StorageService init error, falling back to bundled JSON:', e);
       this.students = rawInitialStudents as Student[];
@@ -589,6 +592,35 @@ class StorageService {
     this.recalculateRanks();
     this.saveVault();
     this.saveLogs();
+  }
+
+  // Fetch live cohort data directly from GitHub repository (Zero delay sync)
+  public async fetchLiveGitHubData(): Promise<boolean> {
+    try {
+      const rawUrl = `https://raw.githubusercontent.com/shaiksameer2431-maker/GDG-OC-NECN/main/Frontend/src/data/initialStudents.json?t=${Date.now()}`;
+      const res = await fetch(rawUrl, { cache: 'no-store' });
+      if (!res.ok) return false;
+
+      const liveStudents = await res.json();
+      if (!Array.isArray(liveStudents) || liveStudents.length === 0) return false;
+
+      const currentRedeemed = this.students.filter(s => s.redemptionStatus === 'Redeemed').length;
+      const liveRedeemed = liveStudents.filter((s: Student) => s.redemptionStatus === 'Redeemed').length;
+      const currentBadges = this.students.reduce((acc, s) => acc + (s.skillBadgeCount || 0), 0);
+      const liveBadges = liveStudents.reduce((acc: number, s: Student) => acc + (s.skillBadgeCount || 0), 0);
+
+      if (liveRedeemed !== currentRedeemed || liveBadges !== currentBadges || liveStudents.length !== this.students.length) {
+        this.students = liveStudents;
+        this.recalculateRanks();
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new CustomEvent('necn_live_data_synced'));
+        }
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
+    }
   }
 }
 

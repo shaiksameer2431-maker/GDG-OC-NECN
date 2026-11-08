@@ -63,6 +63,11 @@ export function App() {
     };
     window.addEventListener('storage', handleStorageChange);
 
+    const handleLiveSync = () => {
+      refreshData();
+    };
+    window.addEventListener('necn_live_data_synced', handleLiveSync);
+
     let channel: BroadcastChannel | null = null;
     try {
       channel = new BroadcastChannel('necn_leaderboard_sync');
@@ -73,6 +78,7 @@ export function App() {
 
     return () => {
       window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('necn_live_data_synced', handleLiveSync);
       channel?.close();
     };
   }, [refreshData]);
