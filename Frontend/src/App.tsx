@@ -21,7 +21,6 @@ export function App() {
   const [students, setStudents] = useState<Student[]>(() => storageService.getStudents());
   const [officialCourses] = useState<OfficialCourse[]>(() => storageService.getOfficialCourses());
   const [stats, setStats] = useState<CohortStats>(() => storageService.getCohortStats());
-  const [isLiveSyncing, setIsLiveSyncing] = useState(false);
 
   // Refresh callback
   const refreshData = useCallback(() => {
@@ -236,29 +235,6 @@ export function App() {
           onTabChange={(tab) => navigateTo(tab)}
         />
       )}
-
-      {/* FLOATING CLOUD LIVE SYNC STATUS & ONE-TAP REFRESH */}
-      <div className="fixed bottom-20 md:bottom-5 right-3 md:right-5 z-40 flex items-center">
-        <button
-          onClick={async () => {
-            setIsLiveSyncing(true);
-            await storageService.forceSyncLive();
-            refreshData();
-            setTimeout(() => setIsLiveSyncing(false), 500);
-          }}
-          disabled={isLiveSyncing}
-          className="group px-3 py-1.5 rounded-full bg-white/95 hover:bg-white backdrop-blur-md border border-slate-200/90 shadow-lg hover:shadow-xl text-xs font-semibold text-slate-700 hover:text-blue-600 transition-all active:scale-95 flex items-center gap-2 cursor-pointer"
-          title="Click to refresh latest cohort data from cloud"
-        >
-          <span className={`w-2 h-2 rounded-full ${isLiveSyncing ? 'bg-amber-500 animate-ping' : 'bg-emerald-500 animate-pulse'}`}></span>
-          <span className="text-[11px] font-medium text-slate-600 group-hover:text-slate-900">
-            {isLiveSyncing ? 'Syncing...' : 'Cloud Synced'}
-          </span>
-          <svg className={`w-3.5 h-3.5 text-slate-400 group-hover:text-blue-500 transition-transform ${isLiveSyncing ? 'animate-spin' : 'group-hover:rotate-180'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-          </svg>
-        </button>
-      </div>
     </div>
   );
 }
