@@ -9,7 +9,6 @@ import { LeaderboardPage } from './pages/LeaderboardPage';
 import { StudentProfilePage } from './pages/StudentProfilePage';
 import { LearningJourneyPage } from './pages/LearningJourneyPage';
 import { AchievementsPage } from './pages/AchievementsPage';
-import { AdminDashboardPage } from './pages/AdminDashboardPage';
 import { AboutPage } from './pages/AboutPage';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { Luxury3DView } from './components/luxury/Luxury3DView';
@@ -54,17 +53,29 @@ export function App() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  // Secret shortcut for Admin: Ctrl+Shift+A or Cmd+Shift+A
+  // Real-time synchronization: when admin updates data via the separate Admin Portal,
+  // the public leaderboard automatically refreshes immediately
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
-        e.preventDefault();
-        navigateTo(currentTab === 'admin' ? 'overview' : 'admin');
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key && e.key.startsWith('necn_cloud_champions')) {
+        refreshData();
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentTab]);
+    window.addEventListener('storage', handleStorageChange);
+
+    let channel: BroadcastChannel | null = null;
+    try {
+      channel = new BroadcastChannel('necn_leaderboard_sync');
+      channel.onmessage = () => {
+        refreshData();
+      };
+    } catch {}
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      channel?.close();
+    };
+  }, [refreshData]);
 
   const navigateTo = (tab: string, studentId?: string) => {
     if (tab === 'students' && studentId) {
@@ -83,7 +94,6 @@ export function App() {
     ? students.find(s => s.id === selectedStudentId)
     : undefined;
 
-  const isAdminTab = currentTab === 'admin' || currentTab === 'admin-portal';
   const isPosterHome = currentTab === 'overview';
   const isLuxury3DTab = currentTab === 'luxury-3d' || currentTab === '3d';
 
@@ -91,7 +101,7 @@ export function App() {
     <div className="relative min-h-screen bg-[#F4F8FD] text-slate-900 flex flex-col antialiased font-sans selection:bg-blue-500/20 selection:text-blue-700">
       
       {/* FLOATING NAVBAR (Untouched Windows / Desktop version) */}
-      {!isAdminTab && !isPosterHome && !isLuxury3DTab && (
+      {!isPosterHome && !isLuxury3DTab && (
         <Navbar
           currentTab={currentTab}
           onTabChange={(tab) => navigateTo(tab)}
@@ -100,7 +110,7 @@ export function App() {
       )}
 
       {/* Back to Home Floating Button on Desktop when viewing sub-pages */}
-      {!isPosterHome && !isLuxury3DTab && !isAdminTab && (
+      {!isPosterHome && !isLuxury3DTab && (
         <div className="fixed top-4 left-4 z-40 hidden md:block">
           <button
             onClick={() => navigateTo('overview')}
@@ -178,17 +188,6 @@ export function App() {
             />
           )}
 
-          {isAdminTab && (
-            <AdminDashboardPage
-              students={students}
-              officialCourses={officialCourses}
-              stats={stats}
-              onRefreshData={refreshData}
-              onSelectStudent={(id) => navigateTo('students', id)}
-              onBackToPublic={() => navigateTo('overview')}
-            />
-          )}
-
           {currentTab === 'about' && (
             <AboutPage />
           )}
@@ -199,7 +198,7 @@ export function App() {
       {!isPosterHome && !isLuxury3DTab && <Footer onNavigate={navigateTo} />}
 
       {/* MOBILE BOTTOM NAVIGATION DOCK (Persistent on mobile with overview, leaderboard, journey, achievements, about) */}
-      {!isAdminTab && !isLuxury3DTab && (
+      {!isLuxury3DTab && (
         <MobileBottomNav
           currentTab={currentTab}
           onTabChange={(tab) => navigateTo(tab)}

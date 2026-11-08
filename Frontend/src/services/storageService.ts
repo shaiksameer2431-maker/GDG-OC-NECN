@@ -81,6 +81,12 @@ class StorageService {
   private saveStudents() {
     try {
       localStorage.setItem(STORAGE_KEYS.STUDENTS, JSON.stringify(this.students));
+      // Notify other open tabs/windows (such as the public website) in real-time
+      try {
+        const channel = new BroadcastChannel('necn_leaderboard_sync');
+        channel.postMessage({ type: 'DATA_UPDATED', timestamp: Date.now() });
+        channel.close();
+      } catch {}
     } catch (e) {
       console.warn('LocalStorage quota exceeded or unavailable:', e);
     }
