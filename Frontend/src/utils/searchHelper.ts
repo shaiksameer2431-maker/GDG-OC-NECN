@@ -25,3 +25,4 @@ export function matchesSearchQuery(
   // Every token in the query must be present in the combined text
   return tokens.every(token => combined.includes(token));
 }
+

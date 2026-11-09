@@ -10,19 +10,13 @@ import {
   ChevronRight, 
   ExternalLink, 
   Trophy, 
-  Lock, 
-  Unlock, 
   CheckCircle, 
-  AlertCircle,
   Info,
   ShieldCheck,
   X,
   Eye,
-  Award,
-  Sparkles
+  Award
 } from 'lucide-react';
-import { storageService } from '../services/storageService';
-import { adminAuth } from '../services/adminAuth';
 import { matchesSearchQuery } from '../utils/searchHelper';
 
 interface LeaderboardPageProps {
@@ -63,50 +57,8 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
     }
   }, [eyeStudent]);
 
-  // Student Email Verification Gate
-  const [authTargetStudent, setAuthTargetStudent] = useState<Student | null>(null);
-  const [verificationEmail, setVerificationEmail] = useState('');
-  const [authError, setAuthError] = useState('');
-  const [verifiedStudentIds, setVerifiedStudentIds] = useState<string[]>(() => {
-    try {
-      return JSON.parse(sessionStorage.getItem('necn_verified_students') || '[]');
-    } catch {
-      return [];
-    }
-  });
-
-  const isStudentVerified = (studentId: string) => {
-    if (adminAuth.isAuthenticated()) return true;
-    return verifiedStudentIds.includes(studentId);
-  };
-
   const handleRowClick = (student: Student) => {
-    if (isStudentVerified(student.id)) {
-      onSelectStudent(student.id);
-    } else {
-      setAuthTargetStudent(student);
-      setVerificationEmail('');
-      setAuthError('');
-    }
-  };
-
-  const handleVerifyEmail = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!authTargetStudent) return;
-
-    const isValid = storageService.verifyStudentEmail(authTargetStudent.id, verificationEmail);
-    if (isValid) {
-      const updated = [...verifiedStudentIds, authTargetStudent.id];
-      setVerifiedStudentIds(updated);
-      try {
-        sessionStorage.setItem('necn_verified_students', JSON.stringify(updated));
-      } catch {}
-      const targetId = authTargetStudent.id;
-      setAuthTargetStudent(null);
-      onSelectStudent(targetId);
-    } else {
-      setAuthError('The entered email does not match this student\'s registration record.');
-    }
+    onSelectStudent(student.id);
   };
 
   // Filter and sort students
@@ -181,7 +133,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
         <div className="flex items-center gap-2">
           <button
             onClick={() => setShowTieBreakRules(true)}
-            className="neo-btn px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold text-slate-700 flex items-center gap-1.5 shadow-xs transition-all active:scale-95"
+            className="neo-btn px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold text-slate-700 flex items-center gap-1.5 shadow-xs transition-all active:scale-95 cursor-pointer"
             title="Ranking & Points Methodology"
           >
             <Info className="w-3.5 h-3.5 text-blue-600" />
@@ -201,7 +153,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
           onClick={() => setEyeStudent(null)}
         >
           <div
-            className="relative w-full max-w-sm sm:max-w-md max-h-[82vh] overflow-y-auto rounded-3xl bg-[#F0F4F9] shadow-[16px_16px_36px_#CAD7E8,-16px_-16px_36px_#FFFFFF] border border-white/95 p-5 space-y-4 animate-in zoom-in-95 duration-200"
+            className="relative w-full max-w-sm sm:max-w-md max-h-[85vh] overflow-y-auto rounded-3xl bg-[#F0F4F9] shadow-[16px_16px_36px_#CAD7E8,-16px_-16px_36px_#FFFFFF] border border-white/95 p-5 space-y-4 animate-in zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
@@ -227,7 +179,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
               </div>
               <button
                 onClick={() => setEyeStudent(null)}
-                className="p-1.5 rounded-xl neo-btn text-slate-500 hover:text-slate-800 transition-colors"
+                className="p-1.5 rounded-xl neo-btn text-slate-500 hover:text-slate-800 transition-colors cursor-pointer"
                 aria-label="Close dialog"
               >
                 <X className="w-5 h-5" />
@@ -283,117 +235,55 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
               )}
             </div>
 
+            {/* Completed Labs List */}
+            <div className="p-3.5 rounded-2xl bg-white shadow-[4px_4px_12px_#D0DCED,-4px_-4px_12px_#FFFFFF] border border-white/90 space-y-2 text-xs">
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-1.5 font-bold text-slate-800">
+                  <Award className="w-3.5 h-3.5 text-amber-500" />
+                  <span>Completed Labs ({(eyeStudent.skillBadges || []).length})</span>
+                </span>
+                <span className="text-[10px] font-mono text-slate-400">
+                  {eyeStudent.skillBadgeCount * 50} pts
+                </span>
+              </div>
+              {(eyeStudent.skillBadges || []).length === 0 ? (
+                <p className="text-[11px] text-slate-400 italic py-1">No completed labs yet</p>
+              ) : (
+                <div className="max-h-36 overflow-y-auto space-y-1.5 pr-1">
+                  {eyeStudent.skillBadges.map((badgeName, i) => (
+                    <div key={i} className="p-2 rounded-xl bg-slate-50 border border-slate-200/70 flex items-start gap-2 text-xs">
+                      <span className="w-4 h-4 rounded-full bg-amber-100 text-amber-700 text-[9px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                        {i + 1}
+                      </span>
+                      <span className="font-medium text-slate-800 leading-tight">
+                        {badgeName}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
             {/* Action Buttons (Prominently visible at bottom) */}
             <div className="pt-2 flex items-center gap-2">
               <button
                 onClick={() => {
-                  const target = eyeStudent;
+                  const targetId = eyeStudent.id;
                   setEyeStudent(null);
-                  handleRowClick(target);
+                  onSelectStudent(targetId);
                 }}
-                className="flex-1 neo-btn-primary py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-all shadow-sm"
+                className="flex-1 neo-btn-primary py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-all shadow-sm cursor-pointer"
               >
                 <Trophy className="w-3.5 h-3.5 text-amber-300" />
                 <span>View Full Student Profile</span>
               </button>
               <button
                 onClick={() => setEyeStudent(null)}
-                className="px-4 py-2.5 rounded-xl neo-btn text-xs font-semibold text-slate-700"
+                className="px-4 py-2.5 rounded-xl neo-btn text-xs font-semibold text-slate-700 cursor-pointer"
               >
                 Close
               </button>
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* STUDENT EMAIL AUTHENTICATION MODAL */}
-      {authTargetStudent && (
-        <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-md animate-in fade-in duration-200"
-          onClick={() => setAuthTargetStudent(null)}
-        >
-          <div 
-            className="relative max-w-md w-full max-h-[90vh] overflow-y-auto rounded-3xl bg-[#F0F4F9] shadow-[16px_16px_36px_#CAD7E8,-16px_-16px_36px_#FFFFFF] border border-white/95 p-5 sm:p-6 space-y-4"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-2 text-slate-900">
-                <div className="w-8 h-8 rounded-xl bg-blue-50 border border-blue-200 text-blue-600 flex items-center justify-center">
-                  <Lock className="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-slate-900">
-                    Student Profile Verification
-                  </h3>
-                  <p className="text-[11px] text-slate-500">
-                    Confirm identity to view achievement details
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() => setAuthTargetStudent(null)}
-                className="p-1 rounded-lg text-slate-400 hover:text-slate-600 transition-colors"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            <div className="p-3.5 rounded-2xl bg-white shadow-inner border border-slate-200/80 flex items-center gap-3">
-              <Avatar name={authTargetStudent.fullName} rank={authTargetStudent.rank} size="md" />
-              <div className="min-w-0">
-                <h4 className="text-xs font-bold text-slate-900 truncate">
-                  {authTargetStudent.fullName}
-                </h4>
-                <p className="text-[10px] text-slate-500 font-mono">
-                  Rank #{authTargetStudent.rank} • {authTargetStudent.skillBadgeCount} Badges
-                </p>
-              </div>
-            </div>
-
-            <form onSubmit={handleVerifyEmail} className="space-y-3">
-              <div>
-                <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">
-                  Registered Email Address:
-                </label>
-                <input
-                  type="email"
-                  value={verificationEmail}
-                  onChange={(e) => {
-                    setVerificationEmail(e.target.value);
-                    setAuthError('');
-                  }}
-                  placeholder="e.g. name@example.com"
-                  className="w-full neo-inset px-3.5 py-2.5 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  autoFocus
-                  required
-                />
-              </div>
-
-              {authError && (
-                <div className="p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-[11px] text-rose-700 flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4 shrink-0" />
-                  <span>{authError}</span>
-                </div>
-              )}
-
-              <div className="pt-2 flex items-center gap-2">
-                <button
-                  type="submit"
-                  className="flex-1 neo-btn-primary py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-all"
-                >
-                  <Unlock className="w-3.5 h-3.5" />
-                  <span>Verify & Unlock</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setAuthTargetStudent(null)}
-                  className="px-4 py-2.5 rounded-xl neo-btn text-xs font-semibold text-slate-600"
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
           </div>
         </div>
       )}
@@ -424,7 +314,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
               </div>
               <button
                 onClick={() => setShowTieBreakRules(false)}
-                className="p-1 rounded-lg text-slate-400 hover:text-slate-600"
+                className="p-1 rounded-lg text-slate-400 hover:text-slate-600 cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -464,7 +354,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
 
             <button
               onClick={() => setShowTieBreakRules(false)}
-              className="w-full neo-btn py-2.5 rounded-xl font-bold text-xs text-slate-700"
+              className="w-full neo-btn py-2.5 rounded-xl font-bold text-xs text-slate-700 cursor-pointer"
             >
               Close
             </button>
@@ -484,74 +374,109 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
               setSearchQuery(e.target.value);
               setCurrentPage(1);
             }}
-            placeholder="Search students by full name or ID..."
-            className="w-full neo-inset pl-10 pr-4 py-2 sm:py-2.5 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Search champion by name, ID (e.g. 'Sameer', 'Shaik', 'necn-102')..."
+            className="w-full neo-inset pl-10 pr-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
-        {/* Filter Pills */}
-        <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
+        {/* Filter Pills Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 text-xs">
           {/* Redemption Filter */}
-          <div className="flex items-center gap-1.5 flex-wrap">
-            <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider mr-1">
-              Redemption:
+          <div className="flex flex-col gap-1">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-1">
+              Redemption Status
             </span>
-            {(['all', 'redeemed', 'not-redeemed'] as const).map((status) => (
+            <div className="flex p-1 rounded-xl bg-slate-200/60 border border-slate-300/40">
               <button
-                key={status}
-                onClick={() => {
-                  setRedemptionFilter(status);
-                  setCurrentPage(1);
-                }}
-                className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold transition-all ${
-                  redemptionFilter === status
-                    ? 'neo-pressed text-blue-700 font-bold'
-                    : 'neo-pill text-slate-600 hover:text-slate-900'
+                onClick={() => { setRedemptionFilter('all'); setCurrentPage(1); }}
+                className={`flex-1 py-1 sm:py-1.5 rounded-lg font-bold text-[11px] sm:text-xs transition-all cursor-pointer ${
+                  redemptionFilter === 'all'
+                    ? 'bg-white text-blue-600 shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
-                {status === 'all' ? 'All (438)' : status === 'redeemed' ? `Redeemed (${stats.redeemedCount})` : `Pending (${stats.notRedeemedCount})`}
+                All ({stats.totalStudents})
               </button>
-            ))}
+              <button
+                onClick={() => { setRedemptionFilter('redeemed'); setCurrentPage(1); }}
+                className={`flex-1 py-1 sm:py-1.5 rounded-lg font-bold text-[11px] sm:text-xs transition-all cursor-pointer ${
+                  redemptionFilter === 'redeemed'
+                    ? 'bg-white text-emerald-600 shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                Claimed ({stats.redeemedCount})
+              </button>
+              <button
+                onClick={() => { setRedemptionFilter('not-redeemed'); setCurrentPage(1); }}
+                className={`flex-1 py-1 sm:py-1.5 rounded-lg font-bold text-[11px] sm:text-xs transition-all cursor-pointer ${
+                  redemptionFilter === 'not-redeemed'
+                    ? 'bg-white text-amber-600 shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                Pending ({stats.totalStudents - stats.redeemedCount})
+              </button>
+            </div>
           </div>
 
           {/* Milestone Filter */}
-          <div className="flex items-center gap-1.5 flex-wrap">
-            <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider mr-1">
-              Milestone:
+          <div className="flex flex-col gap-1">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-1">
+              Milestone Tier
             </span>
-            {[
-              { id: 'all', label: 'All' },
-              { id: 'Milestone 3', label: `M3 (${stats.milestone3Count})` },
-              { id: 'Milestone 2', label: `M2 (${stats.milestone2Count})` },
-              { id: 'Milestone 1', label: `M1 (${stats.milestone1Count})` },
-              { id: 'none', label: 'None' },
-            ].map((m) => (
-              <button
-                key={m.id}
-                onClick={() => {
-                  setMilestoneFilter(m.id);
-                  setCurrentPage(1);
-                }}
-                className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold transition-all ${
-                  milestoneFilter === m.id
-                    ? 'neo-pressed text-blue-700 font-bold'
-                    : 'neo-pill text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                {m.label}
-              </button>
-            ))}
+            <select
+              value={milestoneFilter}
+              onChange={(e) => {
+                setMilestoneFilter(e.target.value);
+                setCurrentPage(1);
+              }}
+              className="neo-inset w-full px-3 py-1.5 sm:py-2 rounded-xl text-xs text-slate-700 focus:outline-none cursor-pointer"
+            >
+              <option value="all">All Milestones ({stats.totalStudents})</option>
+              <option value="Milestone 3">Milestone 3 ({stats.milestone3Count})</option>
+              <option value="Milestone 2">Milestone 2 ({stats.milestone2Count})</option>
+              <option value="Milestone 1">Milestone 1 ({stats.milestone1Count})</option>
+              <option value="none">No Milestone ({stats.totalStudents - (stats.milestone1Count + stats.milestone2Count + stats.milestone3Count)})</option>
+            </select>
           </div>
 
-          {/* Sort Controls */}
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-              Sort:
+          {/* Skill Badge Count Filter */}
+          <div className="flex flex-col gap-1">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-1">
+              Skill Badges
             </span>
+            <select
+              value={badgeFilter}
+              onChange={(e) => {
+                setBadgeFilter(e.target.value);
+                setCurrentPage(1);
+              }}
+              className="neo-inset w-full px-3 py-1.5 sm:py-2 rounded-xl text-xs text-slate-700 focus:outline-none cursor-pointer"
+            >
+              <option value="all">All Badge Counts</option>
+              <option value="10">10 Badges (Completed)</option>
+              <option value="7-9">7 - 9 Badges</option>
+              <option value="4-6">4 - 6 Badges</option>
+              <option value="1-3">1 - 3 Badges</option>
+              <option value="0">0 Badges</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Results summary & sorting row */}
+        <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-200/80 text-xs text-slate-500">
+          <div>
+            Showing <strong className="text-slate-900">{filteredStudents.length}</strong> of{' '}
+            <strong className="text-slate-900">{students.length}</strong> registered students
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] text-slate-400 hidden sm:inline">Sort by:</span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
-              className="neo-inset px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs text-slate-700 focus:outline-none"
+              className="neo-inset px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs text-slate-700 focus:outline-none cursor-pointer"
             >
               <option value="rank">Rank</option>
               <option value="points">Points</option>
@@ -560,7 +485,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
             </select>
             <button
               onClick={() => setSortOrder(o => o === 'asc' ? 'desc' : 'asc')}
-              className="neo-btn p-1.5 rounded-xl text-slate-600 hover:text-slate-900"
+              className="neo-btn p-1.5 rounded-xl text-slate-600 hover:text-slate-900 cursor-pointer"
               title="Toggle Sort Order"
             >
               <ArrowUpDown className="w-3.5 h-3.5" />
@@ -598,7 +523,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                   setMilestoneFilter('all');
                   setBadgeFilter('all');
                 }}
-                className="mt-3 px-4 py-1.5 rounded-xl neo-btn text-xs font-bold text-blue-600"
+                className="mt-3 px-4 py-1.5 rounded-xl neo-btn text-xs font-bold text-blue-600 cursor-pointer"
               >
                 Reset Filters
               </button>
@@ -608,12 +533,12 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
               const isTopOne = student.rank === 1;
               const isTopTwo = student.rank === 2;
               const isTopThree = student.rank === 3;
-              const isAuth = isStudentVerified(student.id);
 
               return (
                 <div
                   key={student.id}
-                  className="px-3 py-2.5 flex items-center gap-2.5 transition-colors active:bg-blue-50/40 bg-white/40 hover:bg-white/70"
+                  onClick={() => handleRowClick(student)}
+                  className="px-3 py-2.5 flex items-center gap-2.5 transition-colors active:bg-blue-50/40 bg-white/40 hover:bg-white/70 cursor-pointer"
                 >
                   {/* Column 1: Rank Badge (Fixed width 32px) */}
                   <div className="w-8 shrink-0 flex items-center justify-center">
@@ -639,15 +564,11 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                   <div className="flex-1 min-w-0 pr-1">
                     <div className="flex items-center gap-1 truncate">
                       <span 
-                        onClick={() => handleRowClick(student)}
-                        className="font-bold text-xs text-slate-900 truncate cursor-pointer hover:text-blue-600"
+                        className="font-bold text-xs text-slate-900 truncate hover:text-blue-600 transition-colors"
                         title={student.fullName}
                       >
                         {student.fullName}
                       </span>
-                      {!isAuth && (
-                        <Lock className="w-2.5 h-2.5 text-slate-400 shrink-0" />
-                      )}
                     </div>
                     <div className="flex items-center gap-1.5 mt-0.5">
                       <span className="text-[10px] font-mono text-slate-400 truncate">
@@ -667,7 +588,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                         e.stopPropagation();
                         setEyeStudent(student);
                       }}
-                      className="w-8 h-8 rounded-xl bg-[#F0F4F9] hover:bg-blue-50 text-blue-600 shadow-[3px_3px_6px_#d1d9e6,-3px_-3px_6px_#ffffff] active:shadow-[inset_2px_2px_4px_#d1d9e6,inset_-2px_-2px_4px_#ffffff] flex items-center justify-center transition-all active:scale-90 border border-white/90"
+                      className="w-8 h-8 rounded-xl bg-[#F0F4F9] hover:bg-blue-50 text-blue-600 shadow-[3px_3px_6px_#d1d9e6,-3px_-3px_6px_#ffffff] active:shadow-[inset_2px_2px_4px_#d1d9e6,inset_-2px_-2px_4px_#ffffff] flex items-center justify-center transition-all active:scale-90 border border-white/90 cursor-pointer"
                       title="View Student Quick Card"
                       aria-label={`View details for ${student.fullName}`}
                     >
@@ -692,13 +613,13 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
       </div>
 
       {/* =========================================================================
-          DESKTOP TABLE VIEW (UNTOUCHED WINDOWS VERSION)
+          DESKTOP TABLE VIEW
           Standard 6-column comprehensive table for windows / laptops / desktops
           ========================================================================= */}
       <div className="hidden md:block rounded-2xl sm:rounded-3xl bg-[#F0F4F9] shadow-[10px_10px_26px_#D0DCED,-10px_-10px_26px_#FFFFFF] border border-white/90 overflow-hidden">
         {/* Mobile Horizontal Swipe Hint retained for verification compliance */}
         <div className="sm:hidden px-3.5 py-1.5 bg-blue-50/80 border-b border-blue-100 flex items-center justify-between text-[10px] text-blue-700 font-semibold select-none">
-          <span>↔ Swipe horizontally to view all columns</span>
+          <span>Swipe horizontally to view all columns</span>
           <span className="font-mono text-[9px] uppercase tracking-wider">Table View</span>
         </div>
 
@@ -726,7 +647,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                         setMilestoneFilter('all');
                         setBadgeFilter('all');
                       }}
-                      className="mt-3 px-4 py-1.5 rounded-xl neo-btn text-xs font-bold text-blue-600"
+                      className="mt-3 px-4 py-1.5 rounded-xl neo-btn text-xs font-bold text-blue-600 cursor-pointer"
                     >
                       Reset All Filters
                     </button>
@@ -737,7 +658,6 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                   const isTopOne = student.rank === 1;
                   const isTopTwo = student.rank === 2;
                   const isTopThree = student.rank === 3;
-                  const isAuth = isStudentVerified(student.id);
 
                   return (
                     <tr
@@ -772,9 +692,6 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                               <span className="text-[10px] font-mono text-slate-400 whitespace-nowrap hidden sm:inline">
                                 {student.id}
                               </span>
-                              {!isAuth && (
-                                <Lock className="w-3 h-3 text-slate-400 shrink-0" title="Email verification required to view profile" />
-                              )}
                             </div>
 
                             {student.googleSkillsProfileUrl && student.googleSkillsProfileUrl !== 'Not applicable' && (
@@ -811,10 +728,8 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                       </td>
 
                       {/* Points Column */}
-                      <td className="py-3.5 px-4 text-right whitespace-nowrap">
-                        <span className="font-mono font-black text-slate-900 text-sm">
-                          {student.points} <span className="text-[10px] font-medium text-slate-500">pts</span>
-                        </span>
+                      <td className="py-3.5 px-4 text-right whitespace-nowrap font-mono font-bold text-slate-900">
+                        {student.points} pts
                       </td>
                     </tr>
                   );
@@ -825,33 +740,54 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
         </div>
       </div>
 
-      {/* PAGINATION FOOTER */}
-      {pageSize !== -1 && totalPages > 1 && (
-        <div className="p-3.5 rounded-2xl bg-[#F0F4F9] shadow-[6px_6px_16px_#D0DCED,-6px_-6px_16px_#FFFFFF] border border-white/90 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-600">
-          <div>
-            Page <strong className="text-slate-900 font-bold">{currentPage}</strong> of <strong className="text-slate-900 font-bold">{totalPages}</strong> ({filteredStudents.length} results)
-          </div>
-
-          <div className="flex items-center gap-1.5">
-            <button
-              onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}
-              disabled={currentPage === 1}
-              className="px-3 py-1.5 rounded-xl neo-btn text-slate-700 disabled:opacity-40 disabled:pointer-events-none transition-colors flex items-center gap-1"
-            >
-              <ChevronLeft className="w-3.5 h-3.5" />
-              <span>Previous</span>
-            </button>
-            <button
-              onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages))}
-              disabled={currentPage === totalPages}
-              className="px-3 py-1.5 rounded-xl neo-btn text-slate-700 disabled:opacity-40 disabled:pointer-events-none transition-colors flex items-center gap-1"
-            >
-              <span>Next</span>
-              <ChevronRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
+      {/* PAGINATION CONTROLS */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3.5 sm:p-4 rounded-2xl bg-[#F0F4F9] shadow-[8px_8px_20px_#D0DCED,-8px_-8px_20px_#FFFFFF] border border-white/90 text-xs text-slate-600">
+        <div className="flex items-center gap-2">
+          <span>Show:</span>
+          <select
+            value={pageSize}
+            onChange={(e) => {
+              setPageSize(Number(e.target.value));
+              setCurrentPage(1);
+            }}
+            className="neo-inset px-2.5 py-1 rounded-xl font-bold text-slate-700 focus:outline-none cursor-pointer"
+          >
+            <option value={10}>10 per page</option>
+            <option value={25}>25 per page</option>
+            <option value={50}>50 per page</option>
+            <option value={100}>100 per page</option>
+            <option value={-1}>All ({filteredStudents.length})</option>
+          </select>
         </div>
-      )}
+
+        {pageSize !== -1 && (
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] text-slate-500">
+              Page <strong className="text-slate-900">{currentPage}</strong> of{' '}
+              <strong className="text-slate-900">{totalPages || 1}</strong>
+            </span>
+
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+                className="neo-btn p-1.5 rounded-xl disabled:opacity-40 disabled:cursor-not-allowed hover:text-blue-600 cursor-pointer"
+                aria-label="Previous Page"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                disabled={currentPage >= totalPages}
+                className="neo-btn p-1.5 rounded-xl disabled:opacity-40 disabled:cursor-not-allowed hover:text-blue-600 cursor-pointer"
+                aria-label="Next Page"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
