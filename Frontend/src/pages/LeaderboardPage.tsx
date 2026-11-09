@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { storageService } from '../services/storageService';
 import { adminAuth } from '../services/adminAuth';
+import { matchesSearchQuery } from '../utils/searchHelper';
 
 interface LeaderboardPageProps {
   students: Student[];
@@ -112,10 +113,9 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
   const filteredStudents = useMemo(() => {
     return students.filter(student => {
       if (searchQuery.trim()) {
-        const query = searchQuery.toLowerCase().trim();
-        const nameMatch = student.fullName.toLowerCase().includes(query);
-        const idMatch = student.id.toLowerCase().includes(query);
-        if (!nameMatch && !idMatch) return false;
+        if (!matchesSearchQuery(searchQuery, student.fullName, student.id)) {
+          return false;
+        }
       }
 
       const isRedeemed = student.redemptionStatus === 'Redeemed';

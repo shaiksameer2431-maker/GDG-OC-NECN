@@ -3,6 +3,7 @@ import type { Student, OfficialCourse, ImportLog, AdminVaultRecord, CohortStats 
 import { adminAuth } from '../services/adminAuth';
 import type { AdminSession } from '../services/adminAuth';
 import { storageService } from '../services/storageService';
+import { matchesSearchQuery } from '../utils/searchHelper';
 import { MilestonePill, RedemptionPill } from '../components/common/BadgePill';
 import { 
   Shield, 
@@ -141,8 +142,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
   // Filter students in management tab
   const filteredStudents = useMemo(() => {
     if (!studentSearch.trim()) return students;
-    const q = studentSearch.toLowerCase();
-    return students.filter(s => s.fullName.toLowerCase().includes(q) || s.id.toLowerCase().includes(q));
+    return students.filter(s => matchesSearchQuery(studentSearch, s.fullName, s.id));
   }, [students, studentSearch]);
 
   const selectedCourseStudent = students.find(s => s.id === courseStudentId);

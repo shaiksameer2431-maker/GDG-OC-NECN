@@ -6,23 +6,23 @@ import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
 
 const STORAGE_KEYS = {
-  STUDENTS: 'necn_cloud_champions_students_v7',
-  ADMIN_VAULT: 'necn_cloud_champions_vault_v7',
-  IMPORT_LOGS: 'necn_cloud_champions_import_logs_v7',
-  ADMIN_TOKEN: 'necn_cloud_champions_admin_token_v7',
-  COURSE_PROGRESS: 'necn_cloud_champions_course_progress_v7',
+  STUDENTS: 'necn_cloud_champions_students_v8',
+  ADMIN_VAULT: 'necn_cloud_champions_vault_v8',
+  IMPORT_LOGS: 'necn_cloud_champions_import_logs_v8',
+  ADMIN_TOKEN: 'necn_cloud_champions_admin_token_v8',
+  COURSE_PROGRESS: 'necn_cloud_champions_course_progress_v8',
 };
 
 // Initial import history log
 const INITIAL_IMPORT_LOG: ImportLog = {
-  id: 'imp-004',
-  filename: 'GDGC-NECNL [08 Nov].csv',
+  id: 'imp-005',
+  filename: 'GDGC-NECNL [09 Nov].csv',
   fileType: 'CSV',
   insertedCount: 438,
   updatedCount: 0,
   unchangedCount: 0,
   rejectedCount: 0,
-  importedAt: '2026-11-08T16:04:00.000Z',
+  importedAt: '2026-11-09T11:42:00.000Z',
   importedBy: 'system',
   errorSummary: []
 };
@@ -40,7 +40,7 @@ class StorageService {
   private init() {
     try {
       // Clear legacy storage versions to prevent stale caches
-      ['necn_cloud_champions_students_v1', 'necn_cloud_champions_students_v2', 'necn_cloud_champions_students_v3', 'necn_cloud_champions_students_v4', 'necn_cloud_champions_students_v5', 'necn_cloud_champions_students_v6', 'necn_students'].forEach(k => {
+      ['necn_cloud_champions_students_v1', 'necn_cloud_champions_students_v2', 'necn_cloud_champions_students_v3', 'necn_cloud_champions_students_v4', 'necn_cloud_champions_students_v5', 'necn_cloud_champions_students_v6', 'necn_cloud_champions_students_v7', 'necn_students'].forEach(k => {
         try { localStorage.removeItem(k); } catch {}
       });
 

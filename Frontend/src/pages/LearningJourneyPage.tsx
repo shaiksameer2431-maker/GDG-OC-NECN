@@ -13,6 +13,7 @@ import {
   X
 } from 'lucide-react';
 import { storageService } from '../services/storageService';
+import { matchesSearchQuery } from '../utils/searchHelper';
 
 interface LearningJourneyPageProps {
   officialCourses: OfficialCourse[];
@@ -38,7 +39,7 @@ export const LearningJourneyPage: React.FC<LearningJourneyPageProps> = ({
 
   // Student search matches
   const matchedStudents = studentSearchInput.trim()
-    ? students.filter(s => s.fullName.toLowerCase().includes(studentSearchInput.toLowerCase())).slice(0, 5)
+    ? students.filter(s => matchesSearchQuery(studentSearchInput, s.fullName, s.id)).slice(0, 5)
     : [];
 
   const handleStudentSelect = (s: Student) => {
