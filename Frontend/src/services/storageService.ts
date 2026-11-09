@@ -6,11 +6,11 @@ import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
 
 const STORAGE_KEYS = {
-  STUDENTS: 'necn_cloud_champions_students_v8',
-  ADMIN_VAULT: 'necn_cloud_champions_vault_v8',
-  IMPORT_LOGS: 'necn_cloud_champions_import_logs_v8',
-  ADMIN_TOKEN: 'necn_cloud_champions_admin_token_v8',
-  COURSE_PROGRESS: 'necn_cloud_champions_course_progress_v8',
+  STUDENTS: 'necn_cloud_champions_students_v9',
+  ADMIN_VAULT: 'necn_cloud_champions_vault_v9',
+  IMPORT_LOGS: 'necn_cloud_champions_import_logs_v9',
+  ADMIN_TOKEN: 'necn_cloud_champions_admin_token_v9',
+  COURSE_PROGRESS: 'necn_cloud_champions_course_progress_v9',
 };
 
 // Initial import history log
