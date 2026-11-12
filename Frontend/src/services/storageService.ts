@@ -6,23 +6,23 @@ import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
 
 const STORAGE_KEYS = {
-  STUDENTS: 'necn_cloud_champions_students_v11',
-  ADMIN_VAULT: 'necn_cloud_champions_vault_v11',
-  IMPORT_LOGS: 'necn_cloud_champions_import_logs_v11',
-  ADMIN_TOKEN: 'necn_cloud_champions_admin_token_v11',
-  COURSE_PROGRESS: 'necn_cloud_champions_course_progress_v11',
+  STUDENTS: 'necn_cloud_champions_students_v12',
+  ADMIN_VAULT: 'necn_cloud_champions_vault_v12',
+  IMPORT_LOGS: 'necn_cloud_champions_import_logs_v12',
+  ADMIN_TOKEN: 'necn_cloud_champions_admin_token_v12',
+  COURSE_PROGRESS: 'necn_cloud_champions_course_progress_v12',
 };
 
 // Initial import history log
 const INITIAL_IMPORT_LOG: ImportLog = {
-  id: 'imp-007',
-  filename: 'GDGC-NECNL [11 Nov].csv',
+  id: 'imp-008',
+  filename: 'GDGC-NECNL [12 Nov].csv',
   fileType: 'CSV',
   insertedCount: 438,
   updatedCount: 0,
   unchangedCount: 0,
   rejectedCount: 0,
-  importedAt: '2026-11-11T18:30:00.000Z',
+  importedAt: '2026-11-12T18:38:00.000Z',
   importedBy: 'system',
   errorSummary: []
 };
