@@ -6,23 +6,23 @@ import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
 
 const STORAGE_KEYS = {
-  STUDENTS: 'necn_cloud_champions_students_v13',
-  ADMIN_VAULT: 'necn_cloud_champions_vault_v13',
-  IMPORT_LOGS: 'necn_cloud_champions_import_logs_v13',
-  ADMIN_TOKEN: 'necn_cloud_champions_admin_token_v13',
-  COURSE_PROGRESS: 'necn_cloud_champions_course_progress_v13',
+  STUDENTS: 'necn_cloud_champions_students_v14',
+  ADMIN_VAULT: 'necn_cloud_champions_vault_v14',
+  IMPORT_LOGS: 'necn_cloud_champions_import_logs_v14',
+  ADMIN_TOKEN: 'necn_cloud_champions_admin_token_v14',
+  COURSE_PROGRESS: 'necn_cloud_champions_course_progress_v14',
 };
 
 // Initial import history log
 const INITIAL_IMPORT_LOG: ImportLog = {
-  id: 'imp-009',
-  filename: 'GDGC-NECNL [13 Nov].csv',
+  id: 'imp-010',
+  filename: 'GDGC-NECNL [14 Nov].csv',
   fileType: 'CSV',
   insertedCount: 438,
   updatedCount: 0,
   unchangedCount: 0,
   rejectedCount: 0,
-  importedAt: '2026-11-13T18:45:00.000Z',
+  importedAt: '2026-11-14T12:43:00.000Z',
   importedBy: 'system',
   errorSummary: []
 };
@@ -40,8 +40,8 @@ class StorageService {
   private init() {
     try {
       // Clear legacy storage versions to prevent stale caches
-      ['necn_cloud_champions_students_v1', 'necn_cloud_champions_students_v2', 'necn_cloud_champions_students_v3', 'necn_cloud_champions_students_v4', 'necn_cloud_champions_students_v5', 'necn_cloud_champions_students_v6', 'necn_cloud_champions_students_v7', 'necn_students'].forEach(k => {
-        try { localStorage.removeItem(k); } catch {}
+      ['necn_cloud_champions_students_v1', 'necn_cloud_champions_students_v2', 'necn_cloud_champions_students_v3', 'necn_cloud_champions_students_v4', 'necn_cloud_champions_students_v5', 'necn_cloud_champions_students_v6', 'necn_cloud_champions_students_v7', 'necn_cloud_champions_students_v8', 'necn_cloud_champions_students_v9', 'necn_cloud_champions_students_v10', 'necn_cloud_champions_students_v11', 'necn_cloud_champions_students_v12', 'necn_cloud_champions_students_v13', 'necn_students'].forEach(k => {
+        try { localStorage.removeItem(k); } catch { }
       });
 
       const cachedStudents = localStorage.getItem(STORAGE_KEYS.STUDENTS);
@@ -89,7 +89,7 @@ class StorageService {
         const channel = new BroadcastChannel('necn_leaderboard_sync');
         channel.postMessage({ type: 'DATA_UPDATED', timestamp: Date.now() });
         channel.close();
-      } catch {}
+      } catch { }
     } catch (e) {
       console.warn('LocalStorage quota exceeded or unavailable:', e);
     }
@@ -614,7 +614,7 @@ class StorageService {
         if (apiRes.ok) {
           liveStudents = await apiRes.json();
         }
-      } catch {}
+      } catch { }
 
       // Fallback: raw.githubusercontent.com with cache-busting timestamp
       if (!liveStudents || !Array.isArray(liveStudents)) {
