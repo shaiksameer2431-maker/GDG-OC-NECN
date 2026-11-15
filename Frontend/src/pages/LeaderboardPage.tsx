@@ -326,11 +326,11 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
                   <CheckCircle className="w-4 h-4 text-emerald-600" />
                   <span>Points Calculation Formula</span>
                 </h4>
-                <ul className="list-disc list-inside space-y-1 pl-1 text-slate-600">
-                  <li><strong className="text-amber-700">Milestone 3:</strong> +300 points</li>
-                  <li><strong className="text-blue-700">Milestone 2:</strong> +200 points</li>
-                  <li><strong className="text-cyan-700">Milestone 1:</strong> +100 points</li>
-                  <li><strong className="text-slate-800">Skill Badges:</strong> +50 points per completed badge</li>
+                <ul className="list-disc list-inside space-y-1.5 pl-1 text-slate-600">
+                  <li><strong className="text-emerald-700">Milestone 3 (10 Badges):</strong> +300 points · <em>Earn an exclusive Developer Kit with a T-Shirt</em></li>
+                  <li><strong className="text-amber-700">Milestone 2 (5 Badges):</strong> +200 points · <em>Earn an official branded Water Bottle</em></li>
+                  <li><strong className="text-cyan-700">Milestone 1 (2 Badges):</strong> +100 points</li>
+                  <li><strong className="text-blue-700">Industry-Recognized Credentials:</strong> +50 points per completed Skill Badge for resume &amp; LinkedIn</li>
                   <li><strong className="text-emerald-700">Google Skills Profile All Good:</strong> +20 points</li>
                   <li><strong className="text-emerald-700">Google Developer Profile All Good:</strong> +20 points</li>
                 </ul>

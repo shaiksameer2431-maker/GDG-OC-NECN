@@ -544,8 +544,8 @@ export const PanoramicPoster: React.FC<PanoramicPosterProps> = ({
                   <Sparkles className="w-3.5 h-3.5 text-amber-600" />
                   <span>Official Program Swag Rewards</span>
                 </div>
-                <h3 className="text-xl font-black text-slate-900 tracking-tight">
-                  Google Cloud Swag Tier Rewards
+                <h3 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-1.5">
+                  <span>✊</span> Exclusive Rewards &amp; Milestones
                 </h3>
               </div>
               <button
@@ -567,26 +567,38 @@ export const PanoramicPoster: React.FC<PanoramicPosterProps> = ({
 
             {/* Swags Tier Breakdown */}
             <div className="space-y-2.5 text-xs">
-              <div className="p-3 rounded-xl bg-white/80 border border-slate-200/80 flex items-start gap-3">
-                <span className="px-2 py-0.5 rounded-md bg-amber-100 text-amber-800 font-bold text-[10px]">
-                  TIER 1
+              <div className="p-3.5 rounded-xl bg-white/80 border border-slate-200/80 flex items-start gap-3">
+                <span className="px-2 py-0.5 rounded-md bg-amber-100 text-amber-800 font-bold text-[10px] shrink-0 mt-0.5">
+                  5 BADGES
                 </span>
                 <div>
-                  <h4 className="font-bold text-slate-900">Complete 5 Skill Badges (Milestone 2)</h4>
-                  <p className="text-slate-600 text-[11px]">
-                    Eligible for Google Cloud Water Bottle & GDG Sticker Pack!
+                  <h4 className="font-bold text-slate-900">Complete 5 Skill Badges</h4>
+                  <p className="text-slate-600 text-[11px] leading-relaxed">
+                    Earn an official branded <strong>Water Bottle</strong>.
                   </p>
                 </div>
               </div>
 
-              <div className="p-3 rounded-xl bg-white/80 border border-slate-200/80 flex items-start gap-3">
-                <span className="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 font-bold text-[10px]">
-                  TIER 2
+              <div className="p-3.5 rounded-xl bg-white/80 border border-slate-200/80 flex items-start gap-3">
+                <span className="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 font-bold text-[10px] shrink-0 mt-0.5">
+                  10 BADGES
                 </span>
                 <div>
-                  <h4 className="font-bold text-slate-900">Complete 10 Skill Badges (Milestone 3)</h4>
-                  <p className="text-slate-600 text-[11px]">
-                    Eligible for the full Swag Kit: Bottle, T-Shirt, Crossbody Bag & Certificate!
+                  <h4 className="font-bold text-slate-900">Complete 10 Skill Badges</h4>
+                  <p className="text-slate-600 text-[11px] leading-relaxed">
+                    Earn an exclusive <strong>Developer Kit with a T-Shirt</strong>.
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-white/80 border border-slate-200/80 flex items-start gap-3">
+                <span className="px-2 py-0.5 rounded-md bg-blue-100 text-blue-800 font-bold text-[10px] shrink-0 mt-0.5">
+                  CREDENTIALS
+                </span>
+                <div>
+                  <h4 className="font-bold text-slate-900">Industry-Recognized Credentials</h4>
+                  <p className="text-slate-600 text-[11px] leading-relaxed">
+                    Earn digital Google Cloud skill badges to display directly on your resume and LinkedIn profile.
                   </p>
                 </div>
               </div>

@@ -16,21 +16,21 @@ export interface SwagInfo {
 export const SWAGS: SwagInfo[] = [
   {
     id: 'tee',
-    name: 'GDG On Campus NECN T-Shirt',
-    badge: 'PREMIUM COTTON APPAREL',
-    subtitle: 'Wear the community · 240 GSM Combed Cotton',
+    name: 'Developer Kit with GDG T-Shirt',
+    badge: '10 SKILL BADGES · DEVELOPER KIT',
+    subtitle: 'Earn an exclusive Developer Kit with a T-Shirt (10 Badges)',
     description:
-      'Engineered with heavy-weight premium cotton, reinforced ribbed crew collar, and breathable weave. Features the iconic Google Developer Groups angle brackets emblem, Narayana Engineering College chapter insignia, and signature Google quad-color accent stripe.',
-    specs: ['240 GSM Combed Bio-Washed Cotton', 'High-density screen print with woven neck tag', 'Double-stitched sleeve hems & ribbed collar']
+      'Official Google Cloud Developer Kit featuring heavy-gauge charcoal-black crewneck t-shirt. Engineered with heavy-weight premium cotton, reinforced ribbed crew collar, and breathable weave. Features the iconic Google Developer Groups angle brackets emblem, Narayana Engineering College chapter insignia, and signature Google quad-color accent stripe.',
+    specs: ['10 Skill Badges Milestone Requirement', 'Exclusive Developer Kit Edition', '240 GSM Combed Bio-Washed Cotton']
   },
   {
     id: 'bottle',
-    name: 'Google Cloud Matte Water Bottle',
-    badge: 'INSULATED STAINLESS STEEL',
-    subtitle: 'Carry your momentum · Brushed Steel Cap with Carry Loop',
+    name: 'Official Branded Water Bottle',
+    badge: '5 SKILL BADGES · WATER BOTTLE',
+    subtitle: 'Earn an official branded Water Bottle (5 Badges)',
     description:
-      'Double-walled vacuum insulated stainless steel bottle with luxury satin matte-black coating. Features laser-precise GDG On Campus NECN insignia, brushed surgical-grade stainless steel cap with integrated utility carry loop, and signature quad-color base stripe.',
-    specs: ['750ml Double-Wall Vacuum Insulation', '304 Surgical Grade Stainless Steel', 'Brushed steel leak-proof cap with ergonomic loop']
+      'Official Google Cloud double-walled vacuum insulated stainless steel bottle with luxury satin matte-black coating. Features laser-precise GDG On Campus NECN insignia, brushed surgical-grade stainless steel cap with integrated utility carry loop, and signature quad-color base stripe.',
+    specs: ['5 Skill Badges Milestone Requirement', 'Official Branded Hydration Gear', '304 Surgical Grade Stainless Steel']
   },
   {
     id: 'certificate',
@@ -1537,6 +1537,30 @@ export const SwagGiftExperience: React.FC = () => {
           Rewards &amp; <span>Swags</span>
         </h2>
         <p>Every milestone deserves to be celebrated. Open your community swag box and explore what's inside.</p>
+
+        {/* EXCLUSIVE REWARDS & MILESTONES CALLOUT */}
+        <div className="max-w-2xl mx-auto mt-4 p-4 rounded-2xl bg-white/10 border border-white/20 text-white backdrop-blur-md shadow-lg text-left space-y-2.5">
+          <div className="flex items-center gap-2">
+            <span className="text-base">✊</span>
+            <h3 className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-amber-300">
+              Exclusive Rewards &amp; Milestones
+            </h3>
+          </div>
+          <ul className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+            <li className="p-2.5 rounded-xl bg-black/30 border border-white/10">
+              <span className="font-bold text-amber-300 block text-[11px]">• Complete 5 Skill Badges:</span>
+              <span className="text-slate-200 text-[11px] leading-relaxed">Earn an official branded <strong>Water Bottle</strong>.</span>
+            </li>
+            <li className="p-2.5 rounded-xl bg-black/30 border border-white/10">
+              <span className="font-bold text-emerald-300 block text-[11px]">• Complete 10 Skill Badges:</span>
+              <span className="text-slate-200 text-[11px] leading-relaxed">Earn an exclusive <strong>Developer Kit with a T-Shirt</strong>.</span>
+            </li>
+            <li className="p-2.5 rounded-xl bg-black/30 border border-white/10">
+              <span className="font-bold text-blue-300 block text-[11px]">• Industry Credentials:</span>
+              <span className="text-slate-200 text-[11px] leading-relaxed">Earn digital Google Cloud badges for <strong>resume &amp; LinkedIn</strong>.</span>
+            </li>
+          </ul>
+        </div>
       </div>
 
       {/* 3D INTERACTIVE STAGE */}

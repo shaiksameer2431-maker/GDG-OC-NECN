@@ -171,7 +171,7 @@ export const StudentProfilePage: React.FC<StudentProfilePageProps> = ({
   // Achievement title based on milestone and badge points
   const getAchievementTitle = (s: Student) => {
     if (s.skillBadgeCount >= 10 || s.milestone === 'Milestone 3') return 'Google Cloud Architect';
-    if (s.skillBadgeCount >= 6 || s.milestone === 'Milestone 2') return 'Cloud Specialist';
+    if (s.skillBadgeCount >= 5 || s.milestone === 'Milestone 2') return 'Cloud Specialist';
     if (s.skillBadgeCount >= 2 || s.milestone === 'Milestone 1') return 'Cloud Practitioner';
     if (s.redemptionStatus === 'Redeemed') return 'Cloud Explorer';
     return 'Registered Learner';

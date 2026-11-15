@@ -166,6 +166,27 @@ export const LearningJourneyPage: React.FC<LearningJourneyPageProps> = ({
         )}
       </div>
 
+      {/* EXCLUSIVE REWARDS & MILESTONES BANNER */}
+      <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-500/10 via-emerald-500/10 to-blue-500/10 border border-slate-200/80 shadow-[0_4px_16px_rgba(20,43,112,0.06)] space-y-2.5">
+        <h3 className="text-xs sm:text-sm font-extrabold text-slate-900 tracking-tight flex items-center gap-1.5">
+          <span>✊</span> Exclusive Rewards &amp; Milestones
+        </h3>
+        <ul className="grid grid-cols-1 md:grid-cols-3 gap-2.5 text-xs">
+          <li className="p-3 rounded-xl bg-white/90 border border-amber-200/80 shadow-2xs">
+            <span className="font-extrabold text-amber-800 block text-xs">• Complete 5 Skill Badges:</span>
+            <span className="text-slate-700 text-[11px] leading-relaxed">Earn an official branded <strong>Water Bottle</strong>.</span>
+          </li>
+          <li className="p-3 rounded-xl bg-white/90 border border-emerald-200/80 shadow-2xs">
+            <span className="font-extrabold text-emerald-800 block text-xs">• Complete 10 Skill Badges:</span>
+            <span className="text-slate-700 text-[11px] leading-relaxed">Earn an exclusive <strong>Developer Kit with a T-Shirt</strong>.</span>
+          </li>
+          <li className="p-3 rounded-xl bg-white/90 border border-blue-200/80 shadow-2xs">
+            <span className="font-extrabold text-blue-800 block text-xs">• Industry-Recognized Credentials:</span>
+            <span className="text-slate-700 text-[11px] leading-relaxed">Earn digital Google Cloud skill badges to display directly on your <strong>resume and LinkedIn profile</strong>.</span>
+          </li>
+        </ul>
+      </div>
+
       {/* CURRICULUM NOTICE (GLASS FLUID CALLOUT) */}
       <div className="p-4 rounded-2xl bg-white/75 backdrop-blur-lg border border-blue-200/70 text-xs text-slate-700 flex items-start gap-3 shadow-[0_4px_16px_rgba(26,115,232,0.06)]">
         <Sparkles className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />

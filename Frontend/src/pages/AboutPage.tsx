@@ -22,6 +22,10 @@ export const AboutPage: React.FC = () => {
       a: "The official CSV import contains verified skill badges and milestone summaries. Individual lab module completions for newly enrolled students are set to 'Not Tracked' until certified through administrator verification or student submission."
     },
     {
+      q: "What are the Exclusive Rewards & Milestones for completing labs?",
+      a: "As per official campaign guidelines: Complete 5 Skill Badges earns an official branded Water Bottle. Complete 10 Skill Badges earns an exclusive Developer Kit with a T-Shirt. In addition, all students earn industry-recognized digital Google Cloud skill badges to display directly on their resume and LinkedIn profile."
+    },
+    {
       q: "How are student emails and access codes kept secure?",
       a: "The portal adheres to strict privacy and data protection principles. Access codes and personal emails are never rendered in public browser views or exposed via client-side API payloads. Profiles require registered email verification to access individual achievement detail."
     }

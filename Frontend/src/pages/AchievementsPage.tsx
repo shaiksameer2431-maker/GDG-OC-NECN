@@ -33,13 +33,15 @@ export const AchievementsPage: React.FC<AchievementsPageProps> = ({
   const rewardTiers = [
     {
       id: 'tier-3',
-      name: 'Champion Tier (Milestone 3)',
+      name: 'Complete 10 Skill Badges',
       milestone: 'Milestone 3',
       badgeCount: '10 Badges',
-      accentBg: 'bg-amber-500/10 text-amber-800 border-amber-300',
+      rewardHeadline: 'Earn an exclusive Developer Kit with a T-Shirt.',
+      accentBg: 'bg-emerald-500/10 text-emerald-800 border-emerald-300',
       icon: Crown,
       perks: [
-        'Exclusive Google Cloud Swag Pack (T-shirt, bottle, stickers)',
+        'Earn an exclusive Developer Kit with a T-Shirt',
+        'Official branded Google Cloud Water Bottle',
         'Verified Certificate of Cloud Excellence from GDG On Campus',
         'Direct Recommendation for Cloud & AI Internship Opportunities',
         'Featured profile on GDG NECN Hall of Champions',
@@ -48,13 +50,14 @@ export const AchievementsPage: React.FC<AchievementsPageProps> = ({
     },
     {
       id: 'tier-2',
-      name: 'Specialist Tier (Milestone 2)',
+      name: 'Complete 5 Skill Badges',
       milestone: 'Milestone 2',
-      badgeCount: '5-9 Badges',
-      accentBg: 'bg-blue-500/10 text-blue-800 border-blue-300',
+      badgeCount: '5 Badges',
+      rewardHeadline: 'Earn an official branded Water Bottle.',
+      accentBg: 'bg-amber-500/10 text-amber-800 border-amber-300',
       icon: Trophy,
       perks: [
-        'Official Google Cloud Water Bottle & Merchandise Pack',
+        'Earn an official branded Water Bottle',
         'GDG On Campus Certificate of Achievement',
         'LinkedIn Skill Endorsement from Campus Mentors',
         'Access to Advanced GenAI & Agent Mentorship Tracks'
@@ -62,12 +65,15 @@ export const AchievementsPage: React.FC<AchievementsPageProps> = ({
     },
     {
       id: 'tier-1',
-      name: 'Explorer Tier (Milestone 1)',
-      milestone: 'Milestone 1',
-      badgeCount: '2 Badges',
-      accentBg: 'bg-cyan-500/10 text-cyan-800 border-cyan-300',
+      name: 'Industry-Recognized Credentials',
+      milestone: 'Skill Badges',
+      badgeCount: '1+ Badges',
+      rewardHeadline: 'Earn digital Google Cloud skill badges for resume & LinkedIn.',
+      accentBg: 'bg-blue-500/10 text-blue-800 border-blue-300',
       icon: Award,
       perks: [
+        'Earn digital Google Cloud skill badges to display directly on your resume and LinkedIn profile',
+        'Shareable public verification links from Google Skills Boost',
         'Digital Certificate of Participation',
         'GDG NECN Community Badge & Recognition',
         'Access to Cloud Study Jams & Peer Learning Circles'
@@ -164,12 +170,34 @@ export const AchievementsPage: React.FC<AchievementsPageProps> = ({
             <Gift className="w-4 h-4 text-blue-600" />
             <span>OFFICIAL PROGRAM PERKS</span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
-            Swag & Reward Eligibility Tiers
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
+            <span>✊</span> Exclusive Rewards &amp; Milestones
           </h2>
           <p className="text-xs text-slate-500 mt-1">
-            Rewards are distributed by GDG On Campus NECN upon program closing verification.
+            Official milestone incentives for the Google Cloud Learn with Communities cohort at NECN.
           </p>
+        </div>
+
+        {/* PROMINENT REWARD SUMMARY CALLOUT */}
+        <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-500/10 via-emerald-500/10 to-blue-500/10 border border-slate-200/80 shadow-xs space-y-2.5">
+          <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+            <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+            <span>Summary of Rewards</span>
+          </h3>
+          <ul className="grid grid-cols-1 md:grid-cols-3 gap-2.5 text-xs">
+            <li className="p-3 rounded-xl bg-white/90 border border-amber-200/80 shadow-2xs">
+              <span className="font-extrabold text-amber-800 block text-xs">• Complete 5 Skill Badges:</span>
+              <span className="text-slate-700 text-[11px] leading-relaxed">Earn an official branded <strong>Water Bottle</strong>.</span>
+            </li>
+            <li className="p-3 rounded-xl bg-white/90 border border-emerald-200/80 shadow-2xs">
+              <span className="font-extrabold text-emerald-800 block text-xs">• Complete 10 Skill Badges:</span>
+              <span className="text-slate-700 text-[11px] leading-relaxed">Earn an exclusive <strong>Developer Kit with a T-Shirt</strong>.</span>
+            </li>
+            <li className="p-3 rounded-xl bg-white/90 border border-blue-200/80 shadow-2xs">
+              <span className="font-extrabold text-blue-800 block text-xs">• Industry-Recognized Credentials:</span>
+              <span className="text-slate-700 text-[11px] leading-relaxed">Earn digital Google Cloud skill badges to display directly on your <strong>resume and LinkedIn profile</strong>.</span>
+            </li>
+          </ul>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -188,6 +216,9 @@ export const AchievementsPage: React.FC<AchievementsPageProps> = ({
                     <h3 className="text-base font-black text-slate-900 mt-0.5">
                       {tier.name}
                     </h3>
+                    <p className="text-[11px] font-semibold text-slate-600 mt-0.5">
+                      {tier.rewardHeadline}
+                    </p>
                   </div>
                   <div className="p-2.5 rounded-2xl neo-inset text-amber-600">
                     <Icon className="w-5 h-5" />
