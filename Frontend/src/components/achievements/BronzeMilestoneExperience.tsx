@@ -17,7 +17,6 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
   const [webglSupported, setWebglSupported] = useState<boolean>(true);
   const [displayCount, setDisplayCount] = useState<number>(0);
   const [confettiFired, setConfettiFired] = useState<boolean>(false);
-  const [isHovered, setIsHovered] = useState<boolean>(false);
 
   const mouseRef = useRef<{ x: number; y: number; targetX: number; targetY: number }>({
     x: 0,
@@ -53,13 +52,13 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // Dimensions
-    const width = container.clientWidth || 480;
-    const height = container.clientHeight || 420;
+    const width = container.clientWidth || 520;
+    const height = container.clientHeight || 480;
 
-    // Scene & Perspective Camera
+    // Scene & Perspective Camera (placed at distance 9.6 to provide ample vertical breathing room)
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 100);
-    camera.position.set(0, 0, 7.6);
+    const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
+    camera.position.set(0, 0, 9.6);
 
     let renderer: THREE.WebGLRenderer;
     try {
@@ -99,13 +98,13 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
 
       const cx = 512;
       const cy = 512;
-      const hexRadius = 460;
+      const hexRadius = 450;
 
-      // Draw Hexagonal Clipping Path
+      // Draw Hexagonal Clipping Path (Apex at top and bottom to match 3D geometry)
       const drawHexPath = (targetCtx: CanvasRenderingContext2D, r: number) => {
         targetCtx.beginPath();
         for (let i = 0; i < 6; i++) {
-          const angle = (i * Math.PI) / 3;
+          const angle = -Math.PI / 2 + (i * Math.PI) / 3;
           const hx = cx + Math.cos(angle) * r;
           const hy = cy + Math.sin(angle) * r;
           if (i === 0) targetCtx.moveTo(hx, hy);
@@ -134,25 +133,6 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, 1024, 1024);
 
-      // Subtle Concentric Hexagonal Micro-Grooves
-      for (let r = 180; r < hexRadius - 20; r += 24) {
-        drawHexPath(ctx, r);
-        ctx.strokeStyle = r % 48 === 0 ? 'rgba(223, 155, 110, 0.18)' : 'rgba(122, 67, 32, 0.12)';
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-      }
-
-      // Decorative Outer Hexagonal Bevel Border
-      drawHexPath(ctx, hexRadius - 15);
-      ctx.strokeStyle = '#DF9B6E';
-      ctx.lineWidth = 8;
-      ctx.stroke();
-
-      drawHexPath(bCtx, hexRadius - 15);
-      bCtx.strokeStyle = '#FFFFFF';
-      bCtx.lineWidth = 8;
-      bCtx.stroke();
-
       // Top Header: "GDG ON CAMPUS"
       ctx.font = 'bold 36px "Plus Jakarta Sans", "Arial Black", sans-serif';
       ctx.textAlign = 'center';
@@ -173,7 +153,7 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       const pillW = 140;
       const pillH = 38;
       const pillX = cx - pillW / 2;
-      const pillY = cy - 185;
+      const pillY = cy - 180;
       ctx.fillStyle = '#4A2510';
       ctx.strokeStyle = '#DF9B6E';
       ctx.lineWidth = 2;
@@ -221,7 +201,6 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       ctx.fillText('}', cx + 140, logoY);
       ctx.shadowBlur = 0;
 
-      // Bump for Logo
       bCtx.font = '900 120px "Plus Jakarta Sans", "Montserrat", sans-serif';
       bCtx.textAlign = 'center';
       bCtx.textBaseline = 'middle';
@@ -230,7 +209,7 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
 
       // -----------------------------------------------------------------------
       // ENGRAVED BRONZE TEXT: "BRONZE" & "MILESTONE ACHIEVED"
-      // (Clean typography with NO line or rectangle box below)
+      // Completely clean typography with NO lines below
       // -----------------------------------------------------------------------
       ctx.font = '900 italic 86px "Plus Jakarta Sans", "Impact", sans-serif';
       ctx.letterSpacing = '6px';
@@ -255,7 +234,7 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       bCtx.fillStyle = '#FFFFFF';
       bCtx.fillText('BRONZE', cx, cy + 120);
 
-      // MILESTONE ACHIEVED - clean typography without any enclosing line/box
+      // MILESTONE ACHIEVED - clean typography without any line or box
       ctx.font = '800 28px "Plus Jakarta Sans", sans-serif';
       ctx.letterSpacing = '5px';
       ctx.fillStyle = '#DF9B6E';
@@ -270,13 +249,7 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
 
       const colorTexture = new THREE.CanvasTexture(cCanvas);
       colorTexture.colorSpace = THREE.SRGBColorSpace;
-      // Rotate -90 degrees so the texture aligns perfectly upright and normal on the cylinder top cap
-      colorTexture.center.set(0.5, 0.5);
-      colorTexture.rotation = -Math.PI / 2;
-
       const bumpTexture = new THREE.CanvasTexture(bCanvas);
-      bumpTexture.center.set(0.5, 0.5);
-      bumpTexture.rotation = -Math.PI / 2;
 
       return { colorMap: colorTexture, bumpMap: bumpTexture };
     };
@@ -327,8 +300,22 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     shieldGroup.add(ridgeMesh);
 
     // 4. Front Shield Face with High-Res Texture (Layer 4)
-    const faceGeo = new THREE.CylinderGeometry(2.14, 2.14, 0.05, 6);
+    const faceRadius = 2.14;
+    const faceGeo = new THREE.CylinderGeometry(faceRadius, faceRadius, 0.05, 6);
     faceGeo.rotateX(Math.PI / 2);
+
+    // Precise Planar UV Mapping: Maps 3D X/Y coordinates directly onto 2D U/V space
+    // Guarantees 100% straight, upright, unmirrored rendering
+    const pos = faceGeo.attributes.position;
+    const uv = faceGeo.attributes.uv;
+    for (let i = 0; i < pos.count; i++) {
+      if (pos.getZ(i) > 0.01) {
+        const x = pos.getX(i);
+        const y = pos.getY(i);
+        uv.setXY(i, x / (2 * faceRadius) + 0.5, y / (2 * faceRadius) + 0.5);
+      }
+    }
+    uv.needsUpdate = true;
 
     const faceMat = new THREE.MeshStandardMaterial({
       color: 0xFFFFFF,
@@ -355,7 +342,7 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     // 6. Glistening Corner Rivets (Single clean front rivet at each of the 6 hexagonal corners)
     const rivetGeo = new THREE.SphereGeometry(0.065, 14, 14);
     for (let i = 0; i < 6; i++) {
-      const angle = Math.PI / 6 + (i * Math.PI) / 3;
+      const angle = Math.PI / 2 + (i * Math.PI) / 3;
       const rx = Math.cos(angle) * 2.36;
       const ry = Math.sin(angle) * 2.36;
 
@@ -432,7 +419,7 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     scene.add(sweepLight);
 
     // -------------------------------------------------------------------------
-    // ENTRANCE & IDLE ANIMATION LOOP
+    // ENTRANCE & SMOOTH IDLE ANIMATION LOOP (No Cropping)
     // -------------------------------------------------------------------------
     let isVisible = true;
     let animId: number;
@@ -440,7 +427,7 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
 
     if (!isReduced) {
       shieldGroup.scale.set(0.1, 0.1, 0.1);
-      shieldGroup.position.y = -1.2;
+      shieldGroup.position.y = -0.8;
       shieldGroup.rotation.y = -Math.PI * 1.2;
     }
 
@@ -475,24 +462,23 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
 
         const currentScale = 0.1 + 0.9 * easeOut;
         shieldGroup.scale.set(currentScale, currentScale, currentScale);
-        shieldGroup.position.y = -1.2 * (1 - easeOut);
+        shieldGroup.position.y = -0.8 * (1 - easeOut);
         shieldGroup.rotation.y = -Math.PI * 1.2 * (1 - easeOut);
 
-        // Light sweep moves smoothly across the shield face
         sweepLight.position.x = -4 + 8 * easeOut;
       } else {
-        // 2. Idle State: Subtle bob, slow yaw drift, and cursor tilt
+        // 2. Idle State: Smooth, gentle float without any edge clipping
         if (!isReduced) {
           mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.05;
           mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.05;
 
-          const idleBob = Math.sin(elapsed * 1.2) * 0.07;
-          const idleYaw = Math.sin(elapsed * 0.6) * 0.12;
-          const idlePitch = Math.cos(elapsed * 0.8) * 0.06;
+          const idleBob = Math.sin(elapsed * 0.9) * 0.04;
+          const idleYaw = Math.sin(elapsed * 0.5) * 0.1;
+          const idlePitch = Math.cos(elapsed * 0.7) * 0.05;
 
           shieldGroup.position.y = idleBob;
-          shieldGroup.rotation.y = idleYaw + mouseRef.current.x * 0.45;
-          shieldGroup.rotation.x = idlePitch - mouseRef.current.y * 0.35;
+          shieldGroup.rotation.y = idleYaw + mouseRef.current.x * 0.35;
+          shieldGroup.rotation.x = idlePitch - mouseRef.current.y * 0.25;
 
           // Periodic light sweep every ~6.5 seconds
           const sweepCycle = (elapsed % 6.5) / 6.5;
@@ -526,16 +512,10 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     const handleMouseLeave = () => {
       mouseRef.current.targetX = 0;
       mouseRef.current.targetY = 0;
-      setIsHovered(false);
-    };
-
-    const handleMouseEnter = () => {
-      setIsHovered(true);
     };
 
     container.addEventListener('mousemove', handleMouseMove);
     container.addEventListener('mouseleave', handleMouseLeave);
-    container.addEventListener('mouseenter', handleMouseEnter);
 
     const handleResize = () => {
       if (!container) return;
@@ -555,7 +535,6 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       window.removeEventListener('resize', handleResize);
       container.removeEventListener('mousemove', handleMouseMove);
       container.removeEventListener('mouseleave', handleMouseLeave);
-      container.removeEventListener('mouseenter', handleMouseEnter);
 
       // Disposal
       baseGeo.dispose();
@@ -622,13 +601,13 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
           Official Google Cloud Learn with Communities 2026 Chapter Milestone
         </p>
 
-        {/* Central 3D Hexagonal Bronze Shield */}
+        {/* Central 3D Hexagonal Bronze Shield (Fully visible, smooth motion, no clipping) */}
         <div className="bme-stage-wrapper">
           {webglSupported ? (
             <div
               ref={mountRef}
               className="w-full h-full flex items-center justify-center select-none"
-              title="Hover to tilt and inspect the 3D Bronze Shield"
+              title="3D Bronze Shield"
             />
           ) : (
             /* Fallback 3D CSS Hexagon */
@@ -645,11 +624,6 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
             </div>
           )}
         </div>
-
-        {/* Interactive Desktop Tilt Hint */}
-        <p className="text-[11px] font-semibold tracking-wider uppercase text-[#7A4320]/75 -mt-2 mb-4 select-none">
-          ✦ {isHovered ? 'Interactive 3D Perspective Active' : 'Hover & tilt to inspect 3D shield depth'} ✦
-        </p>
 
         {/* Rounded White Statistics Container */}
         <div className="bme-stat-card">
