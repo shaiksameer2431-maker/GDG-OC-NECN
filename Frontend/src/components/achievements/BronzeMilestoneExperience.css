@@ -1,50 +1,30 @@
 /* =========================================================================
    GDG ON CAMPUS NECN — BRONZE MILESTONE 3D EXPERIENCE CSS
-   Visual Design Source: Official Instagram Achievement Poster
-   Palette:
-     Background:        #F8F8FA (Soft Off-White)
-     Card Background:   #FFFFFF
-     Bronze Accent:     #B87345
-     Bronze Dark:       #7A4320
-     Bronze Highlight:  #DF9B6E
-     Google Blue:       #4285F4
-     Google Red:        #EA4335
-     Google Yellow:     #FBBC04
-     Google Green:      #34A853
+   Seamless Luxury Integration (Transparent Background, No White Block)
    ========================================================================= */
 
 .bme-section {
   position: relative;
   isolation: isolate;
   width: 100%;
-  background: linear-gradient(180deg, #F8F8FA 0%, #FFFFFF 40%, #F5F5F9 100%);
+  background: transparent;
   color: #171725;
-  padding: clamp(48px, 6vw, 84px) 20px clamp(48px, 6vw, 80px);
+  padding: clamp(36px, 5vw, 64px) 20px clamp(40px, 5vw, 72px);
   overflow: hidden;
-  border-top: 1px solid rgba(184, 115, 69, 0.15);
-  border-bottom: 1px solid rgba(184, 115, 69, 0.15);
 }
 
-/* Subtle background decorative shapes */
+/* Subtle background ambient radial glow */
 .bme-bg-radial {
   position: absolute;
-  top: 15%;
+  top: 20%;
   left: 50%;
   transform: translateX(-50%);
-  width: min(850px, 90vw);
-  height: 550px;
-  background: radial-gradient(circle, rgba(184, 115, 69, 0.08) 0%, rgba(66, 133, 244, 0.04) 40%, transparent 70%);
+  width: min(800px, 90vw);
+  height: 500px;
+  background: radial-gradient(circle, rgba(184, 115, 69, 0.1) 0%, rgba(66, 133, 244, 0.04) 40%, transparent 70%);
   filter: blur(50px);
   pointer-events: none;
   z-index: 1;
-}
-
-/* Confetti particles subtle overlay */
-.bme-confetti-dot {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-  opacity: 0.7;
 }
 
 /* Container */
@@ -59,49 +39,10 @@
   text-align: center;
 }
 
-/* Top GDG Organization Pill */
-.bme-org-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 16px;
-  background: #FFFFFF;
-  border: 1px solid rgba(184, 115, 69, 0.25);
-  border-radius: 9999px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
-  margin-bottom: 18px;
-}
-
-.bme-org-text {
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #4A4A58;
-}
-
-/* 4-Color Google Dot Cluster */
-.bme-google-dots {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.bme-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-}
-
-.bme-dot.blue { background-color: #4285F4; }
-.bme-dot.red { background-color: #EA4335; }
-.bme-dot.yellow { background-color: #FBBC04; }
-.bme-dot.green { background-color: #34A853; }
-
 /* Main Bold Italic Heading */
 .bme-heading {
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  font-size: clamp(28px, 4.5vw, 48px);
+  font-size: clamp(30px, 4.8vw, 50px);
   font-weight: 900;
   font-style: italic;
   letter-spacing: -0.02em;
@@ -119,7 +60,7 @@
   font-size: clamp(13px, 1.8vw, 16px);
   font-weight: 600;
   color: #6A6D7D;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   max-width: 600px;
 }
 
@@ -165,16 +106,17 @@
 /* Rounded White Statistics Container */
 .bme-stat-card {
   position: relative;
-  background: #FFFFFF;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(14px);
   border-radius: 24px;
-  padding: clamp(20px, 3.5vw, 32px) clamp(24px, 4.5vw, 44px);
+  padding: clamp(20px, 3.5vw, 30px) clamp(24px, 4.5vw, 44px);
   box-shadow: 
-    0 16px 36px -6px rgba(20, 24, 43, 0.08),
+    0 16px 36px -6px rgba(20, 24, 43, 0.07),
     0 4px 12px rgba(20, 24, 43, 0.03),
-    0 0 0 1px rgba(184, 115, 69, 0.15);
+    0 0 0 1px rgba(184, 115, 69, 0.18);
   max-width: 540px;
   width: 100%;
-  margin-top: 10px;
+  margin-top: 6px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -184,8 +126,8 @@
 .bme-stat-card:hover {
   transform: translateY(-3px);
   box-shadow: 
-    0 22px 42px -6px rgba(20, 24, 43, 0.12),
-    0 6px 16px rgba(20, 24, 43, 0.05),
+    0 22px 42px -6px rgba(20, 24, 43, 0.1),
+    0 6px 16px rgba(20, 24, 43, 0.04),
     0 0 0 1px rgba(184, 115, 69, 0.3);
 }
 
@@ -200,7 +142,7 @@
   width: 48px;
   height: 48px;
   border-radius: 14px;
-  background: #F8F8FA;
+  background: #FFFFFF;
   border: 1px solid rgba(184, 115, 69, 0.2);
   display: flex;
   align-items: center;
@@ -253,7 +195,7 @@
 
 /* Tagline with Google Brand Colors */
 .bme-tagline {
-  margin-top: 28px;
+  margin-top: 26px;
   font-size: clamp(15px, 2.2vw, 19px);
   font-weight: 800;
   letter-spacing: -0.01em;

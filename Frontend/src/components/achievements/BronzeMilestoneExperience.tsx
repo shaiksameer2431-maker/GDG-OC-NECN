@@ -28,8 +28,6 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
 
   const {
     milestoneTitle,
-    collegeName,
-    organization,
     studentTarget,
     badgeThreshold,
     actualStudentsCompleted5Plus,
@@ -162,20 +160,20 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       ctx.fillStyle = '#FFFFFF';
       ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
       ctx.shadowBlur = 8;
-      ctx.fillText('GDG ON CAMPUS', cx, cy - 250);
+      ctx.fillText('GDG ON CAMPUS', cx, cy - 230);
       ctx.shadowBlur = 0;
 
       bCtx.font = 'bold 36px "Plus Jakarta Sans", "Arial Black", sans-serif';
       bCtx.textAlign = 'center';
       bCtx.textBaseline = 'middle';
       bCtx.fillStyle = '#E0E0E0';
-      bCtx.fillText('GDG ON CAMPUS', cx, cy - 250);
+      bCtx.fillText('GDG ON CAMPUS', cx, cy - 230);
 
       // Top Sub-header Pill: "NECN"
       const pillW = 140;
       const pillH = 38;
       const pillX = cx - pillW / 2;
-      const pillY = cy - 205;
+      const pillY = cy - 185;
       ctx.fillStyle = '#4A2510';
       ctx.strokeStyle = '#DF9B6E';
       ctx.lineWidth = 2;
@@ -192,9 +190,8 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       // MULTICOLOR GDG BRACKETS LOGO: { < / > }
       // Google Blue, Red, Yellow, Green
       // -----------------------------------------------------------------------
-      const logoY = cy - 50;
+      const logoY = cy - 35;
 
-      // Draw GDG Multicolor Brackets
       ctx.font = '900 120px "Plus Jakarta Sans", "Montserrat", sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -233,88 +230,53 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
 
       // -----------------------------------------------------------------------
       // ENGRAVED BRONZE TEXT: "BRONZE" & "MILESTONE ACHIEVED"
+      // (Clean typography with NO line or rectangle box below)
       // -----------------------------------------------------------------------
-      // Main "BRONZE" Text
-      ctx.font = '900 italic 82px "Plus Jakarta Sans", "Impact", sans-serif';
+      ctx.font = '900 italic 86px "Plus Jakarta Sans", "Impact", sans-serif';
       ctx.letterSpacing = '6px';
       ctx.fillStyle = '#1F0F06';
-      ctx.fillText('BRONZE', cx + 2, cy + 112);
+      ctx.fillText('BRONZE', cx + 2, cy + 122);
 
-      const bronzeGrad = ctx.createLinearGradient(cx - 180, cy + 90, cx + 180, cy + 120);
+      const bronzeGrad = ctx.createLinearGradient(cx - 180, cy + 100, cx + 180, cy + 130);
       bronzeGrad.addColorStop(0, '#FFF2E6');
       bronzeGrad.addColorStop(0.3, '#DF9B6E');
       bronzeGrad.addColorStop(0.7, '#B87345');
       bronzeGrad.addColorStop(1, '#7A4320');
       ctx.fillStyle = bronzeGrad;
-      ctx.fillText('BRONZE', cx, cy + 110);
+      ctx.fillText('BRONZE', cx, cy + 120);
 
       // Highlight stroke
       ctx.strokeStyle = '#FFF2E6';
       ctx.lineWidth = 1.5;
-      ctx.strokeText('BRONZE', cx, cy + 110);
+      ctx.strokeText('BRONZE', cx, cy + 120);
 
-      bCtx.font = '900 italic 82px "Plus Jakarta Sans", "Impact", sans-serif';
+      bCtx.font = '900 italic 86px "Plus Jakarta Sans", "Impact", sans-serif';
       bCtx.letterSpacing = '6px';
       bCtx.fillStyle = '#FFFFFF';
-      bCtx.fillText('BRONZE', cx, cy + 110);
+      bCtx.fillText('BRONZE', cx, cy + 120);
 
-      // Curved Banner / Ribbon Label across lower shield: "MILESTONE ACHIEVED"
-      const ribbonY = cy + 200;
-      const rw = 580;
-      const rh = 62;
-      const rx = cx - rw / 2;
+      // MILESTONE ACHIEVED - clean typography without any enclosing line/box
+      ctx.font = '800 28px "Plus Jakarta Sans", sans-serif';
+      ctx.letterSpacing = '5px';
+      ctx.fillStyle = '#DF9B6E';
+      ctx.fillText('MILESTONE ACHIEVED', cx, cy + 195);
 
-      // Ribbon background
-      ctx.fillStyle = '#4A2510';
-      ctx.strokeStyle = '#DF9B6E';
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.roundRect(rx, ribbonY - rh / 2, rw, rh, 12);
-      ctx.fill();
-      ctx.stroke();
-
-      bCtx.fillStyle = '#808080';
-      bCtx.beginPath();
-      bCtx.roundRect(rx, ribbonY - rh / 2, rw, rh, 12);
-      bCtx.fill();
-
-      // Ribbon Text
-      ctx.font = '900 italic 32px "Plus Jakarta Sans", sans-serif';
-      ctx.letterSpacing = '4px';
-      ctx.fillStyle = '#FFFFFF';
-      ctx.fillText('MILESTONE ACHIEVED', cx, ribbonY + 2);
-
-      bCtx.font = '900 italic 32px "Plus Jakarta Sans", sans-serif';
-      bCtx.letterSpacing = '4px';
-      bCtx.fillStyle = '#FFFFFF';
-      bCtx.fillText('MILESTONE ACHIEVED', cx, ribbonY + 2);
-
-      // Five-Pointed Star accents on ribbon flanks
-      const drawFlankStar = (sx: number, sy: number) => {
-        ctx.beginPath();
-        for (let i = 0; i < 5; i++) {
-          const a = (i * Math.PI * 2) / 5 - Math.PI / 2;
-          const aInner = a + Math.PI / 5;
-          const px = sx + Math.cos(a) * 14;
-          const py = sy + Math.sin(a) * 14;
-          const qx = sx + Math.cos(aInner) * 6;
-          const qy = sy + Math.sin(aInner) * 6;
-          if (i === 0) ctx.moveTo(px, py);
-          else ctx.lineTo(px, py);
-          ctx.lineTo(qx, qy);
-        }
-        ctx.closePath();
-        ctx.fillStyle = '#FBBC04';
-        ctx.fill();
-      };
-      drawFlankStar(cx - 220, ribbonY);
-      drawFlankStar(cx + 220, ribbonY);
+      bCtx.font = '800 28px "Plus Jakarta Sans", sans-serif';
+      bCtx.letterSpacing = '5px';
+      bCtx.fillStyle = '#C8C8C8';
+      bCtx.fillText('MILESTONE ACHIEVED', cx, cy + 195);
 
       ctx.restore();
 
       const colorTexture = new THREE.CanvasTexture(cCanvas);
       colorTexture.colorSpace = THREE.SRGBColorSpace;
+      // Rotate -90 degrees so the texture aligns perfectly upright and normal on the cylinder top cap
+      colorTexture.center.set(0.5, 0.5);
+      colorTexture.rotation = -Math.PI / 2;
+
       const bumpTexture = new THREE.CanvasTexture(bCanvas);
+      bumpTexture.center.set(0.5, 0.5);
+      bumpTexture.rotation = -Math.PI / 2;
 
       return { colorMap: colorTexture, bumpMap: bumpTexture };
     };
@@ -390,28 +352,17 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     backMesh.position.z = -0.14;
     shieldGroup.add(backMesh);
 
-    // 6. Glistening Corner Rivets (Placed at all 6 hexagonal vertices)
+    // 6. Glistening Corner Rivets (Single clean front rivet at each of the 6 hexagonal corners)
     const rivetGeo = new THREE.SphereGeometry(0.065, 14, 14);
     for (let i = 0; i < 6; i++) {
-      const angle = (i * Math.PI) / 3;
+      const angle = Math.PI / 6 + (i * Math.PI) / 3;
       const rx = Math.cos(angle) * 2.36;
       const ry = Math.sin(angle) * 2.36;
 
       const rivetFront = new THREE.Mesh(rivetGeo, highlightGoldMat);
       rivetFront.position.set(rx, ry, 0.16);
       shieldGroup.add(rivetFront);
-
-      const rivetBack = new THREE.Mesh(rivetGeo, highlightGoldMat);
-      rivetBack.position.set(rx, ry, -0.16);
-      shieldGroup.add(rivetBack);
     }
-
-    // 7. 3D Curved Bronze Ribbon Segment
-    const ribbonCurve = new THREE.CylinderGeometry(2.32, 2.32, 0.38, 32, 1, true, -Math.PI * 0.42, Math.PI * 0.84);
-    ribbonCurve.rotateX(Math.PI / 2);
-    const ribbonMesh = new THREE.Mesh(ribbonCurve, highlightGoldMat);
-    ribbonMesh.position.set(0, -0.92, 0.15);
-    shieldGroup.add(ribbonMesh);
 
     // -------------------------------------------------------------------------
     // FLOATING PARTICLES & GOOGLE CONFETTI DUST
@@ -461,26 +412,21 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     // -------------------------------------------------------------------------
     // CINEMATIC LIGHTING
     // -------------------------------------------------------------------------
-    // Soft bright ambient base matching the #F8F8FA environment
     const ambientLight = new THREE.AmbientLight(0xFFFFFF, 1.6);
     scene.add(ambientLight);
 
-    // Key Directional Light (Warm highlight from top-right)
     const keyLight = new THREE.DirectionalLight(0xFFF0DC, 2.4);
     keyLight.position.set(4, 5, 5);
     scene.add(keyLight);
 
-    // Fill Light (Subtle bronze fill from bottom-left)
     const fillLight = new THREE.DirectionalLight(0xB87345, 1.2);
     fillLight.position.set(-4, -3, 3);
     scene.add(fillLight);
 
-    // Rim Backlight (Highlighting shield edges)
     const rimLight = new THREE.DirectionalLight(0x4285F4, 1.0);
     rimLight.position.set(0, -3, -4);
     scene.add(rimLight);
 
-    // Dynamic Metallic Sweep Point Light
     const sweepLight = new THREE.PointLight(0xFFFFFF, 3.2, 9);
     sweepLight.position.set(-3.5, 1.2, 2.4);
     scene.add(sweepLight);
@@ -503,7 +449,6 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
         isVisible = entry.isIntersecting;
         if (entry.isIntersecting && !confettiFired) {
           setConfettiFired(true);
-          // Celebratory burst with Google colors + bronze
           confetti({
             particleCount: 45,
             spread: 55,
@@ -618,7 +563,6 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       ridgeGeo.dispose();
       faceGeo.dispose();
       rivetGeo.dispose();
-      ribbonCurve.dispose();
       particleGeometry.dispose();
 
       baseBronzeMat.dispose();
@@ -668,19 +612,6 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
 
       <div className="bme-container">
         
-        {/* Top Header: GDG on Campus – Narayana Engineering College, Nellore */}
-        <div className="bme-org-pill">
-          <div className="bme-google-dots" aria-hidden="true">
-            <span className="bme-dot blue" />
-            <span className="bme-dot red" />
-            <span className="bme-dot yellow" />
-            <span className="bme-dot green" />
-          </div>
-          <span className="bme-org-text">
-            {organization}
-          </span>
-        </div>
-
         {/* Bold Italic Achievement Heading */}
         <h2 className="bme-heading">
           {milestoneTitle}
