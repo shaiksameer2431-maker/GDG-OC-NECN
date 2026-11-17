@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import type { Student, CohortStats, OfficialCourse } from '../../types';
 import { Avatar } from '../common/Avatar';
 import { SwagGiftExperience } from '../swags/SwagGiftExperience';
-import { BronzeAchievement3D } from '../achievements/BronzeAchievement3D';
+import { BronzeMilestoneExperience } from '../achievements/BronzeMilestoneExperience';
 import CloudChampionsScene from '../cloud/CloudChampionsScene';
 import CloudCircuitBackground from '../cloud/CloudCircuitBackground';
 
@@ -522,9 +522,10 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       </section>
 
       {/* =========================================================================
-          COMMUNITY MILESTONE: 3D BRONZE STATUS ACHIEVED SHOWCASE
+          COMMUNITY MILESTONE: 3D BRONZE MILESTONE ACHIEVED SHOWCASE
+          Visual Design Source: Official Instagram Achievement Poster
           ========================================================================= */}
-      <BronzeAchievement3D onExploreLeaderboard={() => onNavigate('leaderboard')} />
+      <BronzeMilestoneExperience onExploreLeaderboard={() => onNavigate('leaderboard')} />
 
       {/* =========================================================================
           SECTION 4: LEARNING PATH & 10-COURSE GRID

@@ -97,6 +97,38 @@ export const AchievementsPage: React.FC<AchievementsPageProps> = ({
         </p>
       </div>
 
+      {/* OFFICIAL GDG ON CAMPUS CHAPTER BRONZE MILESTONE ANNOUNCEMENT */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#F8F8FA] via-white to-[#F5F5F9] border border-[#B87345]/30 p-5 sm:p-6 shadow-sm">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="space-y-1.5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-extrabold bg-[#B87345]/10 text-[#7A4320] border border-[#B87345]/25">
+              <span>✦</span>
+              <span>OFFICIAL COMMUNITY MILESTONE</span>
+              <span className="text-slate-400">•</span>
+              <span>GDG ON CAMPUS NECN</span>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-black italic text-[#7A4320] tracking-tight uppercase">
+              BRONZE MILESTONE ACHIEVED
+            </h3>
+            <p className="text-xs sm:text-sm font-semibold text-slate-600">
+              <strong className="text-slate-900">50+ Students Completed 5 Badges!</strong>
+              <span className="mx-2 text-slate-300">|</span>
+              Together, we <span className="text-[#4285F4] font-bold">Learn.</span> We <span className="text-[#EA4335] font-bold">Build.</span> We <span className="text-[#34A853] font-bold">Grow.</span>
+            </p>
+          </div>
+          <div className="shrink-0 flex items-center gap-3">
+            <div className="px-4 py-2 rounded-xl bg-white border border-[#B87345]/20 shadow-xs text-center">
+              <span className="block text-lg font-black text-[#7A4320]">69</span>
+              <span className="text-[10px] font-bold text-slate-500 uppercase">Achievers (5+ Badges)</span>
+            </div>
+            <div className="px-3.5 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-center">
+              <span className="block text-xs font-bold text-emerald-800">138%</span>
+              <span className="text-[10px] font-semibold text-emerald-600">Target Unlocked</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* WALL OF CHAMPIONS - MILESTONE 3 LEADERS (NEOMORPHIC CARDS) */}
       <section className="space-y-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/80 pb-4">
