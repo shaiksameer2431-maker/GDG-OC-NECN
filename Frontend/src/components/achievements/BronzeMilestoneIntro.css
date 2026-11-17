@@ -15,17 +15,17 @@
   overflow-y: auto;
   overflow-x: hidden;
   padding: 16px;
-  transition: opacity 0.85s cubic-bezier(0.4, 0, 0.2, 1), transform 0.85s cubic-bezier(0.4, 0, 0.2, 1), filter 0.85s ease;
+  transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1), transform 1.8s cubic-bezier(0.4, 0, 0.2, 1), filter 1.8s ease;
 }
 
 .bmi-overlay.bmi-exiting {
   opacity: 0;
-  transform: scale(1.03);
+  transform: scale(1.025);
   filter: blur(8px);
   pointer-events: none;
 }
 
-/* 7.6-second progress bar at top */
+/* 20-second progress bar at top */
 .bmi-progress-track {
   position: fixed;
   top: 0;
@@ -40,7 +40,7 @@
   height: 100%;
   background: linear-gradient(90deg, #4285F4 0%, #EA4335 35%, #FBBC04 70%, #34A853 100%);
   width: 0%;
-  animation: bmi-progress 7.6s linear forwards;
+  animation: bmi-progress 20s linear forwards;
 }
 
 @keyframes bmi-progress {

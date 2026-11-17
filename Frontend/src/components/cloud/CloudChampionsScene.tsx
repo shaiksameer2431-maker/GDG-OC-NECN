@@ -401,6 +401,7 @@ export default function CloudChampionsScene({
       if (disposed) return;
       raf = requestAnimationFrame(render);
       if (!visible) return;
+      if (typeof document !== 'undefined' && document.querySelector('.bmi-overlay:not(.bmi-exiting)')) return;
       const s = time * 0.001;
       if (!reduceMotion) {
         edgeMaterial.uniforms.u.value = s * 1.4;

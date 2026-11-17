@@ -8,11 +8,13 @@ interface BronzeMilestoneExperienceProps {
   onExploreLeaderboard?: () => void;
   className?: string;
   id?: string;
+  isIntro?: boolean;
 }
 
 export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps> = ({
   className = '',
   id = 'bronze-milestone-experience',
+  isIntro = false,
 }) => {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const [webglSupported, setWebglSupported] = useState<boolean>(true);
@@ -72,7 +74,9 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       return;
     }
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const maxDpr = isMobile ? 1.75 : 2.0;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxDpr));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.35;
     container.innerHTML = '';
@@ -473,23 +477,36 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     scene.add(sweepLight);
 
     // -------------------------------------------------------------------------
-    // ENTRANCE & SMOOTH IDLE ANIMATION LOOP (Zero Cropping)
+    // ENTRANCE & SMOOTH IDLE ANIMATION LOOP (Zero Cropping, 60fps Architecture)
     // -------------------------------------------------------------------------
     let isVisible = true;
     let animId: number;
     const startTime = performance.now();
+    const entranceDuration = isIntro ? 4.8 : 1.4;
 
     if (!isReduced) {
-      shieldGroup.scale.set(0.1, 0.1, 0.1);
-      shieldGroup.position.y = -0.8;
-      shieldGroup.rotation.y = -Math.PI * 1.2;
+      shieldGroup.scale.set(0.05, 0.05, 0.05);
+      shieldGroup.position.y = -1.2;
+      shieldGroup.rotation.y = -Math.PI * 2;
     }
+
+    // Cached container bounding rect to eliminate browser layout thrashing on move
+    let cachedRect: DOMRect | null = null;
+    const updateRect = () => {
+      if (container) {
+        cachedRect = container.getBoundingClientRect();
+      }
+    };
+    updateRect();
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         isVisible = entry.isIntersecting;
+        if (entry.isIntersecting) {
+          updateRect();
+        }
       },
-      { threshold: 0.15 }
+      { threshold: 0.1 }
     );
     observer.observe(container);
 
@@ -497,38 +514,47 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       animId = requestAnimationFrame(animate);
       if (!isVisible) return;
 
+      // Senior Architect GPU Optimization:
+      // If this instance is on the Overview page and the full-screen intro is active,
+      // pause rendering to grant 100% GPU bandwidth to the intro!
+      if (!isIntro && typeof document !== 'undefined' && document.querySelector('.bmi-overlay:not(.bmi-exiting)')) {
+        return;
+      }
+
       const elapsed = (currentTime - startTime) / 1000;
 
-      // 1. Entrance Stage (0s -> 2.2s)
-      if (elapsed < 2.2 && !isReduced) {
-        const progress = Math.min(elapsed / 2.2, 1);
-        const easeOut = 1 - Math.pow(1 - progress, 3);
+      // 1. Entrance Stage: Silky smooth cubic-bezier scale, rise, and 360 rotation
+      if (elapsed < entranceDuration && !isReduced) {
+        const p = Math.min(elapsed / entranceDuration, 1);
+        const easeOut = 1 - Math.pow(1 - p, 3.2);
 
-        const currentScale = 0.1 + 0.9 * easeOut;
+        const currentScale = 0.05 + 0.95 * easeOut;
         shieldGroup.scale.set(currentScale, currentScale, currentScale);
-        shieldGroup.position.y = -0.8 * (1 - easeOut);
-        shieldGroup.rotation.y = -Math.PI * 1.2 * (1 - easeOut);
+        shieldGroup.position.y = -1.2 * (1 - easeOut);
+        shieldGroup.rotation.y = -Math.PI * 2 * (1 - easeOut);
 
-        sweepLight.position.x = -4 + 8 * easeOut;
+        // Light sweep glides majestically across the face
+        sweepLight.position.x = -4.5 + 9.0 * easeOut;
+        sweepLight.intensity = 3.6 * Math.sin(p * Math.PI);
       } else {
-        // 2. Idle State: Smooth, gentle float without any edge clipping
+        // 2. Idle State: Smooth, gentle float and interactive 3D perspective
         if (!isReduced) {
-          mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.05;
-          mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.05;
+          mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.06;
+          mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.06;
 
-          const idleBob = Math.sin(elapsed * 0.9) * 0.04;
-          const idleYaw = Math.sin(elapsed * 0.5) * 0.1;
-          const idlePitch = Math.cos(elapsed * 0.7) * 0.05;
+          const idleBob = Math.sin(elapsed * 0.8) * 0.045;
+          const idleYaw = Math.sin(elapsed * 0.45) * 0.075;
+          const idlePitch = Math.cos(elapsed * 0.6) * 0.035;
 
           shieldGroup.position.y = idleBob;
           shieldGroup.rotation.y = idleYaw + mouseRef.current.x * 0.35;
           shieldGroup.rotation.x = idlePitch - mouseRef.current.y * 0.25;
 
-          // Periodic light sweep every ~6.5 seconds
-          const sweepCycle = (elapsed % 6.5) / 6.5;
-          if (sweepCycle < 0.28) {
-            const norm = sweepCycle / 0.28;
-            sweepLight.position.x = -3.5 + 7 * norm;
+          // Periodic light sweep every ~5.5 seconds
+          const sweepCycle = (elapsed % 5.5) / 5.5;
+          if (sweepCycle < 0.26) {
+            const norm = sweepCycle / 0.26;
+            sweepLight.position.x = -4.0 + 8.0 * norm;
             sweepLight.intensity = 3.2 * Math.sin(norm * Math.PI);
           } else {
             sweepLight.intensity = 0.8;
@@ -537,20 +563,25 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       }
 
       // Rotate particle dust
-      particles.rotation.y = elapsed * 0.035;
+      particles.rotation.y = elapsed * 0.04;
 
       renderer.render(scene, camera);
     };
 
     animId = requestAnimationFrame(animate);
 
-    // Desktop Mouse & Mobile Touch 3D Tilt Handlers
+    // Desktop Mouse & Mobile Touch 3D Tilt Handlers with cached rect
     const handleMouseMove = (e: MouseEvent) => {
-      const rect = container.getBoundingClientRect();
+      if (!cachedRect) updateRect();
+      const rect = cachedRect!;
       const nx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
       const ny = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
       mouseRef.current.targetX = Math.max(-1, Math.min(1, nx));
       mouseRef.current.targetY = Math.max(-1, Math.min(1, ny));
+    };
+
+    const handleMouseEnter = () => {
+      updateRect();
     };
 
     const handleMouseLeave = () => {
@@ -558,10 +589,15 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       mouseRef.current.targetY = 0;
     };
 
+    const handleTouchStart = () => {
+      updateRect();
+    };
+
     const handleTouchMove = (e: TouchEvent) => {
       if (e.touches.length > 0) {
+        if (!cachedRect) updateRect();
         const touch = e.touches[0];
-        const rect = container.getBoundingClientRect();
+        const rect = cachedRect!;
         const nx = ((touch.clientX - rect.left) / rect.width - 0.5) * 2;
         const ny = ((touch.clientY - rect.top) / rect.height - 0.5) * 2;
         mouseRef.current.targetX = Math.max(-1, Math.min(1, nx));
@@ -575,25 +611,32 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     };
 
     container.addEventListener('mousemove', handleMouseMove);
+    container.addEventListener('mouseenter', handleMouseEnter);
     container.addEventListener('mouseleave', handleMouseLeave);
+    container.addEventListener('touchstart', handleTouchStart, { passive: true });
     container.addEventListener('touchmove', handleTouchMove, { passive: true });
     container.addEventListener('touchend', handleTouchEnd, { passive: true });
     container.addEventListener('touchcancel', handleTouchEnd, { passive: true });
 
     const handleResize = () => {
       if (!container) return;
+      updateRect();
       const newW = container.clientWidth;
       const newH = container.clientHeight;
       adjustCamera(newW, newH);
     };
     window.addEventListener('resize', handleResize);
+    window.addEventListener('scroll', updateRect, { passive: true });
 
     return () => {
       cancelAnimationFrame(animId);
       observer.disconnect();
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('scroll', updateRect);
       container.removeEventListener('mousemove', handleMouseMove);
+      container.removeEventListener('mouseenter', handleMouseEnter);
       container.removeEventListener('mouseleave', handleMouseLeave);
+      container.removeEventListener('touchstart', handleTouchStart);
       container.removeEventListener('touchmove', handleTouchMove);
       container.removeEventListener('touchend', handleTouchEnd);
       container.removeEventListener('touchcancel', handleTouchEnd);
@@ -621,14 +664,14 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
         renderer.domElement.parentNode.removeChild(renderer.domElement);
       }
     };
-  }, [webglSupported, confettiFired]);
+  }, [webglSupported, isIntro]);
 
   // Smooth Count-Up Animation for 50+ Students
   useEffect(() => {
     let countAnimId: number;
     const target = studentTarget; // 50
     const startTime = performance.now();
-    const duration = 1600;
+    const duration = isIntro ? 3200 : 1600;
 
     const countTick = (now: number) => {
       const p = Math.min((now - startTime) / duration, 1);
@@ -640,7 +683,7 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     };
     countAnimId = requestAnimationFrame(countTick);
     return () => cancelAnimationFrame(countAnimId);
-  }, [studentTarget]);
+  }, [studentTarget, isIntro]);
 
   return (
     <section
