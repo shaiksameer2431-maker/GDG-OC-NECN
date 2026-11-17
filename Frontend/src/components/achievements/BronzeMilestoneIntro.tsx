@@ -12,20 +12,20 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
 
   // Celebratory Falling Paper Confetti Streamers & Auto-Transition
   useEffect(() => {
-    const confettiColors = ['#4285F4', '#EA4335', '#FBBC04', '#34A853', '#E08544', '#F7B882', '#FFD700'];
+    const confettiColors = ['#4285F4', '#EA4335', '#FBBC04', '#34A853', '#EEC39C', '#CC9873', '#B17656'];
 
     // 1. Initial Grand Celebratory Center Blast
     confetti({
-      particleCount: 90,
-      spread: 85,
+      particleCount: 85,
+      spread: 80,
       origin: { y: 0.45 },
       colors: confettiColors,
-      scalar: 1.25,
+      scalar: 1.2,
       disableForReducedMotion: true,
     });
 
-    // 2. Continuous "Papers" Cascade Rain (Running for 8.5 seconds)
-    const confettiEnd = Date.now() + 8500;
+    // 2. Paper Confetti Streamers (Cascades only during first 3.8s so papers settle before intro ends)
+    const confettiEnd = Date.now() + 3800;
     const confettiInterval = setInterval(() => {
       if (Date.now() > confettiEnd) {
         clearInterval(confettiInterval);
@@ -34,47 +34,51 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
 
       // Streamers & papers from left side
       confetti({
-        particleCount: 16,
+        particleCount: 14,
         angle: 60,
-        spread: 60,
+        spread: 55,
         origin: { x: 0, y: 0.6 },
         colors: confettiColors,
-        ticks: 240,
-        gravity: 0.8,
+        ticks: 180,
+        gravity: 0.9,
         shapes: ['square', 'circle'],
-        scalar: 1.15,
+        scalar: 1.1,
         disableForReducedMotion: true,
       });
 
       // Streamers & papers from right side
       confetti({
-        particleCount: 16,
+        particleCount: 14,
         angle: 120,
-        spread: 60,
+        spread: 55,
         origin: { x: 1, y: 0.6 },
         colors: confettiColors,
-        ticks: 240,
-        gravity: 0.8,
+        ticks: 180,
+        gravity: 0.9,
         shapes: ['square', 'circle'],
-        scalar: 1.15,
+        scalar: 1.1,
         disableForReducedMotion: true,
       });
-    }, 280);
+    }, 300);
 
-    // 3. Smooth exit transition begins after 8.6 seconds
+    // 3. Smooth exit transition begins after 6.8 seconds
+    // All papers have settled; instantly clear any stray particles before transition
     const exitTimer = setTimeout(() => {
+      confetti.reset();
       setIsExiting(true);
-    }, 8600);
+    }, 6800);
 
-    // 4. Complete transition and reveal website after 9.4 seconds
+    // 4. Complete transition and reveal website after 7.6 seconds
     const completeTimer = setTimeout(() => {
+      confetti.reset();
       onComplete();
-    }, 9400);
+    }, 7600);
 
     return () => {
       clearInterval(confettiInterval);
       clearTimeout(exitTimer);
       clearTimeout(completeTimer);
+      confetti.reset();
     };
   }, [onComplete]);
 

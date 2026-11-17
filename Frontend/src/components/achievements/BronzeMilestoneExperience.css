@@ -85,11 +85,11 @@
   line-height: 1.15;
   text-transform: uppercase;
   margin-bottom: 6px;
-  background: linear-gradient(135deg, #7A4320 0%, #B87345 35%, #DF9B6E 60%, #9E592B 100%);
+  background: linear-gradient(135deg, #7A3E22 0%, #B17656 30%, #CC9873 55%, #EEC39C 80%, #9E5530 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  filter: drop-shadow(0 2px 8px rgba(184, 115, 69, 0.2));
+  filter: drop-shadow(0 2px 8px rgba(177, 118, 86, 0.25));
 }
 
 .bme-subheading {
