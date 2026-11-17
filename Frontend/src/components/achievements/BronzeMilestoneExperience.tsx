@@ -7,10 +7,12 @@ import './BronzeMilestoneExperience.css';
 interface BronzeMilestoneExperienceProps {
   onExploreLeaderboard?: () => void;
   className?: string;
+  id?: string;
 }
 
 export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps> = ({
   className = '',
+  id = 'bronze-milestone-experience',
 }) => {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const [webglSupported, setWebglSupported] = useState<boolean>(true);
@@ -612,7 +614,7 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
 
   return (
     <section
-      id="bronze-milestone-experience"
+      id={id}
       className={`bme-section ${className}`}
       aria-label="Official GDG NECN Bronze Milestone Achievement Announcement"
     >
@@ -621,6 +623,12 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
 
       <div className="bme-container">
         
+        {/* ACHIEVEMENT UNLOCKED! Celebration Badge */}
+        <div className="bme-unlocked-pill" aria-label="Achievement Unlocked">
+          <span className="bme-sparkle" aria-hidden="true">✦</span>
+          <span>ACHIEVEMENT UNLOCKED!</span>
+        </div>
+
         {/* Bold Italic Achievement Heading */}
         <h2 className="bme-heading">
           {milestoneTitle}

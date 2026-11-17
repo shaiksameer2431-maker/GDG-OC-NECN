@@ -14,7 +14,7 @@
   justify-content: center;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 20px 16px;
+  padding: 16px;
   transition: opacity 0.85s cubic-bezier(0.4, 0, 0.2, 1), transform 0.85s cubic-bezier(0.4, 0, 0.2, 1), filter 0.85s ease;
 }
 
@@ -25,7 +25,7 @@
   pointer-events: none;
 }
 
-/* 9.2-second progress bar at top */
+/* 9.4-second progress bar at top */
 .bmi-progress-track {
   position: fixed;
   top: 0;
@@ -40,7 +40,7 @@
   height: 100%;
   background: linear-gradient(90deg, #4285F4 0%, #EA4335 35%, #FBBC04 70%, #34A853 100%);
   width: 0%;
-  animation: bmi-progress 9.2s linear forwards;
+  animation: bmi-progress 9.4s linear forwards;
 }
 
 @keyframes bmi-progress {
@@ -48,190 +48,20 @@
   100% { width: 100%; }
 }
 
-/* Content Container */
-.bmi-content {
+/* Stage container for the exact same Bronze Milestone Achievement component */
+.bmi-experience-stage {
   position: relative;
   z-index: 2;
-  max-width: 900px;
   width: 100%;
+  max-width: 1120px;
+  margin: auto 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  margin: auto;
-}
-
-/* Organization Branding */
-.bmi-org-title {
-  font-size: clamp(14px, 2.2vw, 18px);
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: #383A49;
-  margin-bottom: 2px;
-}
-
-.bmi-college-title {
-  font-size: clamp(12px, 1.8vw, 15px);
-  font-weight: 600;
-  color: #6A6D7D;
-  margin-bottom: 10px;
-}
-
-/* ACHIEVEMENT UNLOCKED Pill */
-.bmi-unlocked-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 18px;
-  background: #FFFFFF;
-  border: 1px solid rgba(223, 155, 110, 0.6);
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #C66826;
-  box-shadow: 0 4px 14px rgba(198, 104, 38, 0.2);
-  margin-bottom: 8px;
-  animation: bmi-pulse 2s ease-in-out infinite;
-}
-
-@keyframes bmi-pulse {
-  0%, 100% {
-    transform: scale(1);
-    box-shadow: 0 4px 14px rgba(198, 104, 38, 0.2);
-  }
-  50% {
-    transform: scale(1.04);
-    box-shadow: 0 6px 20px rgba(198, 104, 38, 0.4);
-  }
-}
-
-/* Main Heading: BRONZE MILESTONE ACHIEVED */
-.bmi-heading {
-  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-  font-size: clamp(32px, 5.2vw, 56px);
-  font-weight: 900;
-  font-style: italic;
-  letter-spacing: -0.02em;
-  line-height: 1.12;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-  background: linear-gradient(135deg, #C66826 0%, #E58D4C 35%, #F7B882 60%, #B85A1D 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  filter: drop-shadow(0 2px 10px rgba(198, 104, 38, 0.25));
-}
-
-/* 3D Shield Stage Wrapper */
-.bmi-stage-wrapper {
-  position: relative;
-  width: 100%;
-  max-width: 520px;
-  height: clamp(280px, 36vh, 400px);
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  overflow: visible;
 }
 
-/* Statistics Card */
-.bmi-stat-card {
-  position: relative;
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(14px);
-  border-radius: 22px;
-  padding: clamp(14px, 2.5vw, 22px) clamp(20px, 3.5vw, 36px);
-  box-shadow: 
-    0 16px 36px -6px rgba(20, 24, 43, 0.08),
-    0 4px 12px rgba(20, 24, 43, 0.03),
-    0 0 0 1px rgba(198, 104, 38, 0.25);
-  max-width: 480px;
-  width: 100%;
-  margin-top: 4px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.bmi-experience-clean {
+  padding-top: 12px;
+  padding-bottom: 24px;
 }
-
-.bmi-stat-metric-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 4px;
-}
-
-.bmi-stat-icon-wrap {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: #FFFFFF;
-  border: 1px solid rgba(198, 104, 38, 0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-.bmi-stat-number {
-  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-  font-size: clamp(28px, 4.5vw, 40px);
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  line-height: 1;
-  color: #171725;
-}
-
-.bmi-stat-students-label {
-  font-size: clamp(13px, 2vw, 16px);
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #C66826;
-}
-
-.bmi-stat-badge-desc {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: clamp(13px, 1.8vw, 16px);
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  color: #2F3349;
-  margin-top: 4px;
-}
-
-.bmi-check-circle {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #34A853;
-  color: #FFFFFF;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 900;
-  box-shadow: 0 2px 6px rgba(52, 168, 83, 0.35);
-}
-
-/* Tagline */
-.bmi-tagline {
-  margin-top: 16px;
-  font-size: clamp(14px, 2vw, 18px);
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-
-.bmi-tagline-prefix { color: #3B3E52; }
-.bmi-tagline-learn { color: #4285F4; }
-.bmi-tagline-build { color: #EA4335; }
-.bmi-tagline-grow { color: #34A853; }
