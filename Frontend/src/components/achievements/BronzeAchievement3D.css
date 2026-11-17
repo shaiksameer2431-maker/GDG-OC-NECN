@@ -1,0 +1,219 @@
+/* =========================================================================
+   GDG ON CAMPUS NECN — 3D BRONZE ACHIEVEMENT SHOWCASE STYLING
+   Google Cloud Learn with Communities 2026
+   Palette:
+     Deep bronze:     #3B2418
+     Metallic bronze: #A8683A
+     Copper:          #C47A45
+     Highlight:       #E6B27A
+     Dark background: #17120F
+   ========================================================================= */
+
+.bronze-showcase-section {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  background: radial-gradient(120% 100% at 50% 10%, #2a1a12 0%, #17120F 65%, #0d0a08 100%);
+  color: #F8F5EE;
+  padding: clamp(60px, 8vw, 110px) 20px clamp(50px, 7vw, 90px);
+  overflow: hidden;
+  border-top: 1px solid rgba(196, 122, 69, 0.25);
+  border-bottom: 1px solid rgba(196, 122, 69, 0.25);
+  box-shadow: inset 0 20px 40px -15px rgba(0, 0, 0, 0.8), inset 0 -20px 40px -15px rgba(0, 0, 0, 0.8);
+}
+
+/* Subtle background radial ambient glows */
+.bronze-ambient-glow-top {
+  position: absolute;
+  top: -150px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(900px, 90vw);
+  height: 450px;
+  background: radial-gradient(circle, rgba(196, 122, 69, 0.22) 0%, rgba(168, 104, 58, 0.1) 45%, transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bronze-ambient-glow-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(700px, 80vw);
+  height: 700px;
+  background: radial-gradient(circle, rgba(230, 178, 122, 0.08) 0%, rgba(59, 36, 24, 0.2) 50%, transparent 75%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Fine micro-circuit overlay pattern */
+.bronze-grid-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(196, 122, 69, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(196, 122, 69, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, #000 30%, transparent 80%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Container */
+.bronze-showcase-container {
+  position: relative;
+  z-index: 2;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+/* Header & Eyebrow */
+.bronze-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(59, 36, 24, 0.65);
+  border: 1px solid rgba(230, 178, 122, 0.35);
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #E6B27A;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35), 0 0 12px rgba(196, 122, 69, 0.15);
+}
+
+.bronze-eyebrow-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #E6B27A;
+  box-shadow: 0 0 8px #E6B27A;
+  animation: bronze-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes bronze-pulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+    box-shadow: 0 0 14px #E6B27A;
+  }
+}
+
+/* Bronze Metallic Gradient Text */
+.bronze-gradient-title {
+  background: linear-gradient(135deg, #FFF0DC 0%, #E6B27A 25%, #C47A45 55%, #A8683A 80%, #E6B27A 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 2px 20px rgba(196, 122, 69, 0.25);
+}
+
+.bronze-gradient-sub {
+  background: linear-gradient(135deg, #F5D3B3 0%, #C47A45 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Glass Stat Card */
+.bronze-stat-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 20px;
+  background: linear-gradient(145deg, rgba(35, 26, 20, 0.85) 0%, rgba(23, 18, 15, 0.95) 100%);
+  border: 1px solid rgba(196, 122, 69, 0.3);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(230, 178, 122, 0.2);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.bronze-stat-chip:hover {
+  transform: translateY(-2px);
+  border-color: rgba(230, 178, 122, 0.55);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5), 0 0 16px rgba(196, 122, 69, 0.2);
+}
+
+/* 3D Canvas Stage */
+.bronze-canvas-wrapper {
+  position: relative;
+  width: 100%;
+  height: clamp(380px, 46vw, 520px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bronze-canvas-element {
+  width: 100% !important;
+  height: 100% !important;
+  outline: none;
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.bronze-canvas-element:active {
+  cursor: grabbing;
+}
+
+/* Light Sweep Ray Overlay */
+.bronze-light-sweep {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(230, 178, 122, 0.15) 50%, transparent);
+  transform: skewX(-25deg);
+  pointer-events: none;
+  animation: bronze-sweep 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation-delay: 1.5s;
+}
+
+@keyframes bronze-sweep {
+  0% {
+    left: -100%;
+  }
+  30%, 100% {
+    left: 200%;
+  }
+}
+
+/* Fallback 3D CSS Medal if WebGL is unavailable */
+.bronze-fallback-medal {
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #E6B27A 0%, #C47A45 35%, #A8683A 65%, #3B2418 100%);
+  box-shadow: 
+    0 12px 35px rgba(0, 0, 0, 0.7),
+    0 0 0 10px #2A1A12,
+    0 0 0 14px #A8683A,
+    0 0 0 20px #3B2418,
+    0 0 40px rgba(196, 122, 69, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .bronze-eyebrow-dot,
+  .bronze-light-sweep {
+    animation: none !important;
+  }
+}
