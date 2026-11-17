@@ -353,13 +353,6 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
     </section>
 
       {/* =========================================================================
-          COMMUNITY MILESTONE: 3D BRONZE MILESTONE ACHIEVED SHOWCASE
-          Visual Design Source: Official Instagram Achievement Poster
-          Positioned prominently right after Hero for immediate post-intro visibility
-          ========================================================================= */}
-      <BronzeMilestoneExperience onExploreLeaderboard={() => onNavigate('leaderboard')} />
-
-      {/* =========================================================================
           SECTION 2: 3D TILT CARDS (LEARN · EARN · BUILD)
           ========================================================================= */}
       <section className="max-w-[1180px] mx-auto px-5 py-12">
@@ -522,6 +515,12 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
           </p>
         </div>
       </section>
+
+      {/* =========================================================================
+          COMMUNITY MILESTONE: 3D BRONZE MILESTONE ACHIEVED SHOWCASE
+          Dedicated section in Overview (distinct and separate from Intro)
+          ========================================================================= */}
+      <BronzeMilestoneExperience onExploreLeaderboard={() => onNavigate('leaderboard')} />
 
       {/* =========================================================================
           SECTION 4: LEARNING PATH & 10-COURSE GRID

@@ -135,9 +135,12 @@ export function App() {
   return (
     <div className="relative min-h-screen bg-[#F4F8FD] text-slate-900 flex flex-col antialiased font-sans selection:bg-blue-500/20 selection:text-blue-700">
       
-      {/* FULL-SCREEN ANIMATED BRONZE MILESTONE ACHIEVEMENT INTRO (Auto-plays then smoothly transitions) */}
+      {/* FULL-SCREEN ANIMATED BRONZE MILESTONE ACHIEVEMENT INTRO (15-second dedicated celebratory intro) */}
       {showBronzeIntro && (
-        <BronzeMilestoneIntro onComplete={() => setShowBronzeIntro(false)} />
+        <BronzeMilestoneIntro onComplete={() => {
+          setShowBronzeIntro(false);
+          window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        }} />
       )}
 
       {/* FLOATING NAVBAR (Untouched Windows / Desktop version) */}

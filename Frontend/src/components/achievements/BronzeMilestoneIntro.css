@@ -1,6 +1,6 @@
 /* =========================================================================
    GDG ON CAMPUS NECN — FULL-SCREEN BRONZE MILESTONE ACHIEVEMENT INTRO CSS
-   Auto-plays on initial page load / refresh with celebratory paper confetti
+   Auto-plays on initial page load / refresh with celebratory party paper blasts
    ========================================================================= */
 
 .bmi-overlay {
@@ -19,7 +19,7 @@
   padding-bottom: max(32px, env(safe-area-inset-bottom, 32px));
   padding-left: 16px;
   padding-right: 16px;
-  transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1), transform 1.8s cubic-bezier(0.4, 0, 0.2, 1), filter 1.8s ease;
+  transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1), transform 1.5s cubic-bezier(0.4, 0, 0.2, 1), filter 1.5s ease;
 }
 
 .bmi-overlay.bmi-exiting {
@@ -29,7 +29,17 @@
   pointer-events: none;
 }
 
-/* Stage container for the exact same Bronze Milestone Achievement component */
+/* Dedicated Party Paper Blasting Canvas (renders on top of everything at z-index 100005) */
+.bmi-confetti-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none;
+  z-index: 100005;
+}
+
+/* Stage container for the standalone Bronze Milestone Achievement component */
 .bmi-experience-stage {
   position: relative;
   z-index: 2;

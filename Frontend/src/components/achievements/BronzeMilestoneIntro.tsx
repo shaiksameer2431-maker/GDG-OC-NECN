@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import confetti from 'canvas-confetti';
 import { BronzeMilestoneExperience } from './BronzeMilestoneExperience';
 import './BronzeMilestoneIntro.css';
@@ -9,116 +9,186 @@ interface BronzeMilestoneIntroProps {
 
 export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onComplete }) => {
   const [isExiting, setIsExiting] = useState<boolean>(false);
+  const confettiCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  // Paper Blasts & Continuous Streamers ALONG WITH Bronze Opening
+  // Dedicated Party Paper Blasting Effect & 15-Second Auto-Transition
   useEffect(() => {
-    const confettiColors = ['#4285F4', '#EA4335', '#FBBC04', '#34A853', '#EEC39C', '#CC9873', '#B17656', '#FFFFFF'];
+    if (!confettiCanvasRef.current) return;
 
-    // 1. Instant Grand Celebratory Paper Blast RIGHT WITH BRONZE OPENING (0.0s)
-    confetti({
-      particleCount: 120,
-      spread: 95,
-      origin: { y: 0.42 },
-      colors: confettiColors,
-      scalar: 1.25,
-      disableForReducedMotion: true,
+    // Create a dedicated confetti instance directly on our overlay canvas (z-index 100005)
+    // Guarantees party papers render ON TOP of the bronze intro with 100% visibility!
+    const partyConfetti = confetti.create(confettiCanvasRef.current, {
+      resize: true,
+      useWorker: true,
     });
 
-    // 2. Synchronized Left & Right Streamer Cannons as Bronze Scales Up (0.4s & 0.8s)
-    const blastTimer1 = setTimeout(() => {
-      confetti({
-        particleCount: 50,
-        angle: 60,
+    const partyColors = [
+      '#4285F4', // Google Blue
+      '#EA4335', // Google Red
+      '#FBBC04', // Google Yellow
+      '#34A853', // Google Green
+      '#FFD700', // Gold Paper
+      '#FF4081', // Neon Pink
+      '#7C4DFF', // Vibrant Purple
+      '#EEC39C', // Rose Bronze
+      '#FFFFFF', // White Confetti
+    ];
+
+    // =========================================================================
+    // PARTY PAPER BLASTING EFFECT — FIRES DIRECTLY ALONG WITH BRONZE OPENING
+    // =========================================================================
+
+    // 1. Initial Grand Center Stage Party Paper Explosion (0.1s)
+    const blast1 = setTimeout(() => {
+      partyConfetti({
+        particleCount: 150,
+        spread: 110,
+        origin: { x: 0.5, y: 0.42 },
+        colors: partyColors,
+        shapes: ['square', 'circle'],
+        scalar: 1.3,
+        startVelocity: 42,
+        gravity: 0.7,
+        ticks: 280,
+        disableForReducedMotion: true,
+      });
+    }, 100);
+
+    // 2. Left Event Cannon Blast (0.4s) — shoots up & across from bottom-left
+    const blast2 = setTimeout(() => {
+      partyConfetti({
+        particleCount: 80,
+        angle: 55,
         spread: 65,
-        origin: { x: 0.05, y: 0.58 },
-        colors: confettiColors,
-        scalar: 1.2,
+        origin: { x: 0.02, y: 0.85 },
+        colors: partyColors,
+        shapes: ['square', 'circle'],
+        scalar: 1.25,
+        startVelocity: 55,
+        gravity: 0.75,
+        ticks: 280,
         disableForReducedMotion: true,
       });
     }, 400);
 
-    const blastTimer2 = setTimeout(() => {
-      confetti({
-        particleCount: 50,
-        angle: 120,
+    // 3. Right Event Cannon Blast (0.7s) — shoots up & across from bottom-right
+    const blast3 = setTimeout(() => {
+      partyConfetti({
+        particleCount: 80,
+        angle: 125,
         spread: 65,
-        origin: { x: 0.95, y: 0.58 },
-        colors: confettiColors,
-        scalar: 1.2,
+        origin: { x: 0.98, y: 0.85 },
+        colors: partyColors,
+        shapes: ['square', 'circle'],
+        scalar: 1.25,
+        startVelocity: 55,
+        gravity: 0.75,
+        ticks: 280,
         disableForReducedMotion: true,
       });
-    }, 800);
+    }, 700);
 
-    // 3. Dual Fanfare Blast as Bronze Locks Facing Forward (1.8s)
-    const blastTimer3 = setTimeout(() => {
-      confetti({
+    // 4. Dual Cross-Cannon Blast as Bronze Locks Upright (1.6s)
+    const blast4 = setTimeout(() => {
+      partyConfetti({
         particleCount: 60,
-        spread: 80,
-        origin: { y: 0.48 },
-        colors: confettiColors,
+        angle: 60,
+        spread: 70,
+        origin: { x: 0.05, y: 0.7 },
+        colors: partyColors,
         scalar: 1.2,
+        startVelocity: 48,
+        gravity: 0.7,
+        ticks: 260,
         disableForReducedMotion: true,
       });
-    }, 1800);
+      partyConfetti({
+        particleCount: 60,
+        angle: 120,
+        spread: 70,
+        origin: { x: 0.95, y: 0.7 },
+        colors: partyColors,
+        scalar: 1.2,
+        startVelocity: 48,
+        gravity: 0.7,
+        ticks: 260,
+        disableForReducedMotion: true,
+      });
+    }, 1600);
 
-    // 4. Continuous Cascade of Falling Paper Streamers while Bronze is Displayed (Runs until 14.5s)
-    const confettiEnd = Date.now() + 14500;
-    const confettiInterval = setInterval(() => {
-      if (Date.now() > confettiEnd) {
-        clearInterval(confettiInterval);
+    // 5. Milestone Achieved Mid-Celebration Blast (4.5s)
+    const blast5 = setTimeout(() => {
+      partyConfetti({
+        particleCount: 90,
+        spread: 90,
+        origin: { x: 0.5, y: 0.48 },
+        colors: partyColors,
+        scalar: 1.25,
+        startVelocity: 38,
+        gravity: 0.7,
+        ticks: 260,
+        disableForReducedMotion: true,
+      });
+    }, 4500);
+
+    // 6. Continuous Shower of Falling Party Papers (runs until 12.0s)
+    const streamEnd = Date.now() + 12000;
+    const streamInterval = setInterval(() => {
+      if (Date.now() > streamEnd) {
+        clearInterval(streamInterval);
         return;
       }
 
-      // Streamers from left
-      confetti({
+      // Falling papers from left
+      partyConfetti({
         particleCount: 10,
         angle: 60,
         spread: 50,
-        origin: { x: 0, y: 0.55 },
-        colors: confettiColors,
+        origin: { x: 0.05, y: 0.5 },
+        colors: partyColors,
         ticks: 220,
         gravity: 0.65,
         shapes: ['square', 'circle'],
-        scalar: 1.1,
+        scalar: 1.15,
         disableForReducedMotion: true,
       });
 
-      // Streamers from right
-      confetti({
+      // Falling papers from right
+      partyConfetti({
         particleCount: 10,
         angle: 120,
         spread: 50,
-        origin: { x: 1, y: 0.55 },
-        colors: confettiColors,
+        origin: { x: 0.95, y: 0.5 },
+        colors: partyColors,
         ticks: 220,
         gravity: 0.65,
         shapes: ['square', 'circle'],
-        scalar: 1.1,
+        scalar: 1.15,
         disableForReducedMotion: true,
       });
-    }, 360);
+    }, 380);
 
-    // 5. All paper generation is completely stopped by 14.5s so papers settle down naturally
-    // 6. Smooth exit transition begins at 18.2 seconds
+    // 7. Start smooth exit dissolve transition at 13.5 seconds
     const exitTimer = setTimeout(() => {
-      confetti.reset();
       setIsExiting(true);
-    }, 18200);
+    }, 13500);
 
-    // 7. Complete transition at 20.0s — guarantees ZERO confetti after bronze closes
+    // 8. Exactly 15 seconds total: complete transition and reveal website from top
     const completeTimer = setTimeout(() => {
-      confetti.reset();
+      partyConfetti.reset();
       onComplete();
-    }, 20000);
+    }, 15000);
 
     return () => {
-      clearInterval(confettiInterval);
-      clearTimeout(blastTimer1);
-      clearTimeout(blastTimer2);
-      clearTimeout(blastTimer3);
+      clearTimeout(blast1);
+      clearTimeout(blast2);
+      clearTimeout(blast3);
+      clearTimeout(blast4);
+      clearTimeout(blast5);
+      clearInterval(streamInterval);
       clearTimeout(exitTimer);
       clearTimeout(completeTimer);
-      confetti.reset();
+      partyConfetti.reset();
     };
   }, [onComplete]);
 
@@ -129,7 +199,10 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
       aria-modal="true"
       aria-label="Official Bronze Milestone Achievement Introduction"
     >
-      {/* The EXACT SAME Bronze Milestone Achievement Component in Intro Mode */}
+      {/* Dedicated High-Z-Index Confetti Canvas: Guarantees party paper blasting renders in front of everything */}
+      <canvas ref={confettiCanvasRef} className="bmi-confetti-canvas" aria-hidden="true" />
+
+      {/* Standalone Bronze Milestone Achievement Component in Intro Mode */}
       <div className="bmi-experience-stage w-full">
         <BronzeMilestoneExperience
           id="intro-bronze-milestone"
