@@ -1539,25 +1539,25 @@ export const SwagGiftExperience: React.FC = () => {
         <p>Every milestone deserves to be celebrated. Open your community swag box and explore what's inside.</p>
 
         {/* EXCLUSIVE REWARDS & MILESTONES CALLOUT */}
-        <div className="max-w-2xl mx-auto mt-4 p-4 rounded-2xl bg-white/10 border border-white/20 text-white backdrop-blur-md shadow-lg text-left space-y-2.5">
+        <div className="max-w-2xl mx-auto mt-4 p-4 rounded-2xl bg-white/85 border border-amber-300/40 text-slate-800 backdrop-blur-md shadow-md text-left space-y-2.5">
           <div className="flex items-center gap-2">
             <span className="text-base">✊</span>
-            <h3 className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-amber-300">
+            <h3 className="text-xs sm:text-sm font-black uppercase tracking-wider text-[#B87345]">
               Exclusive Rewards &amp; Milestones
             </h3>
           </div>
-          <ul className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
-            <li className="p-2.5 rounded-xl bg-black/30 border border-white/10">
-              <span className="font-bold text-amber-300 block text-[11px]">• Complete 5 Skill Badges:</span>
-              <span className="text-slate-200 text-[11px] leading-relaxed">Earn an official branded <strong>Water Bottle</strong>.</span>
+          <ul className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+            <li className="p-3 rounded-xl bg-white border border-amber-200/90 shadow-2xs hover:border-amber-400 transition-all">
+              <span className="font-extrabold text-amber-800 block text-[11px]">• Complete 5 Skill Badges:</span>
+              <span className="text-slate-700 text-[11px] leading-relaxed">Earn an official branded <strong className="text-slate-900">Water Bottle</strong>.</span>
             </li>
-            <li className="p-2.5 rounded-xl bg-black/30 border border-white/10">
-              <span className="font-bold text-emerald-300 block text-[11px]">• Complete 10 Skill Badges:</span>
-              <span className="text-slate-200 text-[11px] leading-relaxed">Earn an exclusive <strong>Developer Kit with a T-Shirt</strong>.</span>
+            <li className="p-3 rounded-xl bg-white border border-emerald-200/90 shadow-2xs hover:border-emerald-400 transition-all">
+              <span className="font-extrabold text-emerald-800 block text-[11px]">• Complete 10 Skill Badges:</span>
+              <span className="text-slate-700 text-[11px] leading-relaxed">Earn an exclusive <strong className="text-slate-900">Developer Kit with a T-Shirt</strong>.</span>
             </li>
-            <li className="p-2.5 rounded-xl bg-black/30 border border-white/10">
-              <span className="font-bold text-blue-300 block text-[11px]">• Industry-Recognized Credentials:</span>
-              <span className="text-slate-200 text-[11px] leading-relaxed">Earn digital Google Cloud skill badges to display directly on your resume and LinkedIn profile.</span>
+            <li className="p-3 rounded-xl bg-white border border-blue-200/90 shadow-2xs hover:border-blue-400 transition-all">
+              <span className="font-extrabold text-blue-800 block text-[11px]">• Industry-Recognized Credentials:</span>
+              <span className="text-slate-700 text-[11px] leading-relaxed">Earn digital Google Cloud skill badges to display directly on your <strong className="text-slate-900">resume and LinkedIn profile</strong>.</span>
             </li>
           </ul>
         </div>
