@@ -1,6 +1,6 @@
 /* =========================================================================
    GDG ON CAMPUS NECN — BRONZE MILESTONE 3D EXPERIENCE CSS
-   Seamless Luxury Integration (Transparent Background, Smooth Proportions)
+   Seamless Mobile & Desktop Responsive Design (Zero Cropping)
    ========================================================================= */
 
 .bme-section {
@@ -9,7 +9,7 @@
   width: 100%;
   background: transparent;
   color: #171725;
-  padding: clamp(32px, 4.5vw, 56px) 20px clamp(36px, 5vw, 68px);
+  padding: clamp(28px, 4vw, 52px) 16px clamp(32px, 4.5vw, 60px);
   overflow: visible;
 }
 
@@ -19,7 +19,7 @@
   top: 25%;
   left: 50%;
   transform: translateX(-50%);
-  width: min(850px, 92vw);
+  width: min(850px, 94vw);
   height: 520px;
   background: radial-gradient(circle, rgba(184, 115, 69, 0.09) 0%, rgba(66, 133, 244, 0.035) 45%, transparent 70%);
   filter: blur(55px);
@@ -37,18 +37,19 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
+  overflow: visible;
 }
 
 /* Main Bold Italic Heading */
 .bme-heading {
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  font-size: clamp(30px, 4.8vw, 52px);
+  font-size: clamp(28px, 4.8vw, 50px);
   font-weight: 900;
   font-style: italic;
   letter-spacing: -0.02em;
   line-height: 1.15;
   text-transform: uppercase;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   background: linear-gradient(135deg, #7A4320 0%, #B87345 35%, #DF9B6E 60%, #9E592B 100%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -57,19 +58,20 @@
 }
 
 .bme-subheading {
-  font-size: clamp(13px, 1.8vw, 16px);
+  font-size: clamp(12px, 1.8vw, 15px);
   font-weight: 600;
   color: #6A6D7D;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   max-width: 600px;
+  padding: 0 10px;
 }
 
-/* 3D Canvas Stage - Generous dimensions to prevent any clipping */
+/* 3D Canvas Stage - Adaptive sizing on mobile and desktop */
 .bme-stage-wrapper {
   position: relative;
   width: 100%;
-  max-width: 620px;
-  height: clamp(420px, 50vw, 530px);
+  max-width: 580px;
+  height: clamp(340px, 46vh, 480px);
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -92,8 +94,8 @@
 
 /* 3D Fallback Shield */
 .bme-fallback-shield {
-  width: 250px;
-  height: 280px;
+  width: clamp(210px, 55vw, 260px);
+  height: clamp(230px, 60vw, 290px);
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
   background: linear-gradient(145deg, #DF9B6E 0%, #B87345 45%, #7A4320 100%);
   display: flex;
@@ -101,24 +103,24 @@
   align-items: center;
   justify-content: center;
   color: #FFFFFF;
-  padding: 24px;
+  padding: 20px;
   box-shadow: 0 15px 35px rgba(122, 67, 32, 0.35);
 }
 
 /* Rounded White Statistics Container */
 .bme-stat-card {
   position: relative;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(14px);
   border-radius: 24px;
-  padding: clamp(20px, 3.5vw, 30px) clamp(24px, 4.5vw, 44px);
+  padding: clamp(18px, 3.5vw, 28px) clamp(20px, 4vw, 40px);
   box-shadow: 
     0 16px 36px -6px rgba(20, 24, 43, 0.07),
     0 4px 12px rgba(20, 24, 43, 0.03),
     0 0 0 1px rgba(184, 115, 69, 0.18);
-  max-width: 540px;
+  max-width: 520px;
   width: 100%;
-  margin-top: 10px;
+  margin-top: 6px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -136,13 +138,13 @@
 .bme-stat-metric-row {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 6px;
+  gap: clamp(10px, 2.5vw, 14px);
+  margin-bottom: 4px;
 }
 
 .bme-stat-icon-wrap {
-  width: 48px;
-  height: 48px;
+  width: clamp(42px, 8vw, 48px);
+  height: clamp(42px, 8vw, 48px);
   border-radius: 14px;
   background: #FFFFFF;
   border: 1px solid rgba(184, 115, 69, 0.2);
@@ -155,7 +157,7 @@
 
 .bme-stat-number {
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-  font-size: clamp(34px, 5vw, 46px);
+  font-size: clamp(30px, 5vw, 44px);
   font-weight: 900;
   letter-spacing: -0.03em;
   line-height: 1;
@@ -163,7 +165,7 @@
 }
 
 .bme-stat-students-label {
-  font-size: clamp(14px, 2.2vw, 18px);
+  font-size: clamp(13px, 2.2vw, 17px);
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -174,7 +176,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: clamp(14px, 2vw, 17px);
+  font-size: clamp(13px, 2vw, 16px);
   font-weight: 800;
   letter-spacing: 0.02em;
   color: #2F3349;
@@ -182,30 +184,30 @@
 }
 
 .bme-check-circle {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: #34A853;
   color: #FFFFFF;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 900;
   box-shadow: 0 2px 6px rgba(52, 168, 83, 0.35);
 }
 
 /* Tagline with Google Brand Colors */
 .bme-tagline {
-  margin-top: 26px;
-  font-size: clamp(15px, 2.2vw, 19px);
+  margin-top: 22px;
+  font-size: clamp(14px, 2.2vw, 18px);
   font-weight: 800;
   letter-spacing: -0.01em;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .bme-tagline-prefix {
@@ -222,21 +224,6 @@
 
 .bme-tagline-grow {
   color: #34A853; /* Google Green */
-}
-
-/* Verification Pill */
-.bme-verif-pill {
-  margin-top: 18px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px 14px;
-  background: rgba(184, 115, 69, 0.08);
-  border: 1px solid rgba(184, 115, 69, 0.22);
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 700;
-  color: #7A4320;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -10,7 +10,6 @@ interface BronzeMilestoneExperienceProps {
 }
 
 export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps> = ({
-  onExploreLeaderboard,
   className = '',
 }) => {
   const mountRef = useRef<HTMLDivElement | null>(null);
@@ -51,14 +50,13 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
 
     const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Dimensions
+    // Initial Dimensions
     const width = container.clientWidth || 520;
-    const height = container.clientHeight || 480;
+    const height = container.clientHeight || 460;
 
-    // Scene & Perspective Camera (placed at distance 9.6 to provide ample vertical breathing room)
+    // Scene & Perspective Camera with adaptive field-of-view for zero cropping on mobile
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
-    camera.position.set(0, 0, 9.6);
 
     let renderer: THREE.WebGLRenderer;
     try {
@@ -72,13 +70,28 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       return;
     }
 
-    renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.35;
     container.innerHTML = '';
     container.appendChild(renderer.domElement);
     renderer.domElement.className = 'bme-canvas-element';
+
+    // Adaptive Camera Sizing: Calculates required distance based on aspect ratio
+    // Guarantees the shield is never cropped on narrow mobile viewports
+    const adjustCamera = (w: number, h: number) => {
+      if (w <= 0 || h <= 0) return;
+      const aspect = w / h;
+      camera.aspect = aspect;
+      const halfFovRad = (camera.fov * Math.PI) / 360;
+      const minVisibleWidth = 5.8;
+      const requiredZ = minVisibleWidth / (2 * Math.tan(halfFovRad) * aspect);
+      camera.position.z = Math.max(9.6, requiredZ);
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    };
+
+    adjustCamera(width, height);
 
     // -------------------------------------------------------------------------
     // PROCEDURAL TEXTURE GENERATION FOR THE HEXAGONAL SHIELD FACE
@@ -209,7 +222,7 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
 
       // -----------------------------------------------------------------------
       // ENGRAVED BRONZE TEXT: "BRONZE" & "MILESTONE ACHIEVED"
-      // Completely clean typography with NO lines below
+      // Clean typography with no lines below
       // -----------------------------------------------------------------------
       ctx.font = '900 italic 86px "Plus Jakarta Sans", "Impact", sans-serif';
       ctx.letterSpacing = '6px';
@@ -224,7 +237,6 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       ctx.fillStyle = bronzeGrad;
       ctx.fillText('BRONZE', cx, cy + 120);
 
-      // Highlight stroke
       ctx.strokeStyle = '#FFF2E6';
       ctx.lineWidth = 1.5;
       ctx.strokeText('BRONZE', cx, cy + 120);
@@ -304,8 +316,7 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     const faceGeo = new THREE.CylinderGeometry(faceRadius, faceRadius, 0.05, 6);
     faceGeo.rotateX(Math.PI / 2);
 
-    // Precise Planar UV Mapping: Maps 3D X/Y coordinates directly onto 2D U/V space
-    // Guarantees 100% straight, upright, unmirrored rendering
+    // Direct Planar UV Mapping: Maps 3D X/Y coordinates directly onto 2D U/V space
     const pos = faceGeo.attributes.position;
     const uv = faceGeo.attributes.uv;
     for (let i = 0; i < pos.count; i++) {
@@ -419,7 +430,7 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     scene.add(sweepLight);
 
     // -------------------------------------------------------------------------
-    // ENTRANCE & SMOOTH IDLE ANIMATION LOOP (No Cropping)
+    // ENTRANCE & SMOOTH IDLE ANIMATION LOOP (Zero Cropping)
     // -------------------------------------------------------------------------
     let isVisible = true;
     let animId: number;
@@ -500,7 +511,7 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
 
     animId = requestAnimationFrame(animate);
 
-    // Mouse tilt tracking
+    // Desktop Mouse & Mobile Touch 3D Tilt Handlers
     const handleMouseMove = (e: MouseEvent) => {
       const rect = container.getBoundingClientRect();
       const nx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
@@ -514,18 +525,33 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       mouseRef.current.targetY = 0;
     };
 
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        const touch = e.touches[0];
+        const rect = container.getBoundingClientRect();
+        const nx = ((touch.clientX - rect.left) / rect.width - 0.5) * 2;
+        const ny = ((touch.clientY - rect.top) / rect.height - 0.5) * 2;
+        mouseRef.current.targetX = Math.max(-1, Math.min(1, nx));
+        mouseRef.current.targetY = Math.max(-1, Math.min(1, ny));
+      }
+    };
+
+    const handleTouchEnd = () => {
+      mouseRef.current.targetX = 0;
+      mouseRef.current.targetY = 0;
+    };
+
     container.addEventListener('mousemove', handleMouseMove);
     container.addEventListener('mouseleave', handleMouseLeave);
+    container.addEventListener('touchmove', handleTouchMove, { passive: true });
+    container.addEventListener('touchend', handleTouchEnd, { passive: true });
+    container.addEventListener('touchcancel', handleTouchEnd, { passive: true });
 
     const handleResize = () => {
       if (!container) return;
       const newW = container.clientWidth;
       const newH = container.clientHeight;
-      if (newW > 0 && newH > 0) {
-        camera.aspect = newW / newH;
-        camera.updateProjectionMatrix();
-        renderer.setSize(newW, newH);
-      }
+      adjustCamera(newW, newH);
     };
     window.addEventListener('resize', handleResize);
 
@@ -535,6 +561,9 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       window.removeEventListener('resize', handleResize);
       container.removeEventListener('mousemove', handleMouseMove);
       container.removeEventListener('mouseleave', handleMouseLeave);
+      container.removeEventListener('touchmove', handleTouchMove);
+      container.removeEventListener('touchend', handleTouchEnd);
+      container.removeEventListener('touchcancel', handleTouchEnd);
 
       // Disposal
       baseGeo.dispose();
@@ -601,7 +630,7 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
           Official Google Cloud Learn with Communities 2026 Chapter Milestone
         </p>
 
-        {/* Central 3D Hexagonal Bronze Shield (Fully visible, smooth motion, no clipping) */}
+        {/* Central 3D Hexagonal Bronze Shield (Mobile & Desktop Zero-Cropping Responsive) */}
         <div className="bme-stage-wrapper">
           {webglSupported ? (
             <div
@@ -672,27 +701,6 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
           <span className="bme-tagline-learn">{tagline.learn}</span>
           <span className="bme-tagline-build">We {tagline.build}</span>
           <span className="bme-tagline-grow">We {tagline.grow}</span>
-        </div>
-
-        {/* CTA to Cohort Leaderboard */}
-        {onExploreLeaderboard && (
-          <div className="mt-6">
-            <button
-              type="button"
-              onClick={onExploreLeaderboard}
-              className="px-6 py-3 rounded-full bg-white border border-[#B87345]/30 text-slate-800 font-extrabold text-xs tracking-wider uppercase shadow-md hover:bg-[#F8F8FA] hover:border-[#B87345] hover:text-[#B87345] active:scale-95 transition-all cursor-pointer flex items-center gap-2"
-            >
-              <span>Explore Cohort Leaderboard</span>
-              <span className="text-sm">→</span>
-            </button>
-          </div>
-        )}
-
-        {/* Official Campaign Verification Footer */}
-        <div className="bme-verif-pill">
-          <span>Official GDG On Campus Milestone Recognition</span>
-          <span>•</span>
-          <span>Google Cloud Learn with Communities 2026</span>
         </div>
 
       </div>
