@@ -10,122 +10,102 @@ interface BronzeMilestoneIntroProps {
 export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onComplete }) => {
   const [isExiting, setIsExiting] = useState<boolean>(false);
 
-  // Celebratory Falling Paper Confetti Streamers & 20-Second Auto-Transition
+  // Paper Blasts & Continuous Streamers ALONG WITH Bronze Opening
   useEffect(() => {
     const confettiColors = ['#4285F4', '#EA4335', '#FBBC04', '#34A853', '#EEC39C', '#CC9873', '#B17656', '#FFFFFF'];
 
-    // 1. Initial Grand Celebratory Center Blast
+    // 1. Instant Grand Celebratory Paper Blast RIGHT WITH BRONZE OPENING (0.0s)
     confetti({
-      particleCount: 110,
-      spread: 90,
+      particleCount: 120,
+      spread: 95,
       origin: { y: 0.42 },
       colors: confettiColors,
       scalar: 1.25,
       disableForReducedMotion: true,
     });
 
-    // 2. Secondary side fanfare bursts
+    // 2. Synchronized Left & Right Streamer Cannons as Bronze Scales Up (0.4s & 0.8s)
     const blastTimer1 = setTimeout(() => {
       confetti({
-        particleCount: 45,
+        particleCount: 50,
         angle: 60,
-        spread: 60,
-        origin: { x: 0.05, y: 0.6 },
+        spread: 65,
+        origin: { x: 0.05, y: 0.58 },
         colors: confettiColors,
-        scalar: 1.15,
+        scalar: 1.2,
         disableForReducedMotion: true,
       });
-    }, 1500);
+    }, 400);
 
     const blastTimer2 = setTimeout(() => {
       confetti({
-        particleCount: 45,
+        particleCount: 50,
         angle: 120,
-        spread: 60,
-        origin: { x: 0.95, y: 0.6 },
+        spread: 65,
+        origin: { x: 0.95, y: 0.58 },
         colors: confettiColors,
-        scalar: 1.15,
+        scalar: 1.2,
         disableForReducedMotion: true,
       });
-    }, 3000);
+    }, 800);
 
-    // 3. Continuous "Papers" Cascade Rain (Streaming smoothly until 17.5 seconds)
-    const confettiEnd = Date.now() + 17500;
+    // 3. Dual Fanfare Blast as Bronze Locks Facing Forward (1.8s)
+    const blastTimer3 = setTimeout(() => {
+      confetti({
+        particleCount: 60,
+        spread: 80,
+        origin: { y: 0.48 },
+        colors: confettiColors,
+        scalar: 1.2,
+        disableForReducedMotion: true,
+      });
+    }, 1800);
+
+    // 4. Continuous Cascade of Falling Paper Streamers while Bronze is Displayed (Runs until 14.5s)
+    const confettiEnd = Date.now() + 14500;
     const confettiInterval = setInterval(() => {
       if (Date.now() > confettiEnd) {
         clearInterval(confettiInterval);
         return;
       }
 
-      // Streamers & papers from left side
+      // Streamers from left
       confetti({
-        particleCount: 12,
+        particleCount: 10,
         angle: 60,
-        spread: 55,
+        spread: 50,
         origin: { x: 0, y: 0.55 },
         colors: confettiColors,
-        ticks: 240,
+        ticks: 220,
         gravity: 0.65,
         shapes: ['square', 'circle'],
         scalar: 1.1,
         disableForReducedMotion: true,
       });
 
-      // Streamers & papers from right side
+      // Streamers from right
       confetti({
-        particleCount: 12,
+        particleCount: 10,
         angle: 120,
-        spread: 55,
+        spread: 50,
         origin: { x: 1, y: 0.55 },
         colors: confettiColors,
-        ticks: 240,
+        ticks: 220,
         gravity: 0.65,
         shapes: ['square', 'circle'],
         scalar: 1.1,
         disableForReducedMotion: true,
       });
-    }, 350);
+    }, 360);
 
-    // 4. Milestone Achieved Fanfare (at 5.0s, 10.0s, and 14.5s)
-    const fanfareTimer1 = setTimeout(() => {
-      confetti({
-        particleCount: 70,
-        spread: 75,
-        origin: { y: 0.5 },
-        colors: confettiColors,
-        scalar: 1.2,
-        disableForReducedMotion: true,
-      });
-    }, 5000);
-
-    const fanfareTimer2 = setTimeout(() => {
-      confetti({
-        particleCount: 65,
-        spread: 70,
-        origin: { y: 0.45 },
-        colors: confettiColors,
-        scalar: 1.15,
-        disableForReducedMotion: true,
-      });
-    }, 10000);
-
-    const fanfareTimer3 = setTimeout(() => {
-      confetti({
-        particleCount: 60,
-        spread: 65,
-        origin: { y: 0.48 },
-        colors: confettiColors,
-        scalar: 1.15,
-        disableForReducedMotion: true,
-      });
-    }, 14500);
-
-    // 5. Smooth exit transition begins at 18.2 seconds (giving 1.8s for silky dissolve)
+    // 5. All paper generation is completely stopped by 14.5s so papers settle down naturally
+    // 6. Smooth exit transition begins at 18.2 seconds
     const exitTimer = setTimeout(() => {
+      confetti.reset();
       setIsExiting(true);
     }, 18200);
 
-    // 6. Complete transition at exactly 20.0 seconds, clearing all confetti before website shows
+    // 7. Complete transition at 20.0s — guarantees ZERO confetti after bronze closes
     const completeTimer = setTimeout(() => {
       confetti.reset();
       onComplete();
@@ -135,9 +115,7 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
       clearInterval(confettiInterval);
       clearTimeout(blastTimer1);
       clearTimeout(blastTimer2);
-      clearTimeout(fanfareTimer1);
-      clearTimeout(fanfareTimer2);
-      clearTimeout(fanfareTimer3);
+      clearTimeout(blastTimer3);
       clearTimeout(exitTimer);
       clearTimeout(completeTimer);
       confetti.reset();
@@ -151,11 +129,6 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
       aria-modal="true"
       aria-label="Official Bronze Milestone Achievement Introduction"
     >
-      {/* 20-Second Auto-Transition Top Progress Bar */}
-      <div className="bmi-progress-track" aria-hidden="true">
-        <div className="bmi-progress-bar" />
-      </div>
-
       {/* The EXACT SAME Bronze Milestone Achievement Component in Intro Mode */}
       <div className="bmi-experience-stage w-full">
         <BronzeMilestoneExperience

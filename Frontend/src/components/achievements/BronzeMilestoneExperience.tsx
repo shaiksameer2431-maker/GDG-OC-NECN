@@ -481,13 +481,14 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     // -------------------------------------------------------------------------
     let isVisible = true;
     let animId: number;
-    const startTime = performance.now();
-    const entranceDuration = isIntro ? 4.8 : 1.4;
+    let startTime = 0;
+    const entranceDuration = isIntro ? 5.5 : 1.4;
 
     if (!isReduced) {
-      shieldGroup.scale.set(0.05, 0.05, 0.05);
-      shieldGroup.position.y = -1.2;
-      shieldGroup.rotation.y = -Math.PI * 2;
+      shieldGroup.scale.set(0.001, 0.001, 0.001);
+      shieldGroup.position.y = -1.4;
+      shieldGroup.rotation.y = -Math.PI * 0.45;
+      shieldGroup.rotation.x = 0.22;
     }
 
     // Cached container bounding rect to eliminate browser layout thrashing on move
@@ -521,21 +522,28 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
         return;
       }
 
+      if (!startTime) startTime = currentTime;
       const elapsed = (currentTime - startTime) / 1000;
 
-      // 1. Entrance Stage: Silky smooth cubic-bezier scale, rise, and 360 rotation
+      // 1. Entrance Stage: Ultra-smooth quintic ease-out scale, elevation, and gentle tilt-to-upright
       if (elapsed < entranceDuration && !isReduced) {
         const p = Math.min(elapsed / entranceDuration, 1);
-        const easeOut = 1 - Math.pow(1 - p, 3.2);
+        const easeOut = 1 - Math.pow(1 - p, 4);
 
-        const currentScale = 0.05 + 0.95 * easeOut;
+        const currentScale = 0.001 + 0.999 * easeOut;
         shieldGroup.scale.set(currentScale, currentScale, currentScale);
-        shieldGroup.position.y = -1.2 * (1 - easeOut);
-        shieldGroup.rotation.y = -Math.PI * 2 * (1 - easeOut);
+        shieldGroup.position.y = -1.4 * (1 - easeOut);
+        shieldGroup.rotation.y = -Math.PI * 0.45 * (1 - easeOut);
+        shieldGroup.rotation.x = 0.22 * (1 - easeOut);
 
-        // Light sweep glides majestically across the face
-        sweepLight.position.x = -4.5 + 9.0 * easeOut;
-        sweepLight.intensity = 3.6 * Math.sin(p * Math.PI);
+        // Radiant light sweep travelling across the face as it settles into place
+        if (p > 0.35) {
+          const sweepP = (p - 0.35) / 0.65;
+          sweepLight.position.x = -4.5 + 9.0 * sweepP;
+          sweepLight.intensity = 3.6 * Math.sin(sweepP * Math.PI);
+        } else {
+          sweepLight.intensity = 0.6;
+        }
       } else {
         // 2. Idle State: Smooth, gentle float and interactive 3D perspective
         if (!isReduced) {

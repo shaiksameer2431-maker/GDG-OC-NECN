@@ -11,10 +11,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 16px;
+  -webkit-overflow-scrolling: touch;
+  padding-top: max(36px, env(safe-area-inset-top, 36px));
+  padding-bottom: max(32px, env(safe-area-inset-bottom, 32px));
+  padding-left: 16px;
+  padding-right: 16px;
   transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1), transform 1.8s cubic-bezier(0.4, 0, 0.2, 1), filter 1.8s ease;
 }
 
@@ -23,29 +27,6 @@
   transform: scale(1.025);
   filter: blur(8px);
   pointer-events: none;
-}
-
-/* 20-second progress bar at top */
-.bmi-progress-track {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: rgba(177, 118, 86, 0.2);
-  z-index: 100001;
-}
-
-.bmi-progress-bar {
-  height: 100%;
-  background: linear-gradient(90deg, #4285F4 0%, #EA4335 35%, #FBBC04 70%, #34A853 100%);
-  width: 0%;
-  animation: bmi-progress 20s linear forwards;
-}
-
-@keyframes bmi-progress {
-  0% { width: 0%; }
-  100% { width: 100%; }
 }
 
 /* Stage container for the exact same Bronze Milestone Achievement component */
@@ -62,6 +43,6 @@
 }
 
 .bmi-experience-clean {
-  padding-top: 12px;
+  padding-top: 8px;
   padding-bottom: 24px;
 }
