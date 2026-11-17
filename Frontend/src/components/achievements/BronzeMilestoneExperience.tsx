@@ -137,12 +137,13 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       drawHexPath(ctx, hexRadius);
       ctx.clip();
 
-      // Metallic Bronze Gradient Base
-      const grad = ctx.createRadialGradient(cx, cy - 80, 50, cx, cy, hexRadius);
-      grad.addColorStop(0, '#B87345');
-      grad.addColorStop(0.4, '#94552A');
-      grad.addColorStop(0.8, '#6E3B1C');
-      grad.addColorStop(1, '#4A2510');
+      // Radiant Golden-Copper Bronze Gradient Base (Lustrous, never dark or black)
+      const grad = ctx.createRadialGradient(cx, cy - 60, 40, cx, cy, hexRadius);
+      grad.addColorStop(0, '#FFE0C4');
+      grad.addColorStop(0.2, '#F0A973');
+      grad.addColorStop(0.55, '#D68249');
+      grad.addColorStop(0.85, '#B8622A');
+      grad.addColorStop(1, '#9E4E1C');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, 1024, 1024);
 
@@ -274,23 +275,23 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     const shieldGroup = new THREE.Group();
     scene.add(shieldGroup);
 
-    // Common Metallic Materials
+    // Radiant Bronze Materials (Gleaming golden copper-bronze, never dark or black)
     const baseBronzeMat = new THREE.MeshStandardMaterial({
-      color: 0x7A4320,
-      metalness: 0.92,
-      roughness: 0.32,
+      color: 0xB8622A,
+      metalness: 0.88,
+      roughness: 0.28,
     });
 
     const polishedBronzeMat = new THREE.MeshStandardMaterial({
-      color: 0xB87345,
-      metalness: 0.95,
-      roughness: 0.22,
+      color: 0xDE8C53,
+      metalness: 0.92,
+      roughness: 0.20,
     });
 
     const highlightGoldMat = new THREE.MeshStandardMaterial({
-      color: 0xDF9B6E,
-      metalness: 0.96,
-      roughness: 0.18,
+      color: 0xFAD4B2,
+      metalness: 0.95,
+      roughness: 0.14,
     });
 
     // 1. Foundation Hexagon Plate (Layer 1)

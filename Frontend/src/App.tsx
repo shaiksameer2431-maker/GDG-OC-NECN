@@ -12,10 +12,14 @@ import { AchievementsPage } from './pages/AchievementsPage';
 import { AboutPage } from './pages/AboutPage';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { Luxury3DView } from './components/luxury/Luxury3DView';
+import { BronzeMilestoneIntro } from './components/achievements/BronzeMilestoneIntro';
 
 export function App() {
   const [currentTab, setCurrentTab] = useState<string>('overview');
   const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null);
+
+  // Full-screen Bronze Milestone Intro (auto-plays on initial page load / refresh, then fades into website)
+  const [showBronzeIntro, setShowBronzeIntro] = useState<boolean>(true);
 
   // App Data state
   const [students, setStudents] = useState<Student[]>(() => storageService.getStudents());
@@ -131,6 +135,11 @@ export function App() {
   return (
     <div className="relative min-h-screen bg-[#F4F8FD] text-slate-900 flex flex-col antialiased font-sans selection:bg-blue-500/20 selection:text-blue-700">
       
+      {/* FULL-SCREEN ANIMATED BRONZE MILESTONE ACHIEVEMENT INTRO (Auto-plays then smoothly transitions) */}
+      {showBronzeIntro && (
+        <BronzeMilestoneIntro onComplete={() => setShowBronzeIntro(false)} />
+      )}
+
       {/* FLOATING NAVBAR (Untouched Windows / Desktop version) */}
       {!isPosterHome && !isLuxury3DTab && (
         <Navbar

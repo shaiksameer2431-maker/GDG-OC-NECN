@@ -257,11 +257,6 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
               </div>
             </div>
 
-            {/* Eyebrow */}
-            <div className="tracking-[0.35em] text-[11px] font-extrabold uppercase text-[#B8922D]">
-              Same Labs · Bigger Opportunities
-            </div>
-
             {/* Main Title with Dynamic Wave & Glow Animation */}
             <h1 className="luxury-serif font-black leading-[1.02] text-[clamp(34px,6.2vw,86px)] tracking-tight select-none">
               <small className="title-necn block text-[0.58em] tracking-tight text-[#1c3f94] mb-1">
