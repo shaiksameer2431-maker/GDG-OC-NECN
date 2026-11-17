@@ -1,66 +1,31 @@
 /* =========================================================================
    GDG ON CAMPUS NECN — FULL-SCREEN BRONZE MILESTONE ACHIEVEMENT INTRO CSS
-   Auto-plays on initial page load / refresh, then smoothly fades into site
+   Auto-plays on initial page load / refresh with celebratory paper confetti
    ========================================================================= */
 
 .bmi-overlay {
   position: fixed;
   inset: 0;
   z-index: 99999;
-  background: radial-gradient(circle at 50% 20%, #FFFFFF 0%, #F8F8FA 45%, #EFEFF5 100%);
+  background: radial-gradient(circle at 50% 25%, #FFFFFF 0%, #F8F8FA 50%, #ECECF2 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 24px 16px;
+  padding: 20px 16px;
   transition: opacity 0.85s cubic-bezier(0.4, 0, 0.2, 1), transform 0.85s cubic-bezier(0.4, 0, 0.2, 1), filter 0.85s ease;
 }
 
 .bmi-overlay.bmi-exiting {
   opacity: 0;
-  transform: scale(1.035);
+  transform: scale(1.03);
   filter: blur(8px);
   pointer-events: none;
 }
 
-/* Skip Intro button */
-.bmi-skip-btn {
-  position: fixed;
-  top: 20px;
-  right: 24px;
-  z-index: 100000;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(184, 115, 69, 0.3);
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #7A4320;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.bmi-skip-btn:hover {
-  background: #FFFFFF;
-  border-color: #B87345;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(184, 115, 69, 0.2);
-}
-
-.bmi-skip-btn:active {
-  transform: scale(0.96);
-}
-
-/* 6-second progress bar at top */
+/* 9.2-second progress bar at top */
 .bmi-progress-track {
   position: fixed;
   top: 0;
@@ -75,7 +40,7 @@
   height: 100%;
   background: linear-gradient(90deg, #4285F4 0%, #EA4335 35%, #FBBC04 70%, #34A853 100%);
   width: 0%;
-  animation: bmi-progress 6s linear forwards;
+  animation: bmi-progress 9.2s linear forwards;
 }
 
 @keyframes bmi-progress {
@@ -110,7 +75,7 @@
   font-size: clamp(12px, 1.8vw, 15px);
   font-weight: 600;
   color: #6A6D7D;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 /* ACHIEVEMENT UNLOCKED Pill */
@@ -120,26 +85,26 @@
   gap: 8px;
   padding: 6px 18px;
   background: #FFFFFF;
-  border: 1px solid rgba(223, 155, 110, 0.5);
+  border: 1px solid rgba(223, 155, 110, 0.6);
   border-radius: 999px;
   font-size: 11px;
   font-weight: 900;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #9E4E1C;
-  box-shadow: 0 4px 14px rgba(184, 115, 69, 0.15);
-  margin-bottom: 10px;
+  color: #C66826;
+  box-shadow: 0 4px 14px rgba(198, 104, 38, 0.2);
+  margin-bottom: 8px;
   animation: bmi-pulse 2s ease-in-out infinite;
 }
 
 @keyframes bmi-pulse {
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 4px 14px rgba(184, 115, 69, 0.15);
+    box-shadow: 0 4px 14px rgba(198, 104, 38, 0.2);
   }
   50% {
     transform: scale(1.04);
-    box-shadow: 0 6px 20px rgba(184, 115, 69, 0.35);
+    box-shadow: 0 6px 20px rgba(198, 104, 38, 0.4);
   }
 }
 
@@ -153,11 +118,11 @@
   line-height: 1.12;
   text-transform: uppercase;
   margin-bottom: 6px;
-  background: linear-gradient(135deg, #B8622A 0%, #D68249 35%, #F0A973 60%, #9E4E1C 100%);
+  background: linear-gradient(135deg, #C66826 0%, #E58D4C 35%, #F7B882 60%, #B85A1D 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  filter: drop-shadow(0 2px 10px rgba(184, 115, 69, 0.25));
+  filter: drop-shadow(0 2px 10px rgba(198, 104, 38, 0.25));
 }
 
 /* 3D Shield Stage Wrapper */
@@ -170,6 +135,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: visible;
 }
 
 /* Statistics Card */
@@ -182,7 +148,7 @@
   box-shadow: 
     0 16px 36px -6px rgba(20, 24, 43, 0.08),
     0 4px 12px rgba(20, 24, 43, 0.03),
-    0 0 0 1px rgba(184, 115, 69, 0.2);
+    0 0 0 1px rgba(198, 104, 38, 0.25);
   max-width: 480px;
   width: 100%;
   margin-top: 4px;
@@ -203,7 +169,7 @@
   height: 42px;
   border-radius: 12px;
   background: #FFFFFF;
-  border: 1px solid rgba(184, 115, 69, 0.25);
+  border: 1px solid rgba(198, 104, 38, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -224,7 +190,7 @@
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #9E4E1C;
+  color: #C66826;
 }
 
 .bmi-stat-badge-desc {

@@ -22,28 +22,69 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
     tagline,
   } = useMemo(() => COMMUNITY_BRONZE_MILESTONE, []);
 
-  // 6-Second Auto-Transition Timer
+  // Continuous "Papers Effect" (Confetti Rain) & 9.2-Second Transition
   useEffect(() => {
-    // Initial Celebratory Confetti Burst
+    const confettiColors = ['#4285F4', '#EA4335', '#FBBC04', '#34A853', '#E08544', '#F7B882'];
+
+    // 1. Initial Grand Celebratory Center Blast
     confetti({
-      particleCount: 55,
-      spread: 60,
-      origin: { y: 0.55 },
-      colors: ['#4285F4', '#EA4335', '#FBBC04', '#34A853', '#D68249'],
+      particleCount: 80,
+      spread: 80,
+      origin: { y: 0.5 },
+      colors: confettiColors,
+      scalar: 1.2,
       disableForReducedMotion: true,
     });
 
-    // Start exit transition after ~5.2 seconds
+    // 2. Continuous "Papers" Cascade Rain (Running for 8.5 seconds)
+    const confettiEnd = Date.now() + 8500;
+    const confettiInterval = setInterval(() => {
+      if (Date.now() > confettiEnd) {
+        clearInterval(confettiInterval);
+        return;
+      }
+
+      // Streamers & papers from left side
+      confetti({
+        particleCount: 16,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0, y: 0.65 },
+        colors: confettiColors,
+        ticks: 200,
+        gravity: 0.85,
+        shapes: ['square', 'circle'],
+        scalar: 1.1,
+        disableForReducedMotion: true,
+      });
+
+      // Streamers & papers from right side
+      confetti({
+        particleCount: 16,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1, y: 0.65 },
+        colors: confettiColors,
+        ticks: 200,
+        gravity: 0.85,
+        shapes: ['square', 'circle'],
+        scalar: 1.1,
+        disableForReducedMotion: true,
+      });
+    }, 280);
+
+    // 3. Start exit transition after 8.4 seconds
     const exitTimer = setTimeout(() => {
       setIsExiting(true);
-    }, 5200);
+    }, 8400);
 
-    // Complete transition and remove overlay after 6 seconds
+    // 4. Complete transition and reveal website after 9.2 seconds
     const completeTimer = setTimeout(() => {
       onComplete();
-    }, 6000);
+    }, 9200);
 
     return () => {
+      clearInterval(confettiInterval);
       clearTimeout(exitTimer);
       clearTimeout(completeTimer);
     };
@@ -53,7 +94,7 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
   useEffect(() => {
     let animId: number;
     const startTime = performance.now();
-    const duration = 1400;
+    const duration = 1600;
 
     const tick = (now: number) => {
       const p = Math.min((now - startTime) / duration, 1);
@@ -64,14 +105,6 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
     animId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(animId);
   }, [studentTarget]);
-
-  // Handle immediate manual skip
-  const handleSkip = () => {
-    setIsExiting(true);
-    setTimeout(() => {
-      onComplete();
-    }, 350);
-  };
 
   // 3D Three.js Shield Scene (Vibrant Golden-Copper Bronze, Zero Blackness)
   useEffect(() => {
@@ -98,7 +131,7 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
 
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.4;
+    renderer.toneMappingExposure = 1.35;
     container.innerHTML = '';
     container.appendChild(renderer.domElement);
     renderer.domElement.className = 'w-full h-full block';
@@ -116,18 +149,14 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
     };
     adjustCamera(width, height);
 
-    // Procedural Texture with Radiant Golden-Copper Palette
+    // Procedural Texture with Radiant Golden-Copper Palette (No dark brown/black)
     const createShieldTextures = () => {
       const cCanvas = document.createElement('canvas');
       cCanvas.width = 1024;
       cCanvas.height = 1024;
       const ctx = cCanvas.getContext('2d');
-      const bCanvas = document.createElement('canvas');
-      bCanvas.width = 1024;
-      bCanvas.height = 1024;
-      const bCtx = bCanvas.getContext('2d');
 
-      if (!ctx || !bCtx) return { colorMap: null, bumpMap: null };
+      if (!ctx) return null;
 
       const cx = 512;
       const cy = 512;
@@ -149,13 +178,13 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
       drawHexPath(ctx, hexRadius);
       ctx.clip();
 
-      // Radiant Golden-Copper Bronze Gradient Base (Lustrous, never dark or black)
+      // Radiant Golden Bronze Gradient Base (Lustrous, warm golden copper)
       const grad = ctx.createRadialGradient(cx, cy - 60, 40, cx, cy, hexRadius);
-      grad.addColorStop(0, '#FFE0C4');
-      grad.addColorStop(0.2, '#F0A973');
-      grad.addColorStop(0.55, '#D68249');
-      grad.addColorStop(0.85, '#B8622A');
-      grad.addColorStop(1, '#9E4E1C');
+      grad.addColorStop(0, '#FFF0DC');
+      grad.addColorStop(0.25, '#F7B882');
+      grad.addColorStop(0.6, '#E08544');
+      grad.addColorStop(0.85, '#C66826');
+      grad.addColorStop(1, '#A8521A');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, 1024, 1024);
 
@@ -164,7 +193,7 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillStyle = '#FFFFFF';
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.45)';
       ctx.shadowBlur = 8;
       ctx.fillText('GDG ON CAMPUS', cx, cy - 230);
       ctx.shadowBlur = 0;
@@ -172,7 +201,7 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
       // Top Sub-header Pill: "NECN"
       const pillW = 140;
       const pillH = 38;
-      ctx.fillStyle = '#7A3810';
+      ctx.fillStyle = '#8B4214';
       ctx.strokeStyle = '#FFE0C4';
       ctx.lineWidth = 2;
       ctx.beginPath();
@@ -217,8 +246,8 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
       const bronzeGrad = ctx.createLinearGradient(cx - 180, cy + 100, cx + 180, cy + 130);
       bronzeGrad.addColorStop(0, '#FFFFFF');
       bronzeGrad.addColorStop(0.35, '#FFE0C4');
-      bronzeGrad.addColorStop(0.7, '#F0A973');
-      bronzeGrad.addColorStop(1, '#D68249');
+      bronzeGrad.addColorStop(0.7, '#F7B882');
+      bronzeGrad.addColorStop(1, '#E08544');
       ctx.fillStyle = bronzeGrad;
       ctx.fillText('BRONZE', cx, cy + 120);
 
@@ -236,34 +265,32 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
 
       const colorTexture = new THREE.CanvasTexture(cCanvas);
       colorTexture.colorSpace = THREE.SRGBColorSpace;
-      const bumpTexture = new THREE.CanvasTexture(bCanvas);
-
-      return { colorMap: colorTexture, bumpMap: bumpTexture };
+      return colorTexture;
     };
 
-    const textures = createShieldTextures();
+    const colorTexture = createShieldTextures();
 
     // 3D Hexagonal Shield Group
     const shieldGroup = new THREE.Group();
     scene.add(shieldGroup);
 
-    // Radiant Bronze Materials
+    // Radiant Bronze Materials with moderate metalness for rich golden-copper diffuse color
     const baseBronzeMat = new THREE.MeshStandardMaterial({
-      color: 0xB8622A,
-      metalness: 0.88,
-      roughness: 0.28,
+      color: 0xC66826,
+      metalness: 0.38,
+      roughness: 0.32,
     });
 
     const polishedBronzeMat = new THREE.MeshStandardMaterial({
-      color: 0xDE8C53,
-      metalness: 0.92,
-      roughness: 0.20,
+      color: 0xE58D4C,
+      metalness: 0.42,
+      roughness: 0.22,
     });
 
     const highlightGoldMat = new THREE.MeshStandardMaterial({
-      color: 0xFAD4B2,
-      metalness: 0.95,
-      roughness: 0.14,
+      color: 0xFCD6B0,
+      metalness: 0.45,
+      roughness: 0.18,
     });
 
     const baseGeo = new THREE.CylinderGeometry(2.5, 2.5, 0.24, 6);
@@ -295,11 +322,9 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
 
     const faceMat = new THREE.MeshStandardMaterial({
       color: 0xFFFFFF,
-      map: textures.colorMap,
-      bumpMap: textures.bumpMap,
-      bumpScale: 0.045,
-      metalness: 0.88,
-      roughness: 0.24,
+      map: colorTexture,
+      metalness: 0.28,
+      roughness: 0.30,
     });
     const faceMesh = new THREE.Mesh(faceGeo, faceMat);
     faceMesh.position.z = 0.14;
@@ -355,14 +380,14 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
     const particles = new THREE.Points(particleGeometry, particleMaterial);
     scene.add(particles);
 
-    // Warm, Rich Cinematic Lighting (radiates brilliant copper-bronze luster)
-    scene.add(new THREE.AmbientLight(0xFFF6ED, 2.0));
+    // Warm, Rich Cinematic Lighting
+    scene.add(new THREE.AmbientLight(0xFFF6ED, 2.2));
 
-    const keyLight = new THREE.DirectionalLight(0xFFF9F0, 2.6);
+    const keyLight = new THREE.DirectionalLight(0xFFF9F0, 2.8);
     keyLight.position.set(4, 5, 5);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0xF0A973, 1.8);
+    const fillLight = new THREE.DirectionalLight(0xF0A973, 2.0);
     fillLight.position.set(-4, -3, 3);
     scene.add(fillLight);
 
@@ -433,8 +458,7 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
       highlightGoldMat.dispose();
       faceMat.dispose();
       particleMaterial.dispose();
-      if (textures.colorMap) textures.colorMap.dispose();
-      if (textures.bumpMap) textures.bumpMap.dispose();
+      if (colorTexture) colorTexture.dispose();
       renderer.dispose();
       if (renderer.domElement && renderer.domElement.parentNode) {
         renderer.domElement.parentNode.removeChild(renderer.domElement);
@@ -449,21 +473,10 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
       aria-modal="true"
       aria-label="Official Bronze Milestone Achievement Introduction"
     >
-      {/* 6-Second Auto-Transition Top Progress Bar */}
+      {/* 9.2-Second Auto-Transition Top Progress Bar */}
       <div className="bmi-progress-track" aria-hidden="true">
         <div className="bmi-progress-bar" />
       </div>
-
-      {/* Skip Intro Button */}
-      <button
-        type="button"
-        onClick={handleSkip}
-        className="bmi-skip-btn"
-        aria-label="Skip introduction and proceed to website"
-      >
-        <span>Skip Intro</span>
-        <span aria-hidden="true">→</span>
-      </button>
 
       {/* Main Content */}
       <div className="bmi-content">
@@ -488,7 +501,7 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
           {webglSupported ? (
             <div ref={mountRef} className="w-full h-full flex items-center justify-center select-none" />
           ) : (
-            <div className="w-48 h-56 bg-gradient-to-br from-[#DF9B6E] via-[#B87345] to-[#7A4320] rounded-2xl flex items-center justify-center text-white font-black italic text-2xl shadow-xl">
+            <div className="w-48 h-56 bg-gradient-to-br from-[#F7B882] via-[#E08544] to-[#C66826] rounded-2xl flex items-center justify-center text-white font-black italic text-2xl shadow-xl">
               BRONZE
             </div>
           )}

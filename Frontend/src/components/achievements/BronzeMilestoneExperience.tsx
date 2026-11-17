@@ -277,21 +277,21 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
 
     // Radiant Bronze Materials (Gleaming golden copper-bronze, never dark or black)
     const baseBronzeMat = new THREE.MeshStandardMaterial({
-      color: 0xB8622A,
-      metalness: 0.88,
-      roughness: 0.28,
+      color: 0xC66826,
+      metalness: 0.38,
+      roughness: 0.32,
     });
 
     const polishedBronzeMat = new THREE.MeshStandardMaterial({
-      color: 0xDE8C53,
-      metalness: 0.92,
-      roughness: 0.20,
+      color: 0xE58D4C,
+      metalness: 0.42,
+      roughness: 0.22,
     });
 
     const highlightGoldMat = new THREE.MeshStandardMaterial({
-      color: 0xFAD4B2,
-      metalness: 0.95,
-      roughness: 0.14,
+      color: 0xFCD6B0,
+      metalness: 0.45,
+      roughness: 0.18,
     });
 
     // 1. Foundation Hexagon Plate (Layer 1)
@@ -334,8 +334,8 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       map: textures.colorMap,
       bumpMap: textures.bumpMap,
       bumpScale: 0.045,
-      metalness: 0.88,
-      roughness: 0.26,
+      metalness: 0.28,
+      roughness: 0.30,
     });
     const faceMesh = new THREE.Mesh(faceGeo, faceMat);
     faceMesh.position.z = 0.14;
@@ -343,8 +343,8 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
 
     // 5. Back Shield Face
     const backMat = new THREE.MeshStandardMaterial({
-      color: 0x5C3218,
-      metalness: 0.9,
+      color: 0x8A4518,
+      metalness: 0.40,
       roughness: 0.35,
     });
     const backMesh = new THREE.Mesh(faceGeo, backMat);
@@ -409,16 +409,16 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     scene.add(particles);
 
     // -------------------------------------------------------------------------
-    // CINEMATIC LIGHTING
+    // CINEMATIC LIGHTING (Radiant golden-copper illumination)
     // -------------------------------------------------------------------------
-    const ambientLight = new THREE.AmbientLight(0xFFFFFF, 1.6);
+    const ambientLight = new THREE.AmbientLight(0xFFF6ED, 2.2);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xFFF0DC, 2.4);
+    const keyLight = new THREE.DirectionalLight(0xFFF9F0, 2.8);
     keyLight.position.set(4, 5, 5);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0xB87345, 1.2);
+    const fillLight = new THREE.DirectionalLight(0xF0A973, 2.0);
     fillLight.position.set(-4, -3, 3);
     scene.add(fillLight);
 

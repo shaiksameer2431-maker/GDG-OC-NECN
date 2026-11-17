@@ -1556,8 +1556,8 @@ export const SwagGiftExperience: React.FC = () => {
               <span className="text-slate-200 text-[11px] leading-relaxed">Earn an exclusive <strong>Developer Kit with a T-Shirt</strong>.</span>
             </li>
             <li className="p-2.5 rounded-xl bg-black/30 border border-white/10">
-              <span className="font-bold text-blue-300 block text-[11px]">• Industry Credentials:</span>
-              <span className="text-slate-200 text-[11px] leading-relaxed">Earn digital Google Cloud badges for <strong>resume &amp; LinkedIn</strong>.</span>
+              <span className="font-bold text-blue-300 block text-[11px]">• Industry-Recognized Credentials:</span>
+              <span className="text-slate-200 text-[11px] leading-relaxed">Earn digital Google Cloud skill badges to display directly on your resume and LinkedIn profile.</span>
             </li>
           </ul>
         </div>
