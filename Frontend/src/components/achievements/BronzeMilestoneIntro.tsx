@@ -11,13 +11,23 @@ interface BronzeMilestoneIntroProps {
 export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onComplete, onPreload }) => {
   const [isExiting, setIsExiting] = useState<boolean>(false);
   const confettiCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const hasFiredRef = useRef<boolean>(false);
 
-  // Dedicated Party Paper Blasting Effect & 15-Second Auto-Transition
+  // Keep callback references stable to prevent re-triggering lifecycle
+  const onCompleteRef = useRef(onComplete);
+  const onPreloadRef = useRef(onPreload);
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+    onPreloadRef.current = onPreload;
+  });
+
+  // Dedicated Party Paper Blasting Effect & 7-Second Auto-Transition (Single Execution Guaranteed)
   useEffect(() => {
     if (!confettiCanvasRef.current) return;
+    if (hasFiredRef.current) return;
+    hasFiredRef.current = true;
 
     // Create a dedicated confetti instance directly on our overlay canvas (z-index 100005)
-    // Guarantees party papers render ON TOP of the bronze intro with 100% visibility!
     const partyConfetti = confetti.create(confettiCanvasRef.current, {
       resize: true,
       useWorker: true,
@@ -36,28 +46,26 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
     ];
 
     // =========================================================================
-    // SINGLE ONE-TIME OPENING CELEBRATION BURST (Clean & Refined)
+    // EXACTLY ONE-TIME SINGLE CELEBRATION BURST (Strictly no repetition)
     // =========================================================================
-
-    // Single Grand Center Stage Party Paper Explosion (0.15s)
     const blastTimer = setTimeout(() => {
       partyConfetti({
-        particleCount: 130,
-        spread: 100,
+        particleCount: 85,
+        spread: 85,
         origin: { x: 0.5, y: 0.42 },
         colors: partyColors,
         shapes: ['square', 'circle'],
-        scalar: 1.2,
-        startVelocity: 40,
-        gravity: 0.75,
-        ticks: 240,
+        scalar: 1.15,
+        startVelocity: 36,
+        gravity: 0.9,
+        ticks: 150,
         disableForReducedMotion: true,
       });
     }, 150);
 
     // Preload Overview page DOM at 5.0 seconds (right before exit dissolve starts at 5.5s)
     const preloadTimer = setTimeout(() => {
-      onPreload?.();
+      onPreloadRef.current?.();
     }, 5000);
 
     // Smooth exit dissolve transition starts at 5.5 seconds
@@ -65,10 +73,10 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
       setIsExiting(true);
     }, 5500);
 
-    // Exactly 7.0 seconds total intro duration: cleanly transition & reveal website from top
+    // Exactly 7.0 seconds total intro duration: cleanly transition & reveal website
     const completeTimer = setTimeout(() => {
       partyConfetti.reset();
-      onComplete();
+      onCompleteRef.current?.();
     }, 7000);
 
     return () => {
@@ -78,7 +86,7 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
       clearTimeout(completeTimer);
       partyConfetti.reset();
     };
-  }, [onComplete, onPreload]);
+  }, []);
 
   return (
     <div

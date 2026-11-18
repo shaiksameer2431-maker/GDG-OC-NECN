@@ -449,7 +449,9 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     });
 
     const particles = new THREE.Points(particleGeometry, particleMaterial);
-    scene.add(particles);
+    if (!isIntro) {
+      scene.add(particles);
+    }
 
     // -------------------------------------------------------------------------
     // CINEMATIC LIGHTING (Radiant golden-copper illumination)
@@ -582,8 +584,10 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
         }
       }
 
-      // Rotate particle dust
-      particles.rotation.y = elapsed * 0.04;
+      // Rotate particle dust (Overview only; intro remains clean and uncluttered)
+      if (!isIntro) {
+        particles.rotation.y = elapsed * 0.04;
+      }
 
       renderer.render(scene, camera);
     };

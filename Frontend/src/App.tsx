@@ -22,6 +22,19 @@ export function App() {
   const [showBronzeIntro, setShowBronzeIntro] = useState<boolean>(true);
   const [preloadOverview, setPreloadOverview] = useState<boolean>(false);
 
+  const handlePreloadIntro = useCallback(() => {
+    setPreloadOverview(true);
+  }, []);
+
+  const handleCompleteIntro = useCallback(() => {
+    setShowBronzeIntro(false);
+    try {
+      window.scrollTo(0, 0);
+    } catch {
+      // safe fallback
+    }
+  }, []);
+
   // App Data state
   const [students, setStudents] = useState<Student[]>(() => storageService.getStudents());
   const [officialCourses] = useState<OfficialCourse[]>(() => storageService.getOfficialCourses());
@@ -139,15 +152,8 @@ export function App() {
       {/* FULL-SCREEN ANIMATED BRONZE MILESTONE ACHIEVEMENT INTRO (7-second dedicated celebratory intro) */}
       {showBronzeIntro && (
         <BronzeMilestoneIntro
-          onPreload={() => setPreloadOverview(true)}
-          onComplete={() => {
-            setShowBronzeIntro(false);
-            try {
-              window.scrollTo(0, 0);
-            } catch {
-              // safe fallback
-            }
-          }}
+          onPreload={handlePreloadIntro}
+          onComplete={handleCompleteIntro}
         />
       )}
 
