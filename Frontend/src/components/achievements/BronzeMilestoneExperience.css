@@ -106,7 +106,7 @@
   position: relative;
   width: 100%;
   max-width: 580px;
-  height: clamp(340px, 46vh, 480px);
+  height: clamp(360px, 48vh, 500px);
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -265,6 +265,8 @@
   .bme-section {
     padding-top: 8px;
     padding-bottom: 24px;
+    padding-left: 8px;
+    padding-right: 8px;
   }
   .bme-unlocked-pill {
     padding: 6px 16px;
@@ -282,7 +284,9 @@
     margin-bottom: 6px;
   }
   .bme-stage-wrapper {
-    height: clamp(320px, 48vh, 420px);
+    width: 100%;
+    max-width: 100%;
+    height: clamp(380px, 56vh, 480px);
   }
   .bme-stat-card {
     padding: 14px 20px;

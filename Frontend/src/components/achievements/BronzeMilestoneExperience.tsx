@@ -72,18 +72,23 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     container.appendChild(renderer.domElement);
     renderer.domElement.className = 'bme-canvas-element';
 
-    // Adaptive Camera Sizing: Accurately frames the 5.0-unit bronze shield
-    // Maximizes visible size on mobile while guaranteeing zero cropping on all viewports
+    // Adaptive Camera Sizing: Accurately frames the hexagonal bronze shield (Width: 4.33, Height: 5.0)
+    // Maximizes visible size on mobile overview while guaranteeing zero cropping on all viewports
     const adjustCamera = (w: number, h: number) => {
       if (w <= 0 || h <= 0) return;
       const aspect = w / h;
       camera.aspect = aspect;
       const halfFovRad = (camera.fov * Math.PI) / 360;
       const tanHalfFov = Math.tan(halfFovRad);
-      // Shield is 5.0 units across. 5.35 units provides an optimal, safe margin with maximum mobile visibility!
-      const targetVisibleDim = 5.35;
-      const zForHeight = targetVisibleDim / (2 * tanHalfFov);
-      const zForWidth = targetVisibleDim / (2 * tanHalfFov * aspect);
+
+      // Geometry bounding box: Width = 4.33 units, Height = 5.0 units.
+      // On mobile overview, frame with calibrated bounds to ensure maximum commanding presence with 0 cropping:
+      const mobile = (typeof window !== 'undefined' && window.innerWidth < 768) || w < 640;
+      const targetHeight = mobile ? (isIntro ? 5.25 : 5.15) : 5.35;
+      const targetWidth = mobile ? (isIntro ? 4.55 : 4.42) : 4.65;
+
+      const zForHeight = targetHeight / (2 * tanHalfFov);
+      const zForWidth = targetWidth / (2 * tanHalfFov * aspect);
       camera.position.z = Math.max(zForHeight, zForWidth);
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
@@ -551,6 +556,7 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
         sweepLight.position.x = -4.5 + 9.0 * easeOut;
         sweepLight.intensity = 1.0 + 3.0 * Math.sin(p * Math.PI);
       } else {
+        shieldGroup.scale.set(1.0, 1.0, 1.0);
         // 2. Idle State: Smooth, gentle float and interactive 3D perspective
         if (!isReduced) {
           mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.06;

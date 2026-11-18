@@ -135,11 +135,15 @@ export function App() {
   return (
     <div className="relative min-h-screen bg-[#F4F8FD] text-slate-900 flex flex-col antialiased font-sans selection:bg-blue-500/20 selection:text-blue-700">
       
-      {/* FULL-SCREEN ANIMATED BRONZE MILESTONE ACHIEVEMENT INTRO (15-second dedicated celebratory intro) */}
+      {/* FULL-SCREEN ANIMATED BRONZE MILESTONE ACHIEVEMENT INTRO (12-second dedicated celebratory intro) */}
       {showBronzeIntro && (
         <BronzeMilestoneIntro onComplete={() => {
           setShowBronzeIntro(false);
-          window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+          try {
+            window.scrollTo(0, 0);
+          } catch {
+            // safe fallback
+          }
         }} />
       )}
 
@@ -168,7 +172,7 @@ export function App() {
       {/* MAIN CONTAINER (Fluid scaling across mobile and desktop) */}
       <main className={`relative z-10 flex-grow w-full max-w-6xl xl:max-w-7xl mx-auto px-3 sm:px-4 md:px-6 ${isPosterHome || isLuxury3DTab ? 'p-0 pb-0' : 'pb-24 md:pb-16 pt-6 md:pt-24'}`}>
         <ErrorBoundary>
-          {isPosterHome && !showBronzeIntro && (
+          {isPosterHome && (
             <OverviewPage
               stats={stats}
               topStudents={students}
