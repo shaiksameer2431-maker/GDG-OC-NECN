@@ -88,104 +88,50 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
       });
     }, 700);
 
-    // 4. Dual Cross-Cannon Blast as Bronze Locks Upright (1.6s)
+    // 4. Dual Cross-Cannon Blast as Bronze Locks Upright (1.8s)
     const blast4 = setTimeout(() => {
       partyConfetti({
-        particleCount: 60,
+        particleCount: 50,
         angle: 60,
-        spread: 70,
+        spread: 60,
         origin: { x: 0.05, y: 0.7 },
         colors: partyColors,
         scalar: 1.2,
-        startVelocity: 48,
-        gravity: 0.7,
-        ticks: 260,
+        startVelocity: 44,
+        gravity: 0.75,
+        ticks: 240,
         disableForReducedMotion: true,
       });
       partyConfetti({
-        particleCount: 60,
+        particleCount: 50,
         angle: 120,
-        spread: 70,
+        spread: 60,
         origin: { x: 0.95, y: 0.7 },
         colors: partyColors,
         scalar: 1.2,
-        startVelocity: 48,
-        gravity: 0.7,
-        ticks: 260,
+        startVelocity: 44,
+        gravity: 0.75,
+        ticks: 240,
         disableForReducedMotion: true,
       });
-    }, 1600);
+    }, 1800);
 
-    // 5. Milestone Achieved Mid-Celebration Blast (4.5s)
-    const blast5 = setTimeout(() => {
-      partyConfetti({
-        particleCount: 90,
-        spread: 90,
-        origin: { x: 0.5, y: 0.48 },
-        colors: partyColors,
-        scalar: 1.25,
-        startVelocity: 38,
-        gravity: 0.7,
-        ticks: 260,
-        disableForReducedMotion: true,
-      });
-    }, 4500);
-
-    // 6. Continuous Shower of Falling Party Papers (runs until 12.0s)
-    const streamEnd = Date.now() + 12000;
-    const streamInterval = setInterval(() => {
-      if (Date.now() > streamEnd) {
-        clearInterval(streamInterval);
-        return;
-      }
-
-      // Falling papers from left
-      partyConfetti({
-        particleCount: 10,
-        angle: 60,
-        spread: 50,
-        origin: { x: 0.05, y: 0.5 },
-        colors: partyColors,
-        ticks: 220,
-        gravity: 0.65,
-        shapes: ['square', 'circle'],
-        scalar: 1.15,
-        disableForReducedMotion: true,
-      });
-
-      // Falling papers from right
-      partyConfetti({
-        particleCount: 10,
-        angle: 120,
-        spread: 50,
-        origin: { x: 0.95, y: 0.5 },
-        colors: partyColors,
-        ticks: 220,
-        gravity: 0.65,
-        shapes: ['square', 'circle'],
-        scalar: 1.15,
-        disableForReducedMotion: true,
-      });
-    }, 380);
-
-    // 7. Start smooth exit dissolve transition at 13.5 seconds
+    // Smooth exit dissolve transition starts at 10.5 seconds
     const exitTimer = setTimeout(() => {
       setIsExiting(true);
-    }, 13500);
+    }, 10500);
 
-    // 8. Exactly 15 seconds total: complete transition and reveal website from top
+    // Exactly 12.0 seconds total intro duration: cleanly transition & reveal website from top
     const completeTimer = setTimeout(() => {
       partyConfetti.reset();
       onComplete();
-    }, 15000);
+    }, 12000);
 
     return () => {
       clearTimeout(blast1);
       clearTimeout(blast2);
       clearTimeout(blast3);
       clearTimeout(blast4);
-      clearTimeout(blast5);
-      clearInterval(streamInterval);
       clearTimeout(exitTimer);
       clearTimeout(completeTimer);
       partyConfetti.reset();
