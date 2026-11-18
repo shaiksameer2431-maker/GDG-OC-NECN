@@ -282,7 +282,7 @@
     margin-bottom: 6px;
   }
   .bme-stage-wrapper {
-    height: clamp(260px, 38vh, 340px);
+    height: clamp(320px, 48vh, 420px);
   }
   .bme-stat-card {
     padding: 14px 20px;

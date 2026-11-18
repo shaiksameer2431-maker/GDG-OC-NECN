@@ -72,16 +72,19 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     container.appendChild(renderer.domElement);
     renderer.domElement.className = 'bme-canvas-element';
 
-    // Adaptive Camera Sizing: Calculates required distance based on aspect ratio
-    // Guarantees the shield is never cropped on narrow mobile viewports
+    // Adaptive Camera Sizing: Accurately frames the 5.0-unit bronze shield
+    // Maximizes visible size on mobile while guaranteeing zero cropping on all viewports
     const adjustCamera = (w: number, h: number) => {
       if (w <= 0 || h <= 0) return;
       const aspect = w / h;
       camera.aspect = aspect;
       const halfFovRad = (camera.fov * Math.PI) / 360;
-      const minVisibleWidth = 5.8;
-      const requiredZ = minVisibleWidth / (2 * Math.tan(halfFovRad) * aspect);
-      camera.position.z = Math.max(9.6, requiredZ);
+      const tanHalfFov = Math.tan(halfFovRad);
+      // Shield is 5.0 units across. 5.35 units provides an optimal, safe margin with maximum mobile visibility!
+      const targetVisibleDim = 5.35;
+      const zForHeight = targetVisibleDim / (2 * tanHalfFov);
+      const zForWidth = targetVisibleDim / (2 * tanHalfFov * aspect);
+      camera.position.z = Math.max(zForHeight, zForWidth);
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
     };
