@@ -72,13 +72,13 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onTabChange, stats }
             aria-label="NECN Cloud Champions Home"
           >
             {/* Official GDG Brackets Logo */}
-            <div className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white border border-slate-200/80 p-0.5 flex items-center justify-center shadow-2xs transition-transform duration-300 group-hover:scale-105 shrink-0">
+            <div className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white border border-slate-200/80 p-1 flex items-center justify-center shadow-2xs transition-transform duration-300 group-hover:scale-105 shrink-0">
               <img
                 src="/gdg-brackets-logo.png"
                 alt="GDG On Campus"
                 className="w-full h-full object-contain"
-                width="36"
-                height="36"
+                width="32"
+                height="32"
               />
             </div>
 
