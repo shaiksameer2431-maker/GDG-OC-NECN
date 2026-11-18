@@ -117,21 +117,21 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
       });
     }, 1800);
 
-    // Preload Overview page DOM at 10.0 seconds (right before exit dissolve starts at 10.5s)
+    // Preload Overview page DOM at 7.0 seconds (right before exit dissolve starts at 7.5s)
     const preloadTimer = setTimeout(() => {
       onPreload?.();
-    }, 10000);
+    }, 7000);
 
-    // Smooth exit dissolve transition starts at 10.5 seconds
+    // Smooth exit dissolve transition starts at 7.5 seconds
     const exitTimer = setTimeout(() => {
       setIsExiting(true);
-    }, 10500);
+    }, 7500);
 
-    // Exactly 12.0 seconds total intro duration: cleanly transition & reveal website from top
+    // Exactly 9.0 seconds total intro duration: cleanly transition & reveal website from top
     const completeTimer = setTimeout(() => {
       partyConfetti.reset();
       onComplete();
-    }, 12000);
+    }, 9000);
 
     return () => {
       clearTimeout(blast1);
