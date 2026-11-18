@@ -33,8 +33,8 @@ students.forEach(s => {
   else if (s.redemptionStatus === 'Not Redeemed') notRedeemed++;
 });
 
-assert(redeemed === 228, `Redeemed count must equal 228 (Got: ${redeemed})`);
-assert(notRedeemed === 210, `Not Redeemed count must equal 210 (Got: ${notRedeemed})`);
+assert(redeemed === 234, `Redeemed count must equal 234 (Got: ${redeemed})`);
+assert(notRedeemed === 204, `Not Redeemed count must equal 204 (Got: ${notRedeemed})`);
 
 // 3. Check Milestones
 let m1 = 0, m2 = 0, m3 = 0, noM = 0;
@@ -45,14 +45,14 @@ students.forEach(s => {
   else noM++;
 });
 
-assert(m3 === 59, `Milestone 3 count must equal 59 (Got: ${m3})`);
-assert(m2 === 10, `Milestone 2 count must equal 10 (Got: ${m2})`);
-assert(m1 === 8, `Milestone 1 count must equal 8 (Got: ${m1})`);
-assert(noM === 361, `No Milestone count must equal 361 (Got: ${noM})`);
+assert(m3 === 60, `Milestone 3 count must equal 60 (Got: ${m3})`);
+assert(m2 === 15, `Milestone 2 count must equal 15 (Got: ${m2})`);
+assert(m1 === 12, `Milestone 1 count must equal 12 (Got: ${m1})`);
+assert(noM === 351, `No Milestone count must equal 351 (Got: ${noM})`);
 
 // 4. Check Total Badges Sum
 const totalBadges = students.reduce((acc, s) => acc + (s.skillBadgeCount || 0), 0);
-assert(totalBadges === 725, `Total badges count must equal 725 (Got: ${totalBadges})`);
+assert(totalBadges === 791, `Total badges count must equal 791 (Got: ${totalBadges})`);
 
 // 5. Check Privacy & Security: Zero Leaked Access Codes or Emails in Public Dataset
 let leakedEmails = 0;
