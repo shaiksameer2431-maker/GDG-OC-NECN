@@ -482,14 +482,18 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     let isVisible = true;
     let animId: number;
     let startTime = 0;
-    const entranceDuration = isIntro ? 5.5 : 1.4;
+    const entranceDuration = isIntro ? 1.8 : 1.2;
 
     if (!isReduced) {
-      shieldGroup.scale.set(0.001, 0.001, 0.001);
-      shieldGroup.position.y = -1.4;
-      shieldGroup.rotation.y = -Math.PI * 0.45;
-      shieldGroup.rotation.x = 0.22;
+      // Start visibly in the scene from millisecond 0 (never empty or blank!)
+      shieldGroup.scale.set(0.85, 0.85, 0.85);
+      shieldGroup.position.y = -0.15;
+      shieldGroup.rotation.y = -0.22;
+      shieldGroup.rotation.x = 0.08;
     }
+
+    // Immediately render first frame synchronously to guarantee bronze is painted on frame 0
+    renderer.render(scene, camera);
 
     // Cached container bounding rect to eliminate browser layout thrashing on move
     let cachedRect: DOMRect | null = null;
@@ -499,6 +503,18 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       }
     };
     updateRect();
+
+    // ResizeObserver ensures canvas always matches container size on initial paint & device orientation
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const { width: rw, height: rh } = entry.contentRect;
+        if (rw > 0 && rh > 0) {
+          updateRect();
+          adjustCamera(rw, rh);
+        }
+      }
+    });
+    resizeObserver.observe(container);
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -525,25 +541,20 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       if (!startTime) startTime = currentTime;
       const elapsed = (currentTime - startTime) / 1000;
 
-      // 1. Entrance Stage: Ultra-smooth quintic ease-out scale, elevation, and gentle tilt-to-upright
+      // 1. Entrance Stage: Fully visible from start, smoothly expands 85% -> 100% and levels upright
       if (elapsed < entranceDuration && !isReduced) {
         const p = Math.min(elapsed / entranceDuration, 1);
-        const easeOut = 1 - Math.pow(1 - p, 4);
+        const easeOut = 1 - Math.pow(1 - p, 3); // Silky cubic ease-out
 
-        const currentScale = 0.001 + 0.999 * easeOut;
+        const currentScale = 0.85 + 0.15 * easeOut;
         shieldGroup.scale.set(currentScale, currentScale, currentScale);
-        shieldGroup.position.y = -1.4 * (1 - easeOut);
-        shieldGroup.rotation.y = -Math.PI * 0.45 * (1 - easeOut);
-        shieldGroup.rotation.x = 0.22 * (1 - easeOut);
+        shieldGroup.position.y = -0.15 * (1 - easeOut);
+        shieldGroup.rotation.y = -0.22 * (1 - easeOut);
+        shieldGroup.rotation.x = 0.08 * (1 - easeOut);
 
-        // Radiant light sweep travelling across the face as it settles into place
-        if (p > 0.35) {
-          const sweepP = (p - 0.35) / 0.65;
-          sweepLight.position.x = -4.5 + 9.0 * sweepP;
-          sweepLight.intensity = 3.6 * Math.sin(sweepP * Math.PI);
-        } else {
-          sweepLight.intensity = 0.6;
-        }
+        // Radiant specular light sweep travelling across the face as it settles into place
+        sweepLight.position.x = -4.0 + 8.0 * easeOut;
+        sweepLight.intensity = 1.0 + 2.8 * Math.sin(p * Math.PI);
       } else {
         // 2. Idle State: Smooth, gentle float and interactive 3D perspective
         if (!isReduced) {
@@ -639,6 +650,7 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     return () => {
       cancelAnimationFrame(animId);
       observer.disconnect();
+      resizeObserver.disconnect();
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('scroll', updateRect);
       container.removeEventListener('mousemove', handleMouseMove);
