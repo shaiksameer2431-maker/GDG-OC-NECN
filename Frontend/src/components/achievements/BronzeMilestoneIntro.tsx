@@ -36,108 +36,43 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
     ];
 
     // =========================================================================
-    // PARTY PAPER BLASTING EFFECT — FIRES DIRECTLY ALONG WITH BRONZE OPENING
+    // SINGLE ONE-TIME OPENING CELEBRATION BURST (Clean & Refined)
     // =========================================================================
 
-    // 1. Initial Grand Center Stage Party Paper Explosion (0.1s)
-    const blast1 = setTimeout(() => {
+    // Single Grand Center Stage Party Paper Explosion (0.15s)
+    const blastTimer = setTimeout(() => {
       partyConfetti({
-        particleCount: 150,
-        spread: 110,
+        particleCount: 130,
+        spread: 100,
         origin: { x: 0.5, y: 0.42 },
         colors: partyColors,
         shapes: ['square', 'circle'],
-        scalar: 1.3,
-        startVelocity: 42,
-        gravity: 0.7,
-        ticks: 280,
-        disableForReducedMotion: true,
-      });
-    }, 100);
-
-    // 2. Left Event Cannon Blast (0.4s) — shoots up & across from bottom-left
-    const blast2 = setTimeout(() => {
-      partyConfetti({
-        particleCount: 80,
-        angle: 55,
-        spread: 65,
-        origin: { x: 0.02, y: 0.85 },
-        colors: partyColors,
-        shapes: ['square', 'circle'],
-        scalar: 1.25,
-        startVelocity: 55,
-        gravity: 0.75,
-        ticks: 280,
-        disableForReducedMotion: true,
-      });
-    }, 400);
-
-    // 3. Right Event Cannon Blast (0.7s) — shoots up & across from bottom-right
-    const blast3 = setTimeout(() => {
-      partyConfetti({
-        particleCount: 80,
-        angle: 125,
-        spread: 65,
-        origin: { x: 0.98, y: 0.85 },
-        colors: partyColors,
-        shapes: ['square', 'circle'],
-        scalar: 1.25,
-        startVelocity: 55,
-        gravity: 0.75,
-        ticks: 280,
-        disableForReducedMotion: true,
-      });
-    }, 700);
-
-    // 4. Dual Cross-Cannon Blast as Bronze Locks Upright (1.8s)
-    const blast4 = setTimeout(() => {
-      partyConfetti({
-        particleCount: 50,
-        angle: 60,
-        spread: 60,
-        origin: { x: 0.05, y: 0.7 },
-        colors: partyColors,
         scalar: 1.2,
-        startVelocity: 44,
+        startVelocity: 40,
         gravity: 0.75,
         ticks: 240,
         disableForReducedMotion: true,
       });
-      partyConfetti({
-        particleCount: 50,
-        angle: 120,
-        spread: 60,
-        origin: { x: 0.95, y: 0.7 },
-        colors: partyColors,
-        scalar: 1.2,
-        startVelocity: 44,
-        gravity: 0.75,
-        ticks: 240,
-        disableForReducedMotion: true,
-      });
-    }, 1800);
+    }, 150);
 
-    // Preload Overview page DOM at 7.0 seconds (right before exit dissolve starts at 7.5s)
+    // Preload Overview page DOM at 5.0 seconds (right before exit dissolve starts at 5.5s)
     const preloadTimer = setTimeout(() => {
       onPreload?.();
-    }, 7000);
+    }, 5000);
 
-    // Smooth exit dissolve transition starts at 7.5 seconds
+    // Smooth exit dissolve transition starts at 5.5 seconds
     const exitTimer = setTimeout(() => {
       setIsExiting(true);
-    }, 7500);
+    }, 5500);
 
-    // Exactly 9.0 seconds total intro duration: cleanly transition & reveal website from top
+    // Exactly 7.0 seconds total intro duration: cleanly transition & reveal website from top
     const completeTimer = setTimeout(() => {
       partyConfetti.reset();
       onComplete();
-    }, 9000);
+    }, 7000);
 
     return () => {
-      clearTimeout(blast1);
-      clearTimeout(blast2);
-      clearTimeout(blast3);
-      clearTimeout(blast4);
+      clearTimeout(blastTimer);
       clearTimeout(preloadTimer);
       clearTimeout(exitTimer);
       clearTimeout(completeTimer);
