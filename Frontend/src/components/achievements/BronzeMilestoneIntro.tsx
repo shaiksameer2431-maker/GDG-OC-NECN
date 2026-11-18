@@ -5,9 +5,10 @@ import './BronzeMilestoneIntro.css';
 
 interface BronzeMilestoneIntroProps {
   onComplete: () => void;
+  onPreload?: () => void;
 }
 
-export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onComplete }) => {
+export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onComplete, onPreload }) => {
   const [isExiting, setIsExiting] = useState<boolean>(false);
   const confettiCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -116,6 +117,11 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
       });
     }, 1800);
 
+    // Preload Overview page DOM at 10.0 seconds (right before exit dissolve starts at 10.5s)
+    const preloadTimer = setTimeout(() => {
+      onPreload?.();
+    }, 10000);
+
     // Smooth exit dissolve transition starts at 10.5 seconds
     const exitTimer = setTimeout(() => {
       setIsExiting(true);
@@ -132,11 +138,12 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
       clearTimeout(blast2);
       clearTimeout(blast3);
       clearTimeout(blast4);
+      clearTimeout(preloadTimer);
       clearTimeout(exitTimer);
       clearTimeout(completeTimer);
       partyConfetti.reset();
     };
-  }, [onComplete]);
+  }, [onComplete, onPreload]);
 
   return (
     <div

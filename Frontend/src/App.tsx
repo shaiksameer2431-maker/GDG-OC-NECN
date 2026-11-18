@@ -20,6 +20,7 @@ export function App() {
 
   // Full-screen Bronze Milestone Intro (auto-plays on initial page load / refresh, then fades into website)
   const [showBronzeIntro, setShowBronzeIntro] = useState<boolean>(true);
+  const [preloadOverview, setPreloadOverview] = useState<boolean>(false);
 
   // App Data state
   const [students, setStudents] = useState<Student[]>(() => storageService.getStudents());
@@ -137,14 +138,17 @@ export function App() {
       
       {/* FULL-SCREEN ANIMATED BRONZE MILESTONE ACHIEVEMENT INTRO (12-second dedicated celebratory intro) */}
       {showBronzeIntro && (
-        <BronzeMilestoneIntro onComplete={() => {
-          setShowBronzeIntro(false);
-          try {
-            window.scrollTo(0, 0);
-          } catch {
-            // safe fallback
-          }
-        }} />
+        <BronzeMilestoneIntro
+          onPreload={() => setPreloadOverview(true)}
+          onComplete={() => {
+            setShowBronzeIntro(false);
+            try {
+              window.scrollTo(0, 0);
+            } catch {
+              // safe fallback
+            }
+          }}
+        />
       )}
 
       {/* FLOATING NAVBAR (Untouched Windows / Desktop version) */}
@@ -172,7 +176,7 @@ export function App() {
       {/* MAIN CONTAINER (Fluid scaling across mobile and desktop) */}
       <main className={`relative z-10 flex-grow w-full max-w-6xl xl:max-w-7xl mx-auto px-3 sm:px-4 md:px-6 ${isPosterHome || isLuxury3DTab ? 'p-0 pb-0' : 'pb-24 md:pb-16 pt-6 md:pt-24'}`}>
         <ErrorBoundary>
-          {isPosterHome && (
+          {isPosterHome && (!showBronzeIntro || preloadOverview) && (
             <OverviewPage
               stats={stats}
               topStudents={students}

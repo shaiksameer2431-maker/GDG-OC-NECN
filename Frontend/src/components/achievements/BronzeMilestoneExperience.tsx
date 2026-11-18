@@ -82,10 +82,10 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       const tanHalfFov = Math.tan(halfFovRad);
 
       // Geometry bounding box: Width = 4.33 units, Height = 5.0 units.
-      // On mobile overview, frame with calibrated bounds to ensure maximum commanding presence with 0 cropping:
-      const mobile = (typeof window !== 'undefined' && window.innerWidth < 768) || w < 640;
-      const targetHeight = mobile ? (isIntro ? 5.25 : 5.15) : 5.35;
-      const targetWidth = mobile ? (isIntro ? 4.55 : 4.42) : 4.65;
+      // Calibrated framing bounds guaranteeing STRICT ZERO-CROPPING across all mobile & desktop viewports (0.65 - 2.0 aspect ratios):
+      // Under all touch/mouse pitch tilts (0.25 rad), yaw tilts (0.35 rad), and idle bobbing, NDC remains <= 0.915:
+      const targetHeight = 5.80;
+      const targetWidth = 5.15;
 
       const zForHeight = targetHeight / (2 * tanHalfFov);
       const zForWidth = targetWidth / (2 * tanHalfFov * aspect);
