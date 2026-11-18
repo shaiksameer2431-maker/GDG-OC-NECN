@@ -11,212 +11,6 @@ interface BronzeMilestoneExperienceProps {
   isIntro?: boolean;
 }
 
-// -----------------------------------------------------------------------------
-// INSTANT HIGH-FIDELITY ANIMATED BRONZE MEDAL SVG (FRAME 0 HARDWARE-ACCELERATED)
-// Guarantees the medal is 100% visible on mobile the millisecond DOM is parsed!
-// -----------------------------------------------------------------------------
-const InstantBronzeShieldSVG: React.FC = () => (
-  <svg
-    viewBox="0 0 500 500"
-    className="bme-instant-svg select-none pointer-events-none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <defs>
-      <linearGradient id="bmeRimGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#EEC39C" />
-        <stop offset="35%" stopColor="#CC9873" />
-        <stop offset="70%" stopColor="#B17656" />
-        <stop offset="100%" stopColor="#7A3E22" />
-      </linearGradient>
-
-      <radialGradient id="bmeFaceGrad" cx="50%" cy="45%" r="50%">
-        <stop offset="0%" stopColor="#FFF2E6" />
-        <stop offset="20%" stopColor="#EEC39C" />
-        <stop offset="50%" stopColor="#CC9873" />
-        <stop offset="78%" stopColor="#B17656" />
-        <stop offset="100%" stopColor="#8E523A" />
-      </radialGradient>
-
-      <linearGradient id="bmeBronzeTextGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%" stopColor="#FFFFFF" />
-        <stop offset="25%" stopColor="#FFF0E0" />
-        <stop offset="55%" stopColor="#EEC39C" />
-        <stop offset="85%" stopColor="#CC9873" />
-        <stop offset="100%" stopColor="#8E523A" />
-      </linearGradient>
-
-      <filter id="bmeShieldShadow" x="-20%" y="-20%" width="140%" height="140%">
-        <feDropShadow dx="0" dy="16" stdDeviation="16" floodColor="#421C0E" floodOpacity="0.4" />
-      </filter>
-    </defs>
-
-    <g filter="url(#bmeShieldShadow)">
-      {/* 1. Base Hexagon Plate */}
-      <polygon
-        points="250,25 445,137.5 445,362.5 250,475 55,362.5 55,137.5"
-        fill="url(#bmeRimGrad)"
-      />
-
-      {/* 2. Highlight Bevel Ridge */}
-      <polygon
-        points="250,37 435,144 435,356 250,463 65,356 65,144"
-        fill="none"
-        stroke="#EEC39C"
-        strokeWidth="6"
-      />
-
-      {/* 3. Front Face with Radial Copper Gradient */}
-      <polygon
-        points="250,45 425,149 425,351 250,455 75,351 75,149"
-        fill="url(#bmeFaceGrad)"
-      />
-
-      {/* 4. Glistening Corner Rivets */}
-      <circle cx="250" cy="45" r="8" fill="#EEC39C" stroke="#FFF2E6" strokeWidth="2" />
-      <circle cx="425" cy="149" r="8" fill="#EEC39C" stroke="#FFF2E6" strokeWidth="2" />
-      <circle cx="425" cy="351" r="8" fill="#EEC39C" stroke="#FFF2E6" strokeWidth="2" />
-      <circle cx="250" cy="455" r="8" fill="#EEC39C" stroke="#FFF2E6" strokeWidth="2" />
-      <circle cx="75" cy="351" r="8" fill="#EEC39C" stroke="#FFF2E6" strokeWidth="2" />
-      <circle cx="75" cy="149" r="8" fill="#EEC39C" stroke="#FFF2E6" strokeWidth="2" />
-
-      {/* 5. Top Header: GDG ON CAMPUS */}
-      <text
-        x="250"
-        y="140"
-        textAnchor="middle"
-        dominantBaseline="middle"
-        fill="#FFFFFF"
-        fontFamily="'Plus Jakarta Sans', system-ui, sans-serif"
-        fontWeight="800"
-        fontSize="20"
-        letterSpacing="2"
-      >
-        GDG ON CAMPUS
-      </text>
-
-      {/* 6. Sub-header Pill: NECN */}
-      <rect
-        x="195"
-        y="160"
-        width="110"
-        height="26"
-        rx="13"
-        fill="#5A2612"
-        stroke="#EEC39C"
-        strokeWidth="1.5"
-      />
-      <text
-        x="250"
-        y="173"
-        textAnchor="middle"
-        dominantBaseline="middle"
-        fill="#FFFDF8"
-        fontFamily="'Plus Jakarta Sans', system-ui, sans-serif"
-        fontWeight="900"
-        fontSize="12"
-        letterSpacing="3"
-      >
-        NECN
-      </text>
-
-      {/* 7. Google Developer Groups Brackets Logo: { < / > } */}
-      <g transform="translate(250, 235)">
-        <text
-          x="-65"
-          y="0"
-          textAnchor="middle"
-          dominantBaseline="middle"
-          fill="#4285F4"
-          fontFamily="'Plus Jakarta Sans', system-ui, sans-serif"
-          fontWeight="900"
-          fontSize="56"
-        >
-          {'{'}
-        </text>
-        <text
-          x="-24"
-          y="0"
-          textAnchor="middle"
-          dominantBaseline="middle"
-          fill="#EA4335"
-          fontFamily="'Plus Jakarta Sans', system-ui, sans-serif"
-          fontWeight="900"
-          fontSize="56"
-        >
-          {'<'}
-        </text>
-        <text
-          x="24"
-          y="0"
-          textAnchor="middle"
-          dominantBaseline="middle"
-          fill="#FBBC04"
-          fontFamily="'Plus Jakarta Sans', system-ui, sans-serif"
-          fontWeight="900"
-          fontSize="56"
-        >
-          {'>'}
-        </text>
-        <text
-          x="65"
-          y="0"
-          textAnchor="middle"
-          dominantBaseline="middle"
-          fill="#34A853"
-          fontFamily="'Plus Jakarta Sans', system-ui, sans-serif"
-          fontWeight="900"
-          fontSize="56"
-        >
-          {'}'}
-        </text>
-      </g>
-
-      {/* 8. Engraved Title: BRONZE */}
-      <text
-        x="250"
-        y="305"
-        textAnchor="middle"
-        dominantBaseline="middle"
-        fill="url(#bmeBronzeTextGrad)"
-        stroke="#FFFFFF"
-        strokeWidth="1.2"
-        fontFamily="'Plus Jakarta Sans', system-ui, sans-serif"
-        fontWeight="900"
-        fontStyle="italic"
-        fontSize="44"
-        letterSpacing="4"
-      >
-        BRONZE
-      </text>
-
-      {/* 9. Milestone Ribbon Pill: ★ MILESTONE ACHIEVED ★ */}
-      <rect
-        x="135"
-        y="336"
-        width="230"
-        height="32"
-        rx="16"
-        fill="rgba(50, 20, 8, 0.88)"
-        stroke="#EEC39C"
-        strokeWidth="1.5"
-      />
-      <text
-        x="250"
-        y="352"
-        textAnchor="middle"
-        dominantBaseline="middle"
-        fill="#FFFFFF"
-        fontFamily="'Plus Jakarta Sans', system-ui, sans-serif"
-        fontWeight="900"
-        fontSize="13"
-        letterSpacing="2.5"
-      >
-        ★ MILESTONE ACHIEVED ★
-      </text>
-    </g>
-  </svg>
-);
-
 export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps> = ({
   className = '',
   id = 'bronze-milestone-experience',
@@ -224,7 +18,6 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
 }) => {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const [webglSupported, setWebglSupported] = useState<boolean>(true);
-  const [is3DReady, setIs3DReady] = useState<boolean>(false);
   const [displayCount, setDisplayCount] = useState<number>(0);
   const [confettiFired, setConfettiFired] = useState<boolean>(false);
 
@@ -678,21 +471,18 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     let isVisible = true;
     let animId: number;
     let startTime = 0;
-    const entranceDuration = isIntro ? 1.8 : 1.2;
+    const entranceDuration = isIntro ? 2.5 : 1.2;
 
     if (!isReduced) {
-      // Start visibly in the scene from millisecond 0 (never empty or blank!)
-      shieldGroup.scale.set(0.85, 0.85, 0.85);
-      shieldGroup.position.y = -0.15;
-      shieldGroup.rotation.y = -0.22;
-      shieldGroup.rotation.x = 0.08;
+      // Dynamic initial 3D angle for smooth revealing effect (single bronze medal)
+      shieldGroup.scale.set(0.60, 0.60, 0.60);
+      shieldGroup.position.y = -0.30;
+      shieldGroup.rotation.y = -0.45;
+      shieldGroup.rotation.x = 0.14;
     }
 
-    // Immediately render first frame synchronously to guarantee bronze is painted on frame 0
+    // Immediately render first frame synchronously
     renderer.render(scene, camera);
-    requestAnimationFrame(() => {
-      setIs3DReady(true);
-    });
 
     // Cached container bounding rect to eliminate browser layout thrashing on move
     let cachedRect: DOMRect | null = null;
@@ -743,20 +533,20 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       if (!startTime) startTime = currentTime;
       const elapsed = (currentTime - startTime) / 1000;
 
-      // 1. Entrance Stage: Fully visible from start, smoothly expands 85% -> 100% and levels upright
+      // 1. Entrance Stage: Magnificent 3D reveal from 60% -> 100%, rising and leveling upright
       if (elapsed < entranceDuration && !isReduced) {
         const p = Math.min(elapsed / entranceDuration, 1);
         const easeOut = 1 - Math.pow(1 - p, 3); // Silky cubic ease-out
 
-        const currentScale = 0.85 + 0.15 * easeOut;
+        const currentScale = 0.60 + 0.40 * easeOut;
         shieldGroup.scale.set(currentScale, currentScale, currentScale);
-        shieldGroup.position.y = -0.15 * (1 - easeOut);
-        shieldGroup.rotation.y = -0.22 * (1 - easeOut);
-        shieldGroup.rotation.x = 0.08 * (1 - easeOut);
+        shieldGroup.position.y = -0.30 * (1 - easeOut);
+        shieldGroup.rotation.y = -0.45 * (1 - easeOut);
+        shieldGroup.rotation.x = 0.14 * (1 - easeOut);
 
         // Radiant specular light sweep travelling across the face as it settles into place
-        sweepLight.position.x = -4.0 + 8.0 * easeOut;
-        sweepLight.intensity = 1.0 + 2.8 * Math.sin(p * Math.PI);
+        sweepLight.position.x = -4.5 + 9.0 * easeOut;
+        sweepLight.intensity = 1.0 + 3.0 * Math.sin(p * Math.PI);
       } else {
         // 2. Idle State: Smooth, gentle float and interactive 3D perspective
         if (!isReduced) {
@@ -936,18 +726,10 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
 
         {/* Central 3D Hexagonal Bronze Shield (Mobile & Desktop Zero-Cropping Responsive) */}
         <div className="bme-stage-wrapper">
-          {/* Instant Hardware-Accelerated Bronze Medal (Paints on Frame 0: NEVER empty at starting!) */}
-          <div
-            className={`bme-instant-shield ${is3DReady ? 'bme-instant-shield-hidden' : ''}`}
-            aria-hidden={is3DReady}
-          >
-            <InstantBronzeShieldSVG />
-          </div>
-
           {webglSupported ? (
             <div
               ref={mountRef}
-              className={`w-full h-full flex items-center justify-center select-none relative z-10 transition-opacity duration-500 ${is3DReady ? 'opacity-100' : 'opacity-0'}`}
+              className="w-full h-full flex items-center justify-center select-none"
               title="3D Bronze Shield"
             />
           ) : (
