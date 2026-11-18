@@ -114,6 +114,43 @@
   overflow: visible;
 }
 
+/* Instant High-Fidelity Animated Bronze Medal (Visible on Frame 0 with zero empty delay) */
+.bme-instant-shield {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  pointer-events: none;
+  animation: bme-instant-entrance 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transition: opacity 0.5s ease-out;
+}
+
+.bme-instant-shield.bme-instant-shield-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes bme-instant-entrance {
+  0% {
+    transform: scale(0.85) translateY(-6px);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.bme-instant-svg {
+  width: clamp(230px, 40vh, 370px);
+  height: clamp(230px, 40vh, 370px);
+  max-width: 90vw;
+  filter: drop-shadow(0 14px 32px rgba(142, 82, 58, 0.42));
+  display: block;
+}
+
 .bme-canvas-element {
   width: 100% !important;
   height: 100% !important;
