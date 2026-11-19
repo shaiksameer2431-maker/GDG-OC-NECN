@@ -3,6 +3,7 @@ import type { OfficialCourse, Student, CohortStats } from '../types';
 import { Avatar } from '../components/common/Avatar';
 import { MilestonePill } from '../components/common/BadgePill';
 import { RankMedal } from '../components/common/RankMedal';
+import { BadgeAnalyticsReport } from '../components/analytics/BadgeAnalyticsReport';
 import { 
   Award, 
   Trophy, 
@@ -28,6 +29,8 @@ export const AchievementsPage: React.FC<AchievementsPageProps> = ({
   onSelectStudent
 }) => {
   const milestone3Champions = students.filter(s => s.milestone === 'Milestone 3');
+  const bronzeAchieversCount = students.filter(s => (s.skillBadgeCount || 0) >= 5).length;
+  const bronzeTargetPercentage = Math.round((bronzeAchieversCount / 50) * 100);
 
   // Configured Reward Tiers for Google Cloud Learn with Communities
   const rewardTiers = [
@@ -118,16 +121,22 @@ export const AchievementsPage: React.FC<AchievementsPageProps> = ({
           </div>
           <div className="shrink-0 flex items-center gap-3">
             <div className="px-4 py-2 rounded-xl bg-white border border-[#B87345]/20 shadow-xs text-center">
-              <span className="block text-lg font-black text-[#7A4320]">69</span>
+              <span className="block text-lg font-black text-[#7A4320]">{bronzeAchieversCount}</span>
               <span className="text-[10px] font-bold text-slate-500 uppercase">Achievers (5+ Badges)</span>
             </div>
             <div className="px-3.5 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-center">
-              <span className="block text-xs font-bold text-emerald-800">138%</span>
+              <span className="block text-xs font-bold text-emerald-800">{bronzeTargetPercentage}%</span>
               <span className="text-[10px] font-semibold text-emerald-600">Target Unlocked</span>
             </div>
           </div>
         </div>
       </div>
+
+      {/* COHORT BADGE COMPLETION ANALYTICS (1 TO 10 PROGRESSION REPORT) */}
+      <BadgeAnalyticsReport
+        students={students}
+        officialCourses={officialCourses}
+      />
 
       {/* WALL OF CHAMPIONS - MILESTONE 3 LEADERS (NEOMORPHIC CARDS) */}
       <section className="space-y-5">

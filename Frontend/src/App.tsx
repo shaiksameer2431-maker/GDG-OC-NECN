@@ -204,6 +204,7 @@ export function App() {
             <LeaderboardPage
               students={students}
               stats={stats}
+              officialCourses={officialCourses}
               onSelectStudent={(id) => navigateTo('students', id)}
             />
           )}

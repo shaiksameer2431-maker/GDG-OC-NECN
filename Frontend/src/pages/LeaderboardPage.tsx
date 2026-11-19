@@ -1,8 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import type { Student, CohortStats } from '../types';
+import type { Student, CohortStats, OfficialCourse } from '../types';
 import { Avatar } from '../components/common/Avatar';
 import { MilestonePill, RedemptionPill } from '../components/common/BadgePill';
 import { RankMedal } from '../components/common/RankMedal';
+import { BadgeAnalyticsReport } from '../components/analytics/BadgeAnalyticsReport';
 import { 
   Search, 
   ArrowUpDown, 
@@ -22,12 +23,14 @@ import { matchesSearchQuery } from '../utils/searchHelper';
 interface LeaderboardPageProps {
   students: Student[];
   stats: CohortStats;
+  officialCourses?: OfficialCourse[];
   onSelectStudent: (studentId: string) => void;
 }
 
 export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
   students,
   stats,
+  officialCourses = [],
   onSelectStudent
 }) => {
   // Filter states
@@ -65,7 +68,10 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
   const filteredStudents = useMemo(() => {
     return students.filter(student => {
       if (searchQuery.trim()) {
-        if (!matchesSearchQuery(searchQuery, student.fullName, student.id)) {
+        const q = searchQuery.toLowerCase().trim();
+        const matchesName = matchesSearchQuery(searchQuery, student.fullName, student.id);
+        const matchesBadge = Array.isArray(student.skillBadges) && student.skillBadges.some(b => b.toLowerCase().includes(q));
+        if (!matchesName && !matchesBadge) {
           return false;
         }
       }
@@ -86,6 +92,10 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
         if (badgeFilter === '4-6' && (count < 4 || count > 6)) return false;
         if (badgeFilter === '7-9' && (count < 7 || count > 9)) return false;
         if (badgeFilter === '10' && count !== 10) return false;
+        if (badgeFilter.startsWith('exact-')) {
+          const target = parseInt(badgeFilter.replace('exact-', ''), 10);
+          if (count !== target) return false;
+        }
       }
 
       return true;
@@ -362,6 +372,21 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
         </div>
       )}
 
+      {/* COHORT BADGE COMPLETION ANALYTICS (1 TO 10 PROGRESSION REPORT) */}
+      <BadgeAnalyticsReport
+        students={students}
+        officialCourses={officialCourses}
+        onSelectBadgeCount={(badgeCount) => {
+          if (badgeCount === 10) setBadgeFilter('10');
+          else setBadgeFilter(`exact-${badgeCount}`);
+          setCurrentPage(1);
+        }}
+        onSelectCourseBadge={(badgeName) => {
+          setSearchQuery(badgeName);
+          setCurrentPage(1);
+        }}
+      />
+
       {/* FILTER & SEARCH DOCK (NEOMORPHIC INSET & TACTILE PILLS) */}
       <div className="p-3.5 sm:p-5 rounded-2xl bg-[#F0F4F9] shadow-[8px_8px_20px_#D0DCED,-8px_-8px_20px_#FFFFFF] border border-white/90 space-y-3 sm:space-y-4">
         {/* Search row */}
@@ -455,6 +480,11 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
               className="neo-inset w-full px-3 py-1.5 sm:py-2 rounded-xl text-xs text-slate-700 focus:outline-none cursor-pointer"
             >
               <option value="all">All Badge Counts</option>
+              {badgeFilter.startsWith('exact-') && (
+                <option value={badgeFilter}>
+                  Filtered: Exactly {badgeFilter.replace('exact-', '')} {badgeFilter === 'exact-1' ? 'Badge' : 'Badges'}
+                </option>
+              )}
               <option value="10">10 Badges (Completed)</option>
               <option value="7-9">7 - 9 Badges</option>
               <option value="4-6">4 - 6 Badges</option>
