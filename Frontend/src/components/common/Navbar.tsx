@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Trophy, Compass, Award, Info, Menu, X, CheckCircle, Sparkles } from 'lucide-react';
+import { Trophy, Compass, Award, Info, Menu, X, CheckCircle, Sparkles, BarChart3 } from 'lucide-react';
 import type { CohortStats } from '../../types';
 
 interface NavbarProps {
@@ -45,6 +45,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onTabChange, stats }
   const navLinks = [
     { id: 'overview', label: 'Overview', shortLabel: 'Overview', icon: Sparkles },
     { id: 'leaderboard', label: 'Leaderboard', shortLabel: 'Leaderboard', icon: Trophy },
+    { id: 'report', label: 'Badge Report', shortLabel: 'Report', icon: BarChart3 },
     { id: 'journey', label: 'Learning Journey', shortLabel: 'Journey', icon: Compass },
     { id: 'achievements', label: 'Achievements', shortLabel: 'Achievements', icon: Award },
     { id: 'about', label: 'About', shortLabel: 'About', icon: Info },

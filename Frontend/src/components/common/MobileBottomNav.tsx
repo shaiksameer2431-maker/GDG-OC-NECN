@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Trophy, Compass, Award, Info } from 'lucide-react';
+import { Sparkles, Trophy, Compass, Award, Info, BarChart3 } from 'lucide-react';
 
 interface MobileBottomNavProps {
   currentTab: string;
@@ -13,6 +13,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   const tabs = [
     { id: 'overview', label: 'Overview', icon: Sparkles },
     { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
+    { id: 'report', label: 'Report', icon: BarChart3 },
     { id: 'journey', label: 'Journey', icon: Compass },
     { id: 'achievements', label: 'Awards', icon: Award },
     { id: 'about', label: 'About', icon: Info },

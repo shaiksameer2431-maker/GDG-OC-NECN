@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import type { OfficialCourse, Student } from '../types';
 import { CourseStatusPill } from '../components/common/BadgePill';
-import { BadgeAnalyticsReport } from '../components/analytics/BadgeAnalyticsReport';
 import { 
   Compass, 
   ExternalLink, 
@@ -195,12 +194,6 @@ export const LearningJourneyPage: React.FC<LearningJourneyPageProps> = ({
           <strong className="text-slate-900 font-bold">Curriculum Tracking Policy:</strong> The source CSV contains verified skill badge credentials and milestone achievements. Individual module statuses for newly registered students are initialized as <strong>"Not Tracked"</strong>. Students can submit laboratory completion verification links below for administrator certification.
         </p>
       </div>
-
-      {/* COHORT CURRICULUM & BADGE COMPLETION ANALYTICS */}
-      <BadgeAnalyticsReport
-        students={students}
-        officialCourses={officialCourses}
-      />
 
       {/* THE 10 OFFICIAL COURSES GRID (GLASS FLUID FINISH) */}
       <div className="space-y-4">

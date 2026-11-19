@@ -3,7 +3,6 @@ import type { OfficialCourse, Student, CohortStats } from '../types';
 import { Avatar } from '../components/common/Avatar';
 import { MilestonePill } from '../components/common/BadgePill';
 import { RankMedal } from '../components/common/RankMedal';
-import { BadgeAnalyticsReport } from '../components/analytics/BadgeAnalyticsReport';
 import { 
   Award, 
   Trophy, 
@@ -131,12 +130,6 @@ export const AchievementsPage: React.FC<AchievementsPageProps> = ({
           </div>
         </div>
       </div>
-
-      {/* COHORT BADGE COMPLETION ANALYTICS (1 TO 10 PROGRESSION REPORT) */}
-      <BadgeAnalyticsReport
-        students={students}
-        officialCourses={officialCourses}
-      />
 
       {/* WALL OF CHAMPIONS - MILESTONE 3 LEADERS (NEOMORPHIC CARDS) */}
       <section className="space-y-5">

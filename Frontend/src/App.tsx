@@ -10,6 +10,7 @@ import { StudentProfilePage } from './pages/StudentProfilePage';
 import { LearningJourneyPage } from './pages/LearningJourneyPage';
 import { AchievementsPage } from './pages/AchievementsPage';
 import { AboutPage } from './pages/AboutPage';
+import { BadgeReportPage } from './pages/BadgeReportPage';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { Luxury3DView } from './components/luxury/Luxury3DView';
 import { BronzeMilestoneIntro } from './components/achievements/BronzeMilestoneIntro';
@@ -204,8 +205,17 @@ export function App() {
             <LeaderboardPage
               students={students}
               stats={stats}
-              officialCourses={officialCourses}
               onSelectStudent={(id) => navigateTo('students', id)}
+            />
+          )}
+
+          {currentTab === 'report' && (
+            <BadgeReportPage
+              students={students}
+              officialCourses={officialCourses}
+              stats={stats}
+              onSelectStudent={(id) => navigateTo('students', id)}
+              onNavigateToLeaderboard={() => navigateTo('leaderboard')}
             />
           )}
 

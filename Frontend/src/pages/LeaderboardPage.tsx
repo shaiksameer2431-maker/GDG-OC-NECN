@@ -1,9 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import type { Student, CohortStats, OfficialCourse } from '../types';
+import type { Student, CohortStats } from '../types';
 import { Avatar } from '../components/common/Avatar';
 import { MilestonePill, RedemptionPill } from '../components/common/BadgePill';
 import { RankMedal } from '../components/common/RankMedal';
-import { BadgeAnalyticsReport } from '../components/analytics/BadgeAnalyticsReport';
 import { 
   Search, 
   ArrowUpDown, 
@@ -23,14 +22,12 @@ import { matchesSearchQuery } from '../utils/searchHelper';
 interface LeaderboardPageProps {
   students: Student[];
   stats: CohortStats;
-  officialCourses?: OfficialCourse[];
   onSelectStudent: (studentId: string) => void;
 }
 
 export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
   students,
   stats,
-  officialCourses = [],
   onSelectStudent
 }) => {
   // Filter states
@@ -371,21 +368,6 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
           </div>
         </div>
       )}
-
-      {/* COHORT BADGE COMPLETION ANALYTICS (1 TO 10 PROGRESSION REPORT) */}
-      <BadgeAnalyticsReport
-        students={students}
-        officialCourses={officialCourses}
-        onSelectBadgeCount={(badgeCount) => {
-          if (badgeCount === 10) setBadgeFilter('10');
-          else setBadgeFilter(`exact-${badgeCount}`);
-          setCurrentPage(1);
-        }}
-        onSelectCourseBadge={(badgeName) => {
-          setSearchQuery(badgeName);
-          setCurrentPage(1);
-        }}
-      />
 
       {/* FILTER & SEARCH DOCK (NEOMORPHIC INSET & TACTILE PILLS) */}
       <div className="p-3.5 sm:p-5 rounded-2xl bg-[#F0F4F9] shadow-[8px_8px_20px_#D0DCED,-8px_-8px_20px_#FFFFFF] border border-white/90 space-y-3 sm:space-y-4">
