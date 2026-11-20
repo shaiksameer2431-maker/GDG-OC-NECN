@@ -15,7 +15,8 @@ import {
   ShieldCheck,
   X,
   Eye,
-  Award
+  Award,
+  Calendar
 } from 'lucide-react';
 import { matchesSearchQuery } from '../utils/searchHelper';
 
@@ -124,9 +125,16 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
       {/* PAGE HEADER */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-4 border-b border-slate-200/80 pb-3 sm:pb-5">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 mb-1.5 sm:mb-2">
-            <Trophy className="w-3.5 h-3.5 text-blue-600" />
-            <span>OFFICIAL LEADERBOARD 2026</span>
+          <div className="flex items-center gap-2 flex-wrap mb-1.5 sm:mb-2">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
+              <Trophy className="w-3.5 h-3.5 text-blue-600" />
+              <span>OFFICIAL LEADERBOARD 2026</span>
+            </div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-2xs">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <Calendar className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Updated on: 20 Nov 2026</span>
+            </div>
           </div>
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
             Cohort Leaderboard

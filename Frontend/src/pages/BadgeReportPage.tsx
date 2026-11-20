@@ -12,7 +12,8 @@ import {
   Sparkles, 
   ArrowRight,
   Filter,
-  X
+  X,
+  Calendar
 } from 'lucide-react';
 
 interface BadgeReportPageProps {
@@ -47,9 +48,15 @@ export const BadgeReportPage: React.FC<BadgeReportPageProps> = ({
           ========================================================================= */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-200/80 pb-4 sm:pb-5">
         <div className="space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
-            <BarChart3 className="w-3.5 h-3.5 text-blue-600" />
-            <span>STANDALONE FEATURE • COHORT INTELLIGENCE</span>
+          <div className="flex items-center gap-2 flex-wrap">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
+              <BarChart3 className="w-3.5 h-3.5 text-blue-600" />
+              <span>STANDALONE FEATURE • COHORT INTELLIGENCE</span>
+            </div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-2xs">
+              <Calendar className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Updated on: 20 Nov 2026</span>
+            </div>
           </div>
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
             Badge Completion Analytics

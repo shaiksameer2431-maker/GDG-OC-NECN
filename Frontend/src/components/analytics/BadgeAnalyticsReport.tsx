@@ -11,10 +11,11 @@ import {
   ChevronUp, 
   ExternalLink, 
   BarChart3, 
-  Layers,
-  ArrowRight,
-  TrendingUp,
-  BookOpen
+  Layers, 
+  ArrowRight, 
+  TrendingUp, 
+  BookOpen,
+  Calendar
 } from 'lucide-react';
 
 interface BadgeAnalyticsReportProps {
@@ -156,6 +157,11 @@ export const BadgeAnalyticsReport: React.FC<BadgeAnalyticsReportProps> = ({
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/80">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span>Auto-Synced with Data</span>
+            </span>
+
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-50 text-amber-900 border border-amber-200/80 shadow-2xs">
+              <Calendar className="w-3 h-3 text-amber-600" />
+              <span>Updated on: 20 Nov 2026</span>
             </span>
           </div>
 

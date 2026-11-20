@@ -92,20 +92,41 @@ rows.forEach((r, idx) => {
 
   if (!name && !email) return;
 
-  // Match by email via vault or name
+  // Match strictly:
+  // 1. Primary: Exact match on email in vaultMap
   let matchedStudentId = null;
-  for (const [sId, v] of vaultMap.entries()) {
-    if (email && v.email && v.email.toLowerCase() === email) {
-      matchedStudentId = sId;
-      break;
-    }
-  }
-  if (!matchedStudentId) {
-    for (const [sId, s] of studentMap.entries()) {
-      if (s.full_name.toLowerCase() === name.toLowerCase()) {
+  if (email) {
+    for (const [sId, v] of vaultMap.entries()) {
+      if (v.email && v.email.toLowerCase() === email) {
         matchedStudentId = sId;
         break;
       }
+    }
+  }
+
+  // 2. Secondary: Match by Access Code in vaultMap
+  if (!matchedStudentId && accessCode) {
+    for (const [sId, v] of vaultMap.entries()) {
+      if (v.access_code && v.access_code === accessCode) {
+        matchedStudentId = sId;
+        break;
+      }
+    }
+  }
+
+  // 3. Tertiary: Only if neither email nor access code matched, match by student name
+  // CRITICAL: NEVER match by name if the name is shared by more than one student (e.g. SHAIK MUKTHAR)
+  if (!matchedStudentId && name) {
+    const candidates = [];
+    for (const [sId, s] of studentMap.entries()) {
+      if (s.full_name.toLowerCase() === name.toLowerCase()) {
+        candidates.push(sId);
+      }
+    }
+    if (candidates.length === 1) {
+      matchedStudentId = candidates[0];
+    } else if (candidates.length > 1) {
+      console.warn(`⚠️ Ambiguous duplicate name "${name}" detected (${candidates.join(', ')}) without email match; skipping loose name fallback to avoid wrong attribution.`);
     }
   }
 
@@ -125,7 +146,7 @@ rows.forEach((r, idx) => {
     if (redemptionStatus !== s.redemption_status) { s.redemption_status = redemptionStatus; changed = true; }
     if (milestoneRaw && s.milestone !== milestoneRaw) { s.milestone = milestoneRaw; changed = true; }
     if (badgeCount !== s.skill_badge_count) { s.skill_badge_count = badgeCount; changed = true; }
-    if (parsedBadges.length > 0) { s.skill_badges = parsedBadges; changed = true; }
+    if (JSON.stringify(s.skill_badges) !== JSON.stringify(parsedBadges)) { s.skill_badges = parsedBadges; changed = true; }
     if (gearBadges && s.gear_badges !== gearBadges) { s.gear_badges = gearBadges; changed = true; }
 
     const v = vaultMap.get(matchedStudentId);
