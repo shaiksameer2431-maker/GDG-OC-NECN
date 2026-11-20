@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Clock, AlertCircle, Sparkles, Flame, CheckCircle2 } from 'lucide-react';
 
 // Official Hard Cutoff Deadline: November 23, 2026 at 4:59 PM IST
 export const DEADLINE_DATE = new Date('2026-11-23T16:59:00+05:30');
@@ -43,6 +42,109 @@ export function calculateTimeRemaining(target: Date = DEADLINE_DATE): TimeRemain
   };
 }
 
+// =========================================================================
+// REALISTIC ICONS (Authentic mechanical & cloud vectors - Zero AI cartoon slop)
+// =========================================================================
+
+/** Realistic Precision Mechanical Chronometer / Stopwatch */
+export const RealisticStopwatchIcon: React.FC<{ className?: string; size?: number }> = ({ 
+  className = '', 
+  size = 20 
+}) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    xmlns="http://www.w3.org/2000/svg"
+    className={`shrink-0 ${className}`}
+  >
+    {/* Top Crown & Pushers */}
+    <path d="M12 2V5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    <path d="M10 2H14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    <path d="M18.5 4.5L16.8 6.2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M5.5 4.5L7.2 6.2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    
+    {/* Outer Stainless Steel Bezel */}
+    <circle cx="12" cy="14" r="8" stroke="currentColor" strokeWidth="1.8" />
+    
+    {/* Inner Dial Precision Tick Marks */}
+    <circle cx="12" cy="14" r="6.2" stroke="currentColor" strokeWidth="0.8" strokeDasharray="1.5 2.5" opacity="0.6" />
+    
+    {/* Dial Cardinal Ticks */}
+    <line x1="12" y1="7.2" x2="12" y2="8.4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <line x1="12" y1="19.6" x2="12" y2="20.8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <line x1="5.2" y1="14" x2="6.4" y2="14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <line x1="17.6" y1="14" x2="18.8" y2="14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    
+    {/* Precision Hands */}
+    <line x1="12" y1="14" x2="12" y2="10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    <line x1="12" y1="14" x2="15" y2="14" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+    <circle cx="12" cy="14" r="1.2" fill="currentColor" />
+  </svg>
+);
+
+/** Realistic Calendar Date Blueprint Icon */
+export const RealisticCalendarIcon: React.FC<{ className?: string; size?: number }> = ({ 
+  className = '', 
+  size = 18 
+}) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    xmlns="http://www.w3.org/2000/svg"
+    className={`shrink-0 ${className}`}
+  >
+    {/* Calendar Outer Board */}
+    <rect x="3" y="5" width="18" height="16" rx="3" stroke="currentColor" strokeWidth="1.8" />
+    {/* Top Header Strip */}
+    <path d="M3 9.5H21" stroke="currentColor" strokeWidth="1.5" />
+    {/* Binder Metal Rings */}
+    <path d="M7 2.5V5.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    <path d="M17 2.5V5.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    {/* Calendar Cells */}
+    <circle cx="7.5" cy="13.5" r="1" fill="currentColor" opacity="0.8" />
+    <circle cx="12" cy="13.5" r="1" fill="currentColor" opacity="0.8" />
+    <circle cx="16.5" cy="13.5" r="1" fill="currentColor" opacity="0.8" />
+    <circle cx="7.5" cy="17" r="1" fill="currentColor" opacity="0.8" />
+    <circle cx="12" cy="17" r="1" fill="currentColor" opacity="0.8" />
+    <circle cx="16.5" cy="17" r="1" fill="currentColor" opacity="0.8" />
+  </svg>
+);
+
+/** Realistic Google Cloud Verified Node Icon */
+export const RealisticCloudShieldIcon: React.FC<{ className?: string; size?: number }> = ({ 
+  className = '', 
+  size = 18 
+}) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    xmlns="http://www.w3.org/2000/svg"
+    className={`shrink-0 ${className}`}
+  >
+    {/* Cloud Silhouette */}
+    <path 
+      d="M6.5 18C4.01 18 2 15.99 2 13.5C2 11.2 3.73 9.3 6 9.04C6.54 5.6 9.5 3 13 3C16.87 3 20 6.13 20 10C21.18 10.63 22 11.89 22 13.33C22 15.36 20.36 17 18.33 17H16" 
+      stroke="currentColor" 
+      strokeWidth="1.6" 
+      strokeLinecap="round" 
+    />
+    {/* Central Check Mark */}
+    <path 
+      d="M9 13.5L11.5 16L16.5 10.5" 
+      stroke="#00F0FF" 
+      strokeWidth="2" 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+    />
+  </svg>
+);
+
 interface DeadlineCountdownProps {
   variant?: 'card' | 'compact' | 'banner';
   className?: string;
@@ -57,46 +159,45 @@ export const DeadlineCountdown: React.FC<DeadlineCountdownProps> = ({
   const [timeLeft, setTimeLeft] = useState<TimeRemaining>(calculateTimeRemaining);
 
   useEffect(() => {
-    // Initial sync
     setTimeLeft(calculateTimeRemaining());
-
-    // Tick every second
     const interval = setInterval(() => {
       setTimeLeft(calculateTimeRemaining());
     }, 1000);
-
     return () => clearInterval(interval);
   }, []);
 
   const pad = (n: number) => String(Math.max(0, n)).padStart(2, '0');
 
   // =========================================================================
-  // 1. COMPACT VARIANT (For Navbar / Header Badges)
+  // 1. COMPACT VARIANT (For Navbar / Header Badges - Sleek Neon Glass Pill)
   // =========================================================================
   if (variant === 'compact') {
     if (timeLeft.isExpired) {
       return (
-        <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-bold bg-slate-100 text-slate-700 border border-slate-300 shadow-2xs select-none ${className}`}>
-          <AlertCircle className="w-3 h-3 text-red-500" />
-          <span>Deadline Passed</span>
+        <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-mono font-bold bg-[#090D1A] text-red-400 border border-red-500/50 shadow-[0_0_12px_rgba(255,46,116,0.3)] select-none ${className}`}>
+          <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+          <span>PORTAL CLOSED</span>
         </div>
       );
     }
 
     return (
       <div 
-        className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold bg-amber-50/95 text-amber-900 border border-amber-300 shadow-2xs select-none hover:bg-amber-100/90 transition-all ${className}`}
-        title="Google Cloud Learn with Communities Submission Deadline: 23 Nov, 4:59 PM IST"
+        className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-mono font-bold bg-[#090D1A]/95 text-cyan-300 border border-cyan-500/40 shadow-[0_0_18px_rgba(0,240,255,0.25),inset_0_0_10px_rgba(0,240,255,0.08)] select-none hover:border-cyan-400 transition-all ${className}`}
+        title="Official Submission Deadline: 23 November 2026, 4:59 PM IST"
       >
         <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75" />
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-600" />
+          <span className="neon-pulse-dot absolute inline-flex h-full w-full rounded-full bg-[#FF2E74] opacity-80" />
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF2E74]" />
         </span>
-        <Clock className="w-3 h-3 text-amber-600 shrink-0" />
-        <span className="font-mono tracking-tight font-extrabold whitespace-nowrap">
-          {pad(timeLeft.days)}d {pad(timeLeft.hours)}h {pad(timeLeft.minutes)}m {pad(timeLeft.seconds)}s
+        <RealisticStopwatchIcon size={14} className="text-cyan-400" />
+        <span className="tracking-tight text-white font-extrabold whitespace-nowrap">
+          <span className="text-[#00F0FF]">{pad(timeLeft.days)}d</span> :
+          <span className="text-[#38BDF8] ml-1">{pad(timeLeft.hours)}h</span> :
+          <span className="text-[#FBBF24] ml-1">{pad(timeLeft.minutes)}m</span> :
+          <span className="text-[#FF2E74] ml-1 font-black">{pad(timeLeft.seconds)}s</span>
         </span>
-        <span className="hidden lg:inline text-[9px] text-amber-700 font-semibold border-l border-amber-300/80 pl-1.5 ml-0.5">
+        <span className="hidden lg:inline text-[9px] text-slate-400 font-sans font-semibold border-l border-cyan-500/30 pl-2">
           23 Nov 4:59 PM
         </span>
       </div>
@@ -104,131 +205,166 @@ export const DeadlineCountdown: React.FC<DeadlineCountdownProps> = ({
   }
 
   // =========================================================================
-  // 2. BANNER VARIANT (Full-width sticky top notice)
-  // =========================================================================
-  if (variant === 'banner') {
-    return (
-      <div className={`w-full bg-gradient-to-r from-amber-500/10 via-red-500/10 to-blue-500/10 border-y border-amber-300/60 py-2 px-4 backdrop-blur-md ${className}`}>
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs">
-          <div className="flex items-center gap-2">
-            <Flame className="w-4 h-4 text-amber-600 animate-bounce" />
-            <span className="font-extrabold text-slate-900">
-              Official Campaign Cutoff:
-            </span>
-            <span className="text-slate-700 font-medium">
-              November 23, 2026 at 4:59 PM IST
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2 font-mono font-bold text-amber-900 bg-white/90 px-3 py-1 rounded-full border border-amber-300 shadow-2xs">
-            <span>{pad(timeLeft.days)}d</span>:
-            <span>{pad(timeLeft.hours)}h</span>:
-            <span>{pad(timeLeft.minutes)}m</span>:
-            <span>{pad(timeLeft.seconds)}s</span>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // =========================================================================
-  // 3. FULL LUXURY HERO CARD VARIANT (For Overview Page & Mobile Hero)
-  // Crafted to fit cleanly on 320px+ mobile screens with zero clipping!
+  // 2. FULL CREATIVE NEON HERO TIMER (With Visual Glow Effects & Realistic Icons)
+  // Designed for zero mobile breaking (supports 320px up to 4K displays!)
   // =========================================================================
   return (
-    <div className={`w-full max-w-xl rounded-2xl sm:rounded-3xl bg-white/90 backdrop-blur-xl border border-amber-300/70 shadow-[0_12px_36px_rgba(184,146,45,0.14),4px_4px_16px_#EADECA,-4px_-4px_16px_#FFFFFF] p-3.5 sm:p-5 space-y-3 sm:space-y-3.5 transition-all relative overflow-hidden group ${className}`}>
+    <div className={`w-full max-w-xl rounded-2xl sm:rounded-3xl neon-timer-chassis p-3.5 sm:p-5 space-y-3.5 relative overflow-hidden select-none transition-all ${className}`}>
       
-      {/* Top Google Quad-Color Accent Strip */}
+      {/* Dynamic Flowing Neon Border Laser Tube (Top Edge Glow) */}
       <div 
-        className="absolute top-0 left-0 right-0 h-1 sm:h-1.5 bg-gradient-to-r from-[#4285F4] via-[#EA4335] via-[#FBBC04] to-[#34A853]" 
+        className="absolute top-0 left-0 right-0 h-1 sm:h-1.5 neon-border-glow-tube shadow-[0_0_14px_rgba(0,240,255,0.8)]" 
         aria-hidden="true" 
       />
 
-      {/* Header with live pulsating urgency badge */}
-      <div className="flex items-center justify-between gap-2 flex-wrap pt-0.5">
+      {/* Atmospheric Ambient Neon Glows (Deep chromatic backdrop blooms) */}
+      <div 
+        className="absolute -top-12 -left-12 w-32 h-32 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none" 
+        aria-hidden="true" 
+      />
+      <div 
+        className="absolute -bottom-12 -right-12 w-32 h-32 bg-rose-500/15 rounded-full blur-3xl pointer-events-none" 
+        aria-hidden="true" 
+      />
+
+      {/* =========================================================================
+          HEADER: Realistic Stopwatch + Pulsing Neon Radar Pill + Hard Cutoff Badge
+          ========================================================================= */}
+      <div className="flex items-center justify-between gap-2 flex-wrap relative z-10 pt-0.5">
         <div className="flex items-center gap-2">
+          {/* Neon Pulsing Radar Dot */}
           <span className="relative flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-600" />
+            <span className="neon-pulse-dot absolute inline-flex h-full w-full rounded-full bg-[#FF2E74] opacity-80" />
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#FF2E74] shadow-[0_0_8px_#FF2E74]" />
           </span>
 
-          <span className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-wider bg-red-50 text-red-700 border border-red-200 shadow-2xs">
-            <Flame className="w-3 h-3 text-red-600 shrink-0" />
-            <span>Campaign Deadline</span>
-          </span>
+          {/* Neon Mission Badge with Realistic Chronometer Icon */}
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-mono font-bold tracking-wider uppercase bg-cyan-950/60 text-cyan-300 border border-cyan-500/40 shadow-[0_0_12px_rgba(0,240,255,0.2)]">
+            <RealisticStopwatchIcon size={14} className="text-cyan-400" />
+            <span>FINAL COUNTDOWN</span>
+          </div>
         </div>
 
-        <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-bold text-slate-700 bg-amber-50/80 px-2.5 py-0.5 rounded-lg border border-amber-200/80">
-          <Clock className="w-3 h-3 text-amber-600 shrink-0" />
-          <span className="whitespace-nowrap">23 Nov 2026 • 4:59 PM IST</span>
+        {/* Realistic Calendar Timestamp Readout */}
+        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] min-[380px]:text-[11px] sm:text-xs font-mono font-bold bg-[#060913]/90 text-slate-300 border border-slate-700/70 shadow-inner">
+          <RealisticCalendarIcon size={13} className="text-amber-400" />
+          <span className="text-amber-300 font-extrabold whitespace-nowrap">23 NOV 2026</span>
+          <span className="text-slate-500">//</span>
+          <span className="text-cyan-300 font-extrabold whitespace-nowrap">16:59:00 IST</span>
         </div>
       </div>
 
-      {/* Main 4-Box Countdown Timer Grid (Mobile Responsive) */}
-      <div className="grid grid-cols-4 gap-1.5 sm:gap-2.5">
-        {/* DAYS */}
-        <div className="flex flex-col items-center justify-center p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-gradient-to-b from-white to-slate-50/90 border border-slate-200/90 shadow-2xs group-hover:border-amber-300 transition-colors">
-          <span className="font-mono font-black text-xl min-[380px]:text-2xl sm:text-3xl text-slate-900 leading-none tracking-tight">
+      {/* =========================================================================
+          THE 4 NEON DIGIT PODS (DAYS · HOURS · MINS · SECS)
+          Each chamber pod features individual beveled wells, glowing diodes,
+          and vibrant phosphor luminescence.
+          ========================================================================= */}
+      <div className="grid grid-cols-4 gap-1.5 min-[380px]:gap-2 sm:gap-3 relative z-10">
+        
+        {/* POD 1: DAYS (Neon Cyan) */}
+        <div className="neon-timer-pod rounded-xl sm:rounded-2xl p-2 min-[380px]:p-2.5 sm:p-3.5 flex flex-col items-center justify-center relative overflow-hidden group/pod">
+          {/* Top Diode */}
+          <div className="w-5 h-0.5 rounded-full bg-[#00F0FF] shadow-[0_0_6px_#00F0FF] mb-1 sm:mb-1.5 opacity-80" />
+          
+          {/* Number */}
+          <span className="font-mono font-black text-2xl min-[380px]:text-3xl sm:text-4xl neon-glow-cyan leading-none tracking-tight">
             {pad(timeLeft.days)}
           </span>
-          <span className="text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-slate-500 mt-1">
-            Days
+          
+          {/* High-Tech Subtitle */}
+          <span className="text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-mono font-extrabold tracking-[0.2em] text-slate-400 uppercase mt-1.5">
+            DAYS
           </span>
         </div>
 
-        {/* HOURS */}
-        <div className="flex flex-col items-center justify-center p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-gradient-to-b from-white to-slate-50/90 border border-slate-200/90 shadow-2xs group-hover:border-amber-300 transition-colors">
-          <span className="font-mono font-black text-xl min-[380px]:text-2xl sm:text-3xl text-slate-900 leading-none tracking-tight">
+        {/* POD 2: HOURS (Neon Electric Blue) */}
+        <div className="neon-timer-pod rounded-xl sm:rounded-2xl p-2 min-[380px]:p-2.5 sm:p-3.5 flex flex-col items-center justify-center relative overflow-hidden group/pod">
+          {/* Top Diode */}
+          <div className="w-5 h-0.5 rounded-full bg-[#38BDF8] shadow-[0_0_6px_#38BDF8] mb-1 sm:mb-1.5 opacity-80" />
+          
+          {/* Number */}
+          <span className="font-mono font-black text-2xl min-[380px]:text-3xl sm:text-4xl neon-glow-blue leading-none tracking-tight">
             {pad(timeLeft.hours)}
           </span>
-          <span className="text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-slate-500 mt-1">
-            Hours
+          
+          {/* High-Tech Subtitle */}
+          <span className="text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-mono font-extrabold tracking-[0.2em] text-slate-400 uppercase mt-1.5">
+            HOURS
           </span>
         </div>
 
-        {/* MINUTES */}
-        <div className="flex flex-col items-center justify-center p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-gradient-to-b from-white to-slate-50/90 border border-slate-200/90 shadow-2xs group-hover:border-amber-300 transition-colors">
-          <span className="font-mono font-black text-xl min-[380px]:text-2xl sm:text-3xl text-slate-900 leading-none tracking-tight">
+        {/* POD 3: MINUTES (Neon Radiant Amber) */}
+        <div className="neon-timer-pod rounded-xl sm:rounded-2xl p-2 min-[380px]:p-2.5 sm:p-3.5 flex flex-col items-center justify-center relative overflow-hidden group/pod">
+          {/* Top Diode */}
+          <div className="w-5 h-0.5 rounded-full bg-[#FBBF24] shadow-[0_0_6px_#FBBF24] mb-1 sm:mb-1.5 opacity-80" />
+          
+          {/* Number */}
+          <span className="font-mono font-black text-2xl min-[380px]:text-3xl sm:text-4xl neon-glow-amber leading-none tracking-tight">
             {pad(timeLeft.minutes)}
           </span>
-          <span className="text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-slate-500 mt-1">
-            Mins
+          
+          {/* High-Tech Subtitle */}
+          <span className="text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-mono font-extrabold tracking-[0.2em] text-slate-400 uppercase mt-1.5">
+            MINS
           </span>
         </div>
 
-        {/* SECONDS */}
-        <div className="flex flex-col items-center justify-center p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-gradient-to-b from-amber-50/80 to-amber-100/60 border border-amber-300/80 shadow-2xs">
-          <span className="font-mono font-black text-xl min-[380px]:text-2xl sm:text-3xl text-amber-700 leading-none tracking-tight animate-pulse">
+        {/* POD 4: SECONDS (Neon Laser Ruby with Active Pulse) */}
+        <div className="neon-timer-pod rounded-xl sm:rounded-2xl p-2 min-[380px]:p-2.5 sm:p-3.5 flex flex-col items-center justify-center relative overflow-hidden border-rose-500/30">
+          {/* Top Diode */}
+          <div className="w-5 h-0.5 rounded-full bg-[#FF2E74] shadow-[0_0_8px_#FF2E74] mb-1 sm:mb-1.5" />
+          
+          {/* Number with Live Pulse Glow */}
+          <span className="font-mono font-black text-2xl min-[380px]:text-3xl sm:text-4xl neon-glow-rose leading-none tracking-tight">
             {pad(timeLeft.seconds)}
           </span>
-          <span className="text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-amber-700 mt-1">
-            Secs
+          
+          {/* High-Tech Subtitle */}
+          <span className="text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-mono font-extrabold tracking-[0.2em] text-rose-400 uppercase mt-1.5">
+            SECS
           </span>
         </div>
       </div>
 
-      {/* Motivational Microcopy & Instructions */}
-      <div className="flex items-center justify-between gap-2 pt-1 border-t border-slate-200/60 text-[10.5px] sm:text-xs">
-        <div className="flex items-center gap-1.5 text-slate-600 leading-tight">
-          <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-          <span>Complete all 10 labs on Google Skills Boost before the portal closes.</span>
+      {/* =========================================================================
+          DYNAMIC NEON LASER URGENCY TRACK (Continuous Animated Light Beam)
+          ========================================================================= */}
+      <div className="relative w-full h-1 bg-slate-800/80 rounded-full overflow-hidden border border-slate-700/50">
+        <div className="absolute inset-y-0 left-0 right-0 neon-laser-sweep" />
+      </div>
+
+      {/* =========================================================================
+          FOOTER: Realistic Cloud Shield + Verified Instruction Notice
+          ========================================================================= */}
+      <div className="flex items-center justify-between gap-2 pt-0.5 relative z-10 text-[10.5px] sm:text-xs">
+        <div className="flex items-center gap-1.5 text-slate-300 leading-tight">
+          <RealisticCloudShieldIcon size={16} className="text-cyan-400 shrink-0" />
+          <span>
+            Google Skills Boost portal closes at <strong className="text-amber-300 font-mono font-bold">4:59 PM</strong>. Complete all 10 labs for swags & certificates.
+          </span>
         </div>
 
         {onExploreClick && (
           <button
             onClick={onExploreClick}
-            className="text-[11px] font-bold text-blue-600 hover:text-blue-700 whitespace-nowrap underline shrink-0 cursor-pointer"
+            className="text-[11px] font-mono font-bold text-cyan-400 hover:text-cyan-300 transition-colors whitespace-nowrap shrink-0 cursor-pointer underline underline-offset-2 flex items-center gap-1"
           >
-            View Journey →
+            <span>Labs</span>
+            <span>→</span>
           </button>
         )}
       </div>
 
+      {/* Portal Closed Overlay if deadline reached */}
       {timeLeft.isExpired && (
-        <div className="absolute inset-0 bg-slate-900/85 backdrop-blur-sm flex flex-col items-center justify-center p-4 text-center text-white rounded-2xl sm:rounded-3xl z-10 space-y-1">
-          <CheckCircle2 className="w-8 h-8 text-emerald-400" />
-          <h4 className="font-black text-base sm:text-lg">Campaign Period Concluded</h4>
-          <p className="text-xs text-slate-300">The 23 Nov 4:59 PM deadline has passed. Thank you for participating!</p>
+        <div className="absolute inset-0 bg-[#060913]/95 backdrop-blur-md flex flex-col items-center justify-center p-4 text-center text-white rounded-2xl sm:rounded-3xl z-20 space-y-2 border border-red-500/50 shadow-[0_0_30px_rgba(255,46,116,0.4)]">
+          <RealisticStopwatchIcon size={32} className="text-red-400" />
+          <h4 className="font-mono font-black text-lg sm:text-xl text-red-400 tracking-wider">
+            DEADLINE REACHED • PORTAL CLOSED
+          </h4>
+          <p className="text-xs text-slate-300 max-w-sm">
+            The November 23, 2026 4:59 PM cutoff has concluded. Results and certificate disbursements are now in verification.
+          </p>
         </div>
       )}
     </div>
