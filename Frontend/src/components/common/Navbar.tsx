@@ -47,7 +47,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onTabChange, stats }
     { id: 'leaderboard', label: 'Leaderboard', shortLabel: 'Leaderboard', icon: Trophy },
     { id: 'report', label: 'Badge Report', shortLabel: 'Report', icon: BarChart3 },
     { id: 'journey', label: 'Learning Journey', shortLabel: 'Journey', icon: Compass },
-    { id: 'achievements', label: 'Achievements', shortLabel: 'Achievements', icon: Award },
+    { id: 'achievements', label: 'Achievements', shortLabel: 'Awards', icon: Award },
     { id: 'about', label: 'About', shortLabel: 'About', icon: Info },
   ];
 
@@ -60,7 +60,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onTabChange, stats }
     <>
       <header className="fixed top-0 left-0 right-0 z-50 flex justify-center px-2.5 sm:px-4 pt-2.5 sm:pt-4 transition-all duration-300 pointer-events-none">
         <nav
-          className={`pointer-events-auto flex items-center justify-between gap-2 sm:gap-3 px-3 sm:px-4 lg:px-5 py-2 sm:py-2.5 rounded-full border transition-all duration-300 max-w-6xl w-full ${
+          className={`pointer-events-auto flex items-center justify-between gap-2 sm:gap-3 px-3 sm:px-4 lg:px-6 py-2 sm:py-2.5 rounded-full border transition-all duration-300 max-w-6xl w-full overflow-hidden ${
             isScrolled
               ? 'bg-white/95 backdrop-blur-2xl border-slate-200/90 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.06)]'
               : 'bg-[#F0F4F9]/90 backdrop-blur-xl border-white/80 shadow-[6px_6px_16px_#D0DCED,-6px_-6px_16px_#FFFFFF]'
@@ -93,14 +93,14 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onTabChange, stats }
                   2026
                 </span>
               </div>
-              <p className="text-[9px] sm:text-[10px] text-slate-500 truncate max-w-[150px] sm:max-w-[200px] lg:max-w-none hidden min-[460px]:block">
+              <p className="text-[9px] sm:text-[10px] text-slate-500 truncate max-w-[140px] sm:max-w-[180px] xl:max-w-none hidden min-[460px]:block">
                 GDG On Campus • Narayana Engineering College
               </p>
             </div>
           </button>
 
-          {/* Desktop & Tablet Navigation Links (Untouched Windows / Desktop version) */}
-          <div className="hidden md:flex items-center gap-1 lg:gap-1.5">
+          {/* Desktop & Tablet Navigation Links (Adaptive responsive labels & padding) */}
+          <div className="hidden md:flex items-center gap-1 xl:gap-1.5 shrink min-w-0">
             {navLinks.map(link => {
               const Icon = link.icon;
               const isActive = currentTab === link.id;
@@ -109,7 +109,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onTabChange, stats }
                 <button
                   key={link.id}
                   onClick={() => handleNavClick(link.id)}
-                  className={`flex items-center gap-1.5 lg:gap-2 px-2.5 lg:px-3.5 py-1.5 rounded-full text-[11px] lg:text-xs font-bold transition-all duration-200 select-none ${
+                  className={`flex items-center gap-1.5 px-2.5 xl:px-3.5 py-1.5 rounded-full text-[11px] xl:text-xs font-bold transition-all duration-200 select-none shrink-0 ${
                     isActive
                       ? 'bg-blue-600 text-white shadow-sm'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-white/80 active:scale-95'
@@ -117,8 +117,8 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onTabChange, stats }
                 >
                   <Icon className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-white' : 'text-slate-500'}`} />
                   <span className="whitespace-nowrap">
-                    <span className="inline lg:hidden">{link.shortLabel}</span>
-                    <span className="hidden lg:inline">{link.label}</span>
+                    <span className="inline xl:hidden">{link.shortLabel}</span>
+                    <span className="hidden xl:inline">{link.label}</span>
                   </span>
                 </button>
               );
@@ -135,8 +135,8 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onTabChange, stats }
             >
               <CheckCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
               <span className="font-mono font-bold">{stats.redeemedCount}</span>
-              <span className="text-emerald-600 font-mono hidden sm:inline">/{stats.totalRegistered}</span>
-              <span className="text-[9px] sm:text-[10px] text-emerald-700 hidden xl:inline">({stats.redemptionPercentage}%)</span>
+              <span className="text-emerald-600 font-mono hidden min-[480px]:inline">/{stats.totalRegistered}</span>
+              <span className="text-[9px] sm:text-[10px] text-emerald-700 hidden 2xl:inline">({stats.redemptionPercentage}%)</span>
             </button>
 
             {/* Mobile Hamburger Button (Removed from view per user request; kept in DOM/accessibility for test compliance) */}
