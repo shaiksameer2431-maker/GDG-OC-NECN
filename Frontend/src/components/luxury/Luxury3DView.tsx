@@ -6,6 +6,7 @@ import { SwagGiftExperience } from '../swags/SwagGiftExperience';
 import { BronzeMilestoneExperience } from '../achievements/BronzeMilestoneExperience';
 import CloudChampionsScene from '../cloud/CloudChampionsScene';
 import CloudCircuitBackground from '../cloud/CloudCircuitBackground';
+import { DeadlineCountdown } from '../common/DeadlineCountdown';
 
 interface Luxury3DViewProps {
   stats: CohortStats;
@@ -275,15 +276,15 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
             </h1>
 
             {/* Program Pill with Pure Rotating Border (Only Border Rotates) */}
-            <div className="rotating-border-box inline-flex items-center">
+            <div className="rotating-border-box inline-flex items-center max-w-full">
               {/* Spinning Conic Gradient (Border only) */}
               <div className="rotating-border-spin" aria-hidden="true" />
 
               {/* Static Content (Stays upright, covers center so only border spins) */}
-              <div className="rotating-border-content px-5 py-2 font-bold text-xs sm:text-sm text-[#14182b] flex items-center gap-1.5 shadow-sm">
-                <span>Google Cloud Learn with</span>
-                <span className="font-extrabold text-[#4285F4]">Communities</span>
-                <span className="font-extrabold text-[#14182b]">2026</span>
+              <div className="rotating-border-content px-3 min-[380px]:px-4 sm:px-5 py-1.5 sm:py-2 font-bold text-[10.5px] min-[380px]:text-xs sm:text-sm text-[#14182b] flex items-center justify-center gap-1 sm:gap-1.5 shadow-sm whitespace-nowrap select-none">
+                <span className="whitespace-nowrap">Google Cloud Learn with</span>
+                <span className="font-extrabold text-[#4285F4] whitespace-nowrap">Communities</span>
+                <span className="font-extrabold text-[#14182b] whitespace-nowrap">2026</span>
               </div>
             </div>
 
@@ -298,6 +299,14 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
             {/* Script Text */}
             <div className="luxury-script text-2xl sm:text-3xl text-[#B8922D] font-bold">
               Same Labs. Bigger Opportunities!
+            </div>
+
+            {/* Official Campaign Deadline Countdown (23 Nov 4:59 PM IST) */}
+            <div className="pt-1.5 sm:pt-2 w-full max-w-lg">
+              <DeadlineCountdown
+                variant="card"
+                onExploreClick={() => onNavigate('journey')}
+              />
             </div>
 
             {/* Dynamic Counter Stats */}
