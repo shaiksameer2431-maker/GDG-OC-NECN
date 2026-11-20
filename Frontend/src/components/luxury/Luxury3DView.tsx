@@ -302,15 +302,9 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
             </div>
 
             {/* Official Campaign Deadline Countdown (23 Nov 4:59 PM IST) */}
-            <div className="relative pt-1.5 sm:pt-2 w-full max-w-lg">
-              {/* Diffused luxury ambient backlight for seamless physical integration */}
-              <div 
-                className="absolute -inset-1.5 bg-gradient-to-r from-blue-200/25 via-amber-200/20 to-rose-200/25 rounded-3xl blur-xl opacity-70 pointer-events-none" 
-                aria-hidden="true" 
-              />
+            <div className="pt-2 sm:pt-3 w-full max-w-lg">
               <DeadlineCountdown
                 variant="card"
-                onExploreClick={() => onNavigate('journey')}
               />
             </div>
 
