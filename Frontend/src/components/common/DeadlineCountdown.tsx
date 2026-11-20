@@ -43,7 +43,7 @@ export function calculateTimeRemaining(target: Date = DEADLINE_DATE): TimeRemain
 }
 
 // =========================================================================
-// REALISTIC ICONS (Authentic mechanical & cloud vectors - Zero AI cartoon slop)
+// REALISTIC ICONS (Authentic precision vectors - Zero cartoon/AI slop)
 // =========================================================================
 
 /** Realistic Precision Mechanical Chronometer / Stopwatch */
@@ -114,7 +114,7 @@ export const RealisticCalendarIcon: React.FC<{ className?: string; size?: number
   </svg>
 );
 
-/** Realistic Google Cloud Verified Node Icon */
+/** Realistic Google Cloud Verified Shield Icon */
 export const RealisticCloudShieldIcon: React.FC<{ className?: string; size?: number }> = ({ 
   className = '', 
   size = 18 
@@ -137,7 +137,7 @@ export const RealisticCloudShieldIcon: React.FC<{ className?: string; size?: num
     {/* Central Check Mark */}
     <path 
       d="M9 13.5L11.5 16L16.5 10.5" 
-      stroke="#00F0FF" 
+      stroke="#0284C7" 
       strokeWidth="2" 
       strokeLinecap="round" 
       strokeLinejoin="round" 
@@ -146,7 +146,7 @@ export const RealisticCloudShieldIcon: React.FC<{ className?: string; size?: num
 );
 
 interface DeadlineCountdownProps {
-  variant?: 'card' | 'compact' | 'banner';
+  variant?: 'card' | 'compact';
   className?: string;
   onExploreClick?: () => void;
 }
@@ -169,12 +169,12 @@ export const DeadlineCountdown: React.FC<DeadlineCountdownProps> = ({
   const pad = (n: number) => String(Math.max(0, n)).padStart(2, '0');
 
   // =========================================================================
-  // 1. COMPACT VARIANT (For Navbar / Header Badges - Sleek Neon Glass Pill)
+  // 1. COMPACT VARIANT (For Sub-headers / Badges)
   // =========================================================================
   if (variant === 'compact') {
     if (timeLeft.isExpired) {
       return (
-        <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-mono font-bold bg-[#090D1A] text-red-400 border border-red-500/50 shadow-[0_0_12px_rgba(255,46,116,0.3)] select-none ${className}`}>
+        <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-mono font-bold bg-[#090D1A] text-red-400 border border-red-500/50 shadow-sm select-none ${className}`}>
           <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
           <span>PORTAL CLOSED</span>
         </div>
@@ -183,21 +183,21 @@ export const DeadlineCountdown: React.FC<DeadlineCountdownProps> = ({
 
     return (
       <div 
-        className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-mono font-bold bg-[#090D1A]/95 text-cyan-300 border border-cyan-500/40 shadow-[0_0_18px_rgba(0,240,255,0.25),inset_0_0_10px_rgba(0,240,255,0.08)] select-none hover:border-cyan-400 transition-all ${className}`}
+        className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-mono font-bold bg-white/70 backdrop-blur-md text-slate-800 border border-white/80 shadow-sm select-none transition-all ${className}`}
         title="Official Submission Deadline: 23 November 2026, 4:59 PM IST"
       >
         <span className="relative flex h-2 w-2">
-          <span className="neon-pulse-dot absolute inline-flex h-full w-full rounded-full bg-[#FF2E74] opacity-80" />
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF2E74]" />
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75" />
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500" />
         </span>
-        <RealisticStopwatchIcon size={14} className="text-cyan-400" />
-        <span className="tracking-tight text-white font-extrabold whitespace-nowrap">
-          <span className="text-[#00F0FF]">{pad(timeLeft.days)}d</span> :
-          <span className="text-[#38BDF8] ml-1">{pad(timeLeft.hours)}h</span> :
-          <span className="text-[#FBBF24] ml-1">{pad(timeLeft.minutes)}m</span> :
-          <span className="text-[#FF2E74] ml-1 font-black">{pad(timeLeft.seconds)}s</span>
+        <RealisticStopwatchIcon size={13} className="text-[#0284C7]" />
+        <span className="tracking-tight font-extrabold whitespace-nowrap">
+          <span className="text-[#0284C7]">{pad(timeLeft.days)}d</span> :
+          <span className="text-[#2563EB] ml-1">{pad(timeLeft.hours)}h</span> :
+          <span className="text-[#D97706] ml-1">{pad(timeLeft.minutes)}m</span> :
+          <span className="text-[#E11D48] ml-1">{pad(timeLeft.seconds)}s</span>
         </span>
-        <span className="hidden lg:inline text-[9px] text-slate-400 font-sans font-semibold border-l border-cyan-500/30 pl-2">
+        <span className="hidden lg:inline text-[9px] text-slate-500 font-sans font-semibold border-l border-slate-300 pl-2">
           23 Nov 4:59 PM
         </span>
       </div>
@@ -205,149 +205,114 @@ export const DeadlineCountdown: React.FC<DeadlineCountdownProps> = ({
   }
 
   // =========================================================================
-  // 2. FULL FLUID GLASSMORPHISM NEON HERO TIMER (With Transparency & Neon Bloom)
-  // Designed for zero mobile breaking (supports 320px up to 4K displays!)
+  // 2. SEAMLESS FLUID GLASS HERO TIMER (Smooth Luxury Finishing)
+  // Truly translucent fluid glassmorphism with ambient neon bloom.
+  // Blends organically with the warm cream background; never looks "pasted".
   // =========================================================================
   return (
-    <div className={`w-full max-w-xl rounded-2xl sm:rounded-3xl fluid-glass-neon-chassis p-3.5 sm:p-5 space-y-3.5 relative overflow-hidden select-none transition-all ${className}`}>
+    <div className={`w-full max-w-lg rounded-2xl sm:rounded-3xl smooth-glass-timer p-3 min-[380px]:p-4 sm:p-5 space-y-3 relative overflow-hidden select-none transition-all ${className}`}>
       
-      {/* Dynamic Flowing Neon Border Laser Tube (Top Edge Glow) */}
+      {/* Delicate Optical Specular Sheen (Natural glass highlight, NOT a harsh rainbow bar) */}
       <div 
-        className="absolute top-0 left-0 right-0 h-1 sm:h-1.5 neon-border-glow-tube shadow-[0_0_12px_rgba(0,240,255,0.7)]" 
-        aria-hidden="true" 
-      />
-
-      {/* Atmospheric Translucent Glass Refraction Blooms */}
-      <div 
-        className="absolute -top-12 -left-12 w-36 h-36 bg-cyan-400/20 rounded-full blur-3xl pointer-events-none" 
-        aria-hidden="true" 
-      />
-      <div 
-        className="absolute -bottom-12 -right-12 w-36 h-36 bg-rose-400/20 rounded-full blur-3xl pointer-events-none" 
+        className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/90 to-transparent" 
         aria-hidden="true" 
       />
 
       {/* =========================================================================
-          HEADER: Realistic Stopwatch + Pulsing Neon Radar Pill + Hard Cutoff Badge
+          HEADER: Unified Seamless Row (Pulsing Live Dot + Clean Timestamp)
           ========================================================================= */}
       <div className="flex items-center justify-between gap-2 flex-wrap relative z-10 pt-0.5">
         <div className="flex items-center gap-2">
-          {/* Neon Pulsing Radar Dot */}
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="neon-pulse-dot absolute inline-flex h-full w-full rounded-full bg-[#FF2E74] opacity-80" />
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#FF2E74] shadow-[0_0_8px_#FF2E74]" />
+          {/* Subtle Pulsing Live Radar Dot */}
+          <span className="relative flex h-2 w-2 shrink-0">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500 shadow-[0_0_6px_#E11D48]" />
           </span>
 
-          {/* Translucent Glass Mission Badge with Realistic Chronometer Icon */}
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-mono font-bold tracking-wider uppercase bg-cyan-50/85 backdrop-blur-md text-cyan-800 border border-cyan-300/80 shadow-[0_0_12px_rgba(0,240,255,0.25)]">
-            <RealisticStopwatchIcon size={14} className="text-[#008AA8]" />
-            <span>FINAL COUNTDOWN</span>
-          </div>
+          <span className="text-[10.5px] min-[380px]:text-[11px] sm:text-xs font-mono font-extrabold tracking-wider uppercase text-slate-700 flex items-center gap-1.5 whitespace-nowrap">
+            <RealisticStopwatchIcon size={13} className="text-[#0284C7]" />
+            <span>Campaign Cutoff</span>
+          </span>
         </div>
 
-        {/* Realistic Calendar Timestamp Readout on Fluid Glass */}
-        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] min-[380px]:text-[11px] sm:text-xs font-mono font-bold bg-white/85 backdrop-blur-md text-slate-700 border border-slate-200/90 shadow-2xs">
-          <RealisticCalendarIcon size={13} className="text-amber-600" />
-          <span className="text-amber-700 font-extrabold whitespace-nowrap">23 NOV 2026</span>
-          <span className="text-slate-400">//</span>
-          <span className="text-blue-700 font-extrabold whitespace-nowrap">16:59:00 IST</span>
+        {/* Realistic Calendar Timestamp Readout */}
+        <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] min-[380px]:text-[11px] sm:text-xs font-mono font-bold bg-white/50 backdrop-blur-sm text-slate-700 border border-white/70 shadow-2xs">
+          <RealisticCalendarIcon size={12} className="text-amber-600" />
+          <span className="text-amber-800 font-extrabold whitespace-nowrap">23 Nov 2026</span>
+          <span className="text-slate-400">·</span>
+          <span className="text-blue-700 font-extrabold whitespace-nowrap">4:59 PM IST</span>
         </div>
       </div>
 
       {/* =========================================================================
-          THE 4 TRANSLUCENT FLUID GLASS PODS (DAYS · HOURS · MINS · SECS)
-          Each chamber pod features fluid glassmorphism, glowing neon diodes,
-          and vibrant phosphor luminescence.
+          THE 4 SEAMLESS FLUID GLASS PODS (DAYS · HOURS · MINS · SECS)
+          Frosted crystal bays with soft ambient neon bloom.
           ========================================================================= */}
-      <div className="grid grid-cols-4 gap-1.5 min-[380px]:gap-2 sm:gap-3 relative z-10">
+      <div className="grid grid-cols-4 gap-1.5 min-[380px]:gap-2 sm:gap-2.5 relative z-10">
         
         {/* POD 1: DAYS (Fluid Glass + Neon Cyan) */}
-        <div className="fluid-glass-neon-pod rounded-xl sm:rounded-2xl p-2 min-[380px]:p-2.5 sm:p-3.5 flex flex-col items-center justify-center relative overflow-hidden group/pod">
-          {/* Top Diode */}
-          <div className="w-5 h-0.5 rounded-full bg-[#00D2FF] shadow-[0_0_8px_#00D2FF] mb-1 sm:mb-1.5 opacity-90" />
-          
-          {/* Number */}
+        <div className="smooth-glass-pod rounded-xl sm:rounded-2xl p-2 min-[380px]:p-2.5 sm:p-3.5 flex flex-col items-center justify-center relative overflow-hidden group/pod">
           <span className="font-mono font-black text-2xl min-[380px]:text-3xl sm:text-4xl fluid-neon-cyan leading-none tracking-tight">
             {pad(timeLeft.days)}
           </span>
-          
-          {/* High-Tech Subtitle */}
-          <span className="text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-mono font-extrabold tracking-[0.2em] text-slate-500 uppercase mt-1.5">
+          <span className="text-[9px] min-[380px]:text-[10px] sm:text-[10.5px] font-mono font-extrabold tracking-[0.2em] text-slate-500 uppercase mt-1.5">
             DAYS
           </span>
         </div>
 
         {/* POD 2: HOURS (Fluid Glass + Neon Electric Blue) */}
-        <div className="fluid-glass-neon-pod rounded-xl sm:rounded-2xl p-2 min-[380px]:p-2.5 sm:p-3.5 flex flex-col items-center justify-center relative overflow-hidden group/pod">
-          {/* Top Diode */}
-          <div className="w-5 h-0.5 rounded-full bg-[#38BDF8] shadow-[0_0_8px_#38BDF8] mb-1 sm:mb-1.5 opacity-90" />
-          
-          {/* Number */}
+        <div className="smooth-glass-pod rounded-xl sm:rounded-2xl p-2 min-[380px]:p-2.5 sm:p-3.5 flex flex-col items-center justify-center relative overflow-hidden group/pod">
           <span className="font-mono font-black text-2xl min-[380px]:text-3xl sm:text-4xl fluid-neon-blue leading-none tracking-tight">
             {pad(timeLeft.hours)}
           </span>
-          
-          {/* High-Tech Subtitle */}
-          <span className="text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-mono font-extrabold tracking-[0.2em] text-slate-500 uppercase mt-1.5">
+          <span className="text-[9px] min-[380px]:text-[10px] sm:text-[10.5px] font-mono font-extrabold tracking-[0.2em] text-slate-500 uppercase mt-1.5">
             HOURS
           </span>
         </div>
 
-        {/* POD 3: MINUTES (Fluid Glass + Neon Radiant Amber) */}
-        <div className="fluid-glass-neon-pod rounded-xl sm:rounded-2xl p-2 min-[380px]:p-2.5 sm:p-3.5 flex flex-col items-center justify-center relative overflow-hidden group/pod">
-          {/* Top Diode */}
-          <div className="w-5 h-0.5 rounded-full bg-[#FBBF24] shadow-[0_0_8px_#FBBF24] mb-1 sm:mb-1.5 opacity-90" />
-          
-          {/* Number */}
+        {/* POD 3: MINUTES (Fluid Glass + Neon Warm Amber) */}
+        <div className="smooth-glass-pod rounded-xl sm:rounded-2xl p-2 min-[380px]:p-2.5 sm:p-3.5 flex flex-col items-center justify-center relative overflow-hidden group/pod">
           <span className="font-mono font-black text-2xl min-[380px]:text-3xl sm:text-4xl fluid-neon-amber leading-none tracking-tight">
             {pad(timeLeft.minutes)}
           </span>
-          
-          {/* High-Tech Subtitle */}
-          <span className="text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-mono font-extrabold tracking-[0.2em] text-slate-500 uppercase mt-1.5">
+          <span className="text-[9px] min-[380px]:text-[10px] sm:text-[10.5px] font-mono font-extrabold tracking-[0.2em] text-slate-500 uppercase mt-1.5">
             MINS
           </span>
         </div>
 
-        {/* POD 4: SECONDS (Fluid Glass + Neon Laser Ruby with Active Pulse) */}
-        <div className="fluid-glass-neon-pod rounded-xl sm:rounded-2xl p-2 min-[380px]:p-2.5 sm:p-3.5 flex flex-col items-center justify-center relative overflow-hidden border-rose-200/80">
-          {/* Top Diode */}
-          <div className="w-5 h-0.5 rounded-full bg-[#FF2E74] shadow-[0_0_8px_#FF2E74] mb-1 sm:mb-1.5" />
-          
-          {/* Number with Live Pulse Glow */}
+        {/* POD 4: SECONDS (Fluid Glass + Neon Vivid Ruby) */}
+        <div className="smooth-glass-pod rounded-xl sm:rounded-2xl p-2 min-[380px]:p-2.5 sm:p-3.5 flex flex-col items-center justify-center relative overflow-hidden group/pod">
           <span className="font-mono font-black text-2xl min-[380px]:text-3xl sm:text-4xl fluid-neon-rose leading-none tracking-tight">
             {pad(timeLeft.seconds)}
           </span>
-          
-          {/* High-Tech Subtitle */}
-          <span className="text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-mono font-extrabold tracking-[0.2em] text-rose-600 uppercase mt-1.5">
+          <span className="text-[9px] min-[380px]:text-[10px] sm:text-[10.5px] font-mono font-extrabold tracking-[0.2em] text-rose-600 uppercase mt-1.5">
             SECS
           </span>
         </div>
       </div>
 
       {/* =========================================================================
-          DYNAMIC NEON LASER URGENCY TRACK (Continuous Animated Light Beam)
+          DYNAMIC AMBIENT URGENCY RAIL (Delicate Glass Inset Track)
           ========================================================================= */}
-      <div className="relative w-full h-1 bg-slate-200/80 rounded-full overflow-hidden border border-slate-300/60 shadow-inner">
-        <div className="absolute inset-y-0 left-0 right-0 neon-laser-sweep" />
+      <div className="relative w-full h-1 bg-slate-200/40 rounded-full overflow-hidden border border-white/50 shadow-inner">
+        <div className="absolute inset-y-0 left-0 right-0 neon-laser-sweep opacity-60" />
       </div>
 
       {/* =========================================================================
-          FOOTER: Realistic Cloud Shield + Verified Instruction Notice
+          FOOTER: Realistic Cloud Emblem + Seamless Integrated Instruction
           ========================================================================= */}
-      <div className="flex items-center justify-between gap-2 pt-0.5 relative z-10 text-[10.5px] sm:text-xs">
-        <div className="flex items-center gap-1.5 text-slate-700 leading-tight">
-          <RealisticCloudShieldIcon size={16} className="text-[#008AA8] shrink-0" />
+      <div className="flex items-center justify-between gap-2 pt-0.5 relative z-10 text-[10px] min-[380px]:text-[10.5px] sm:text-xs text-slate-600">
+        <div className="flex items-center gap-1.5 leading-tight">
+          <RealisticCloudShieldIcon size={14} className="text-[#0284C7] shrink-0" />
           <span>
-            Google Skills Boost portal closes at <strong className="text-amber-700 font-mono font-bold">4:59 PM</strong>. Complete all 10 labs for swags & certificates.
+            Google Skills Boost closes at <strong className="text-slate-800 font-mono font-bold">4:59 PM</strong>. Complete 10 labs for swags.
           </span>
         </div>
 
         {onExploreClick && (
           <button
             onClick={onExploreClick}
-            className="text-[11px] font-mono font-bold text-blue-600 hover:text-blue-800 transition-colors whitespace-nowrap shrink-0 cursor-pointer underline underline-offset-2 flex items-center gap-1"
+            className="text-[11px] font-mono font-bold text-blue-600 hover:text-blue-700 transition-colors whitespace-nowrap shrink-0 cursor-pointer underline underline-offset-2 flex items-center gap-1"
           >
             <span>Labs</span>
             <span>→</span>
@@ -357,7 +322,7 @@ export const DeadlineCountdown: React.FC<DeadlineCountdownProps> = ({
 
       {/* Portal Closed Overlay if deadline reached */}
       {timeLeft.isExpired && (
-        <div className="absolute inset-0 bg-white/95 backdrop-blur-md flex flex-col items-center justify-center p-4 text-center text-slate-900 rounded-2xl sm:rounded-3xl z-20 space-y-2 border border-red-500/50 shadow-[0_0_30px_rgba(255,46,116,0.2)]">
+        <div className="absolute inset-0 bg-white/95 backdrop-blur-md flex flex-col items-center justify-center p-4 text-center text-slate-900 rounded-2xl sm:rounded-3xl z-20 space-y-2 border border-red-500/40 shadow-sm">
           <RealisticStopwatchIcon size={32} className="text-red-500" />
           <h4 className="font-mono font-black text-lg sm:text-xl text-red-600 tracking-wider">
             DEADLINE REACHED • PORTAL CLOSED

@@ -527,69 +527,78 @@
 }
 
 /* =========================================================================
-   FLUID GLASSMORPHISM NEON TIMER (CRYSTAL TRANSLUCENT GLASS + NEON BLOOM)
+   SEAMLESS FLUID GLASS TIMER (LUXURY FINISHING - INTEGRATED FLUID GLASS)
    ========================================================================= */
-.fluid-glass-neon-chassis {
+.smooth-glass-timer {
   position: relative;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.52) 50%, rgba(240, 246, 255, 0.68) 100%);
-  backdrop-filter: blur(28px) saturate(190%);
-  -webkit-backdrop-filter: blur(28px) saturate(190%);
-  border: 1.5px solid rgba(255, 255, 255, 0.88);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.52) 0%, rgba(255, 255, 255, 0.25) 100%);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.8);
   box-shadow: 
-    0 16px 42px rgba(20, 43, 112, 0.08),
-    0 4px 18px rgba(0, 240, 255, 0.15),
-    0 0 30px rgba(66, 133, 244, 0.08),
-    inset 0 1px 2px rgba(255, 255, 255, 0.95),
-    inset 0 -1px 2px rgba(0, 240, 255, 0.18);
+    0 12px 32px -4px rgba(28, 63, 148, 0.05),
+    0 4px 12px -2px rgba(0, 0, 0, 0.02),
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.95);
+  transition: all 0.3s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-.fluid-glass-neon-pod {
+.smooth-glass-pod {
   position: relative;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.88) 0%, rgba(248, 250, 255, 0.72) 100%);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.75);
   box-shadow: 
-    0 4px 16px rgba(15, 23, 42, 0.04),
-    inset 0 2px 4px rgba(255, 255, 255, 0.95),
-    inset 0 -1px 2px rgba(0, 0, 0, 0.02);
+    0 2px 6px rgba(15, 23, 42, 0.015),
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.9);
+  transition: all 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.smooth-glass-pod:hover {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 
+    0 6px 16px rgba(15, 23, 42, 0.03),
+    inset 0 1px 2px rgba(255, 255, 255, 1);
+  transform: translateY(-1px);
 }
 
 .fluid-neon-cyan {
-  color: #008AA8;
+  color: #0284C7;
   text-shadow: 
-    0 0 8px rgba(0, 210, 255, 0.7),
-    0 0 20px rgba(0, 240, 255, 0.4);
+    0 0 6px rgba(14, 165, 233, 0.45),
+    0 0 16px rgba(56, 189, 248, 0.25);
 }
 
 .fluid-neon-blue {
-  color: #1D4ED8;
+  color: #2563EB;
   text-shadow: 
-    0 0 8px rgba(59, 130, 246, 0.7),
-    0 0 20px rgba(37, 99, 235, 0.4);
+    0 0 6px rgba(37, 99, 235, 0.45),
+    0 0 16px rgba(59, 130, 246, 0.25);
 }
 
 .fluid-neon-amber {
-  color: #B45309;
+  color: #D97706;
   text-shadow: 
-    0 0 8px rgba(245, 158, 11, 0.7),
-    0 0 20px rgba(217, 119, 6, 0.4);
+    0 0 6px rgba(217, 119, 6, 0.45),
+    0 0 16px rgba(245, 158, 11, 0.25);
 }
 
 .fluid-neon-rose {
   color: #E11D48;
   text-shadow: 
-    0 0 10px rgba(244, 63, 94, 0.8),
-    0 0 24px rgba(225, 29, 72, 0.5);
+    0 0 8px rgba(225, 29, 72, 0.5),
+    0 0 18px rgba(244, 63, 94, 0.3);
 }
 
 .neon-laser-sweep {
   background: linear-gradient(90deg, 
     transparent 0%, 
-    rgba(0, 240, 255, 0.85) 50%, 
+    rgba(2, 132, 199, 0.6) 30%, 
+    rgba(225, 29, 72, 0.7) 70%, 
     transparent 100%
   );
-  animation: laserSweep 3.2s ease-in-out infinite;
+  animation: laserSweep 3.6s ease-in-out infinite;
 }
 
 @keyframes laserSweep {
@@ -604,23 +613,6 @@
 @keyframes neonPulse {
   0%, 100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 8px #FF2E74); }
   50% { opacity: 0.45; transform: scale(0.85); filter: drop-shadow(0 0 2px #FF2E74); }
-}
-
-.neon-border-glow-tube {
-  background: linear-gradient(90deg, 
-    #00F0FF, 
-    #3B82F6, 
-    #FBBF24, 
-    #FF2E74, 
-    #00F0FF
-  );
-  background-size: 300% 100%;
-  animation: tubeFlow 6s linear infinite;
-}
-
-@keyframes tubeFlow {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 300% 50%; }
 }
 
 
