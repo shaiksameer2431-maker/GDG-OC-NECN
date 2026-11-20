@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Trophy, Compass, Award, Info, Menu, X, CheckCircle, Sparkles, BarChart3 } from 'lucide-react';
 import type { CohortStats } from '../../types';
-import { DeadlineCountdown } from './DeadlineCountdown';
 
 interface NavbarProps {
   currentTab: string;
@@ -126,11 +125,8 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onTabChange, stats }
             })}
           </div>
 
-          {/* Right Action: Deadline Countdown & Redemption Pill */}
+          {/* Right Action: Redemption Pill & Mobile Hamburger */}
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            {/* Live Deadline Countdown (sm+ screens) */}
-            <DeadlineCountdown variant="compact" className="hidden sm:inline-flex" />
-
             {/* Live Redemption Pill */}
             <button
               onClick={() => handleNavClick('leaderboard')}
