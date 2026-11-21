@@ -329,100 +329,124 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
         drawHexPath(ctx, cx, cy, hexRadius - 26);
         ctx.stroke();
 
-        // TOP HEADER PILL: [GDG Logo] GDG OC NECN
-        const pillW = 820;
-        const pillH = 104;
-        const pillX = cx - pillW / 2;
-        const pillY = cy - 470;
-        ctx.fillStyle = 'rgba(45, 18, 8, 0.94)';
-        ctx.strokeStyle = '#D98664';
-        ctx.lineWidth = 4;
-        ctx.beginPath();
-        ctx.roundRect(pillX, pillY, pillW, pillH, 52);
-        ctx.fill();
-        ctx.stroke();
+        // TOP HEADER: [GDG Logo] GDG OC NECN (Floating directly on medal - NO background container)
+        const headerY = cy - 430;
+        const fontHeader = '900 62px "Plus Jakarta Sans", "Montserrat", "Outfit", system-ui, sans-serif';
+        ctx.font = fontHeader;
+        ctx.letterSpacing = '5px';
+        const headerText = 'GDG OC NECN';
+        const textMetrics = ctx.measureText(headerText);
+        const textW = textMetrics.width;
 
-        // GDG Logo beside GDG OC NECN inside top pill
+        const logoH = 76;
+        const logoW = Math.round(logoH * (416 / 198)); // 160px for tight Google bracket emblem
+        const gap = 24;
+        const totalW = logoW + gap + textW;
+        const startX = cx - totalW / 2;
+        const logoX = startX;
+        const logoY = headerY - logoH / 2;
+        const textX = startX + logoW + gap;
+
+        // Draw transparent GDG Logo beside GDG OC NECN
         if (gdgImg.complete && gdgImg.naturalWidth > 0) {
-          ctx.drawImage(gdgImg, pillX + 38, pillY + (pillH - 64) / 2, 64, 64);
+          ctx.save();
+          ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+          ctx.shadowBlur = 10;
+          ctx.shadowOffsetY = 3;
+          ctx.drawImage(gdgImg, logoX, logoY, logoW, logoH);
+          ctx.restore();
         } else {
-          drawGdgBrackets(ctx, pillX + 70, pillY + pillH / 2, 54);
+          drawGdgBrackets(ctx, logoX + logoW / 2, headerY, 68);
         }
 
-        // Header Text: "GDG OC NECN"
-        ctx.font = '900 48px "Plus Jakarta Sans", "Montserrat", system-ui, sans-serif';
+        // Stylish High-Quality Text: "GDG OC NECN" (Bronze - Ultra-Crisp & Highlighted)
+        ctx.save();
+        ctx.font = fontHeader;
+        ctx.letterSpacing = '5px';
         ctx.textAlign = 'left';
         ctx.textBaseline = 'middle';
-        ctx.letterSpacing = '3px';
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
-        ctx.shadowBlur = 8;
-        ctx.fillStyle = '#FFFFFF';
-        ctx.fillText('GDG OC NECN', pillX + 128, pillY + pillH / 2 + 1);
-        ctx.shadowBlur = 0;
 
-        // Bump map for top header pill & text
-        bCtx.fillStyle = '#FFFFFF';
-        bCtx.beginPath();
-        bCtx.roundRect(pillX, pillY, pillW, pillH, 52);
-        bCtx.fill();
-        bCtx.font = '900 48px "Plus Jakarta Sans", "Montserrat", system-ui, sans-serif';
+        // Warm specular highlight underneath for embossed bevel
+        ctx.shadowColor = 'rgba(255, 245, 235, 0.95)';
+        ctx.shadowBlur = 4;
+        ctx.shadowOffsetY = 2;
+        ctx.fillStyle = '#FFEAD8';
+        ctx.fillText(headerText, textX, headerY + 1.5);
+
+        // Rich dark espresso bronze text
+        ctx.shadowColor = 'rgba(20, 6, 2, 0.65)';
+        ctx.shadowBlur = 8;
+        ctx.shadowOffsetY = 3;
+        ctx.fillStyle = '#1B0601';
+        ctx.fillText(headerText, textX, headerY);
+
+        ctx.strokeStyle = '#3D1305';
+        ctx.lineWidth = 1.2;
+        ctx.strokeText(headerText, textX, headerY);
+        ctx.restore();
+
+        // Bump map for top header text (No background pill)
+        bCtx.save();
+        bCtx.font = fontHeader;
+        bCtx.letterSpacing = '5px';
         bCtx.textAlign = 'left';
         bCtx.textBaseline = 'middle';
-        bCtx.letterSpacing = '3px';
-        bCtx.fillStyle = '#404040';
-        bCtx.fillText('GDG OC NECN', pillX + 128, pillY + pillH / 2 + 1);
+        bCtx.fillStyle = '#E0E0E0';
+        bCtx.fillText(headerText, textX, headerY);
+        bCtx.restore();
 
-        // CENTER: GOOGLE CLOUD MULTICOLOR LOGO
+        // CENTER: GOOGLE CLOUD MULTICOLOR LOGO (High Quality & Full Saturated Brilliance)
         if (cloudImg.complete && cloudImg.naturalWidth > 0) {
-          const cloudW = 460;
-          const cloudH = 460;
+          const cloudW = 500;
+          const cloudH = 410;
           const cloudX = cx - cloudW / 2;
           const cloudY = cy - 200;
+          ctx.save();
           ctx.shadowColor = 'rgba(0, 0, 0, 0.35)';
           ctx.shadowBlur = 24;
           ctx.shadowOffsetY = 10;
           ctx.drawImage(cloudImg, cloudX, cloudY, cloudW, cloudH);
-          ctx.shadowBlur = 0;
-          ctx.shadowOffsetY = 0;
+          ctx.restore();
         } else {
           const cloudY = cy - 80;
           drawGoogleCloudLogo(ctx, cx, cloudY, 1.45, '#AD563D');
           drawGoogleCloudLogoBump(bCtx, cx, cloudY, 1.45);
         }
 
-        // ENGRAVED SINGLE TITLE: "BRONZE MILESTONE"
-        const bronzeTextY = cy + 320;
-        ctx.font = '900 italic 104px "Plus Jakarta Sans", "Montserrat", system-ui, sans-serif';
+        // ENGRAVED SINGLE TITLE: "BRONZE MILESTONE" (HIGHLIGHTED, HIGH CONTRAST)
+        const bronzeTextY = cy + 340;
+        const titleFont = '900 italic 106px "Plus Jakarta Sans", "Montserrat", "Outfit", system-ui, sans-serif';
+        ctx.save();
+        ctx.font = titleFont;
         ctx.letterSpacing = '8px';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
-        ctx.shadowColor = 'rgba(40, 15, 8, 0.55)';
+        // Soft ambient drop shadow for depth
+        ctx.shadowColor = 'rgba(20, 6, 2, 0.6)';
         ctx.shadowBlur = 16;
         ctx.shadowOffsetY = 6;
-        ctx.fillStyle = '#1D0803';
-        ctx.fillText('BRONZE MILESTONE', cx, bronzeTextY + 4);
-        ctx.shadowBlur = 0;
-        ctx.shadowOffsetY = 0;
+        ctx.fillStyle = '#140301';
+        ctx.fillText('BRONZE MILESTONE', cx, bronzeTextY + 3);
 
-        const textGrad = ctx.createLinearGradient(cx - 350, bronzeTextY - 40, cx + 350, bronzeTextY + 40);
-        textGrad.addColorStop(0, '#2A0E05');
-        textGrad.addColorStop(0.40, '#4A1D0D');
-        textGrad.addColorStop(0.70, '#6C2B16');
-        textGrad.addColorStop(1, '#2A0E05');
-        ctx.fillStyle = textGrad;
+        // Rich dark bronze engraved body
+        ctx.fillStyle = '#1D0702';
         ctx.fillText('BRONZE MILESTONE', cx, bronzeTextY);
 
-        ctx.strokeStyle = '#FFF5EB';
-        ctx.lineWidth = 3.0;
+        // Crisp warm specular rim highlight that makes text POP clearly
+        ctx.strokeStyle = '#FFF2E6';
+        ctx.lineWidth = 3.2;
         ctx.strokeText('BRONZE MILESTONE', cx, bronzeTextY);
+        ctx.restore();
 
-        bCtx.font = '900 italic 104px "Plus Jakarta Sans", "Montserrat", system-ui, sans-serif';
+        bCtx.save();
+        bCtx.font = titleFont;
         bCtx.letterSpacing = '8px';
         bCtx.textAlign = 'center';
         bCtx.textBaseline = 'middle';
         bCtx.fillStyle = '#FFFFFF';
         bCtx.fillText('BRONZE MILESTONE', cx, bronzeTextY);
+        bCtx.restore();
 
         ctx.restore();
       } else {
@@ -468,100 +492,125 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
         drawHexPath(ctx, cx, cy, hexRadius - 26);
         ctx.stroke();
 
-        // TOP HEADER PILL: [GDG Logo] GDG OC NECN
-        const pillW = 820;
-        const pillH = 104;
-        const pillX = cx - pillW / 2;
-        const pillY = cy - 470;
-        ctx.fillStyle = 'rgba(20, 25, 35, 0.94)';
-        ctx.strokeStyle = '#A8A8A8';
-        ctx.lineWidth = 4;
-        ctx.beginPath();
-        ctx.roundRect(pillX, pillY, pillW, pillH, 52);
-        ctx.fill();
-        ctx.stroke();
+        // TOP HEADER: [GDG Logo] GDG OC NECN (Floating directly on medal - NO background container)
+        const headerY = cy - 430;
+        const fontHeader = '900 62px "Plus Jakarta Sans", "Montserrat", "Outfit", system-ui, sans-serif';
+        ctx.font = fontHeader;
+        ctx.letterSpacing = '5px';
+        const headerText = 'GDG OC NECN';
+        const textMetrics = ctx.measureText(headerText);
+        const textW = textMetrics.width;
 
-        // GDG Logo beside GDG OC NECN inside top pill
+        const logoH = 76;
+        const logoW = Math.round(logoH * (416 / 198)); // 160px for tight Google bracket emblem
+        const gap = 24;
+        const totalW = logoW + gap + textW;
+        const startX = cx - totalW / 2;
+        const logoX = startX;
+        const logoY = headerY - logoH / 2;
+        const textX = startX + logoW + gap;
+
+        // Draw transparent GDG Logo beside GDG OC NECN
         if (gdgImg.complete && gdgImg.naturalWidth > 0) {
-          ctx.drawImage(gdgImg, pillX + 38, pillY + (pillH - 64) / 2, 64, 64);
+          ctx.save();
+          ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+          ctx.shadowBlur = 10;
+          ctx.shadowOffsetY = 3;
+          ctx.drawImage(gdgImg, logoX, logoY, logoW, logoH);
+          ctx.restore();
         } else {
-          drawGdgBrackets(ctx, pillX + 70, pillY + pillH / 2, 54);
+          drawGdgBrackets(ctx, logoX + logoW / 2, headerY, 68);
         }
 
-        // Header Text: "GDG OC NECN"
-        ctx.font = '900 48px "Plus Jakarta Sans", "Montserrat", system-ui, sans-serif';
+        // Stylish High-Quality Text: "GDG OC NECN" (Silver - Ultra-Highlighted & Razor-Sharp)
+        ctx.save();
+        ctx.font = fontHeader;
+        ctx.letterSpacing = '5px';
         ctx.textAlign = 'left';
         ctx.textBaseline = 'middle';
-        ctx.letterSpacing = '3px';
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
-        ctx.shadowBlur = 8;
-        ctx.fillStyle = '#FFFFFF';
-        ctx.fillText('GDG OC NECN', pillX + 128, pillY + pillH / 2 + 1);
-        ctx.shadowBlur = 0;
 
-        // Bump map for top header pill & text
-        bCtx.fillStyle = '#FFFFFF';
-        bCtx.beginPath();
-        bCtx.roundRect(pillX, pillY, pillW, pillH, 52);
-        bCtx.fill();
-        bCtx.font = '900 48px "Plus Jakarta Sans", "Montserrat", system-ui, sans-serif';
+        // Brilliant pure white specular bevel highlight underneath for crystal-clear contrast
+        ctx.shadowColor = 'rgba(255, 255, 255, 1.0)';
+        ctx.shadowBlur = 5;
+        ctx.shadowOffsetY = 2;
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillText(headerText, textX, headerY + 1.5);
+
+        // Deep, authoritative obsidian / midnight navy text (maximum contrast on silver)
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.55)';
+        ctx.shadowBlur = 8;
+        ctx.shadowOffsetY = 2;
+        ctx.fillStyle = '#080C16';
+        ctx.fillText(headerText, textX, headerY);
+
+        // Sharp precision edge outline
+        ctx.strokeStyle = '#1E293B';
+        ctx.lineWidth = 1.2;
+        ctx.strokeText(headerText, textX, headerY);
+        ctx.restore();
+
+        // Bump map for top header text (No background pill)
+        bCtx.save();
+        bCtx.font = fontHeader;
+        bCtx.letterSpacing = '5px';
         bCtx.textAlign = 'left';
         bCtx.textBaseline = 'middle';
-        bCtx.letterSpacing = '3px';
-        bCtx.fillStyle = '#404040';
-        bCtx.fillText('GDG OC NECN', pillX + 128, pillY + pillH / 2 + 1);
+        bCtx.fillStyle = '#E0E0E0';
+        bCtx.fillText(headerText, textX, headerY);
+        bCtx.restore();
 
-        // CENTER: GOOGLE CLOUD MULTICOLOR LOGO
+        // CENTER: GOOGLE CLOUD MULTICOLOR LOGO (High Quality & Full Saturated Brilliance)
         if (cloudImg.complete && cloudImg.naturalWidth > 0) {
-          const cloudW = 460;
-          const cloudH = 460;
+          const cloudW = 500;
+          const cloudH = 410;
           const cloudX = cx - cloudW / 2;
           const cloudY = cy - 200;
+          ctx.save();
           ctx.shadowColor = 'rgba(0, 0, 0, 0.35)';
           ctx.shadowBlur = 24;
           ctx.shadowOffsetY = 10;
           ctx.drawImage(cloudImg, cloudX, cloudY, cloudW, cloudH);
-          ctx.shadowBlur = 0;
-          ctx.shadowOffsetY = 0;
+          ctx.restore();
         } else {
           const cloudY = cy - 80;
           drawGoogleCloudLogo(ctx, cx, cloudY, 1.45, '#C0C0C0');
           drawGoogleCloudLogoBump(bCtx, cx, cloudY, 1.45);
         }
 
-        // ENGRAVED SINGLE TITLE: "SILVER MILESTONE" (CHISELED HIGH CONTRAST)
-        const silverTextY = cy + 320;
-        ctx.font = '900 italic 104px "Plus Jakarta Sans", "Montserrat", system-ui, sans-serif';
+        // ENGRAVED SINGLE TITLE: "SILVER MILESTONE" (CHISELED, ULTRA-HIGHLIGHTED CONTRAST)
+        const silverTextY = cy + 340;
+        const titleFont = '900 italic 106px "Plus Jakarta Sans", "Montserrat", "Outfit", system-ui, sans-serif';
+        ctx.save();
+        ctx.font = titleFont;
         ctx.letterSpacing = '8px';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.45)';
+        // Deep ambient drop shadow for dimensional pop
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.55)';
         ctx.shadowBlur = 16;
         ctx.shadowOffsetY = 6;
-        ctx.fillStyle = '#0F172A';
-        ctx.fillText('SILVER MILESTONE', cx, silverTextY + 4);
-        ctx.shadowBlur = 0;
-        ctx.shadowOffsetY = 0;
+        ctx.fillStyle = '#050811';
+        ctx.fillText('SILVER MILESTONE', cx, silverTextY + 3);
 
-        const textGrad = ctx.createLinearGradient(cx - 350, silverTextY - 40, cx + 350, silverTextY + 40);
-        textGrad.addColorStop(0, '#1E293B');
-        textGrad.addColorStop(0.40, '#334155');
-        textGrad.addColorStop(0.70, '#475569');
-        textGrad.addColorStop(1, '#1E293B');
-        ctx.fillStyle = textGrad;
+        // Deep, rich obsidian black text (never washed-out or dim)
+        ctx.fillStyle = '#080D18';
         ctx.fillText('SILVER MILESTONE', cx, silverTextY);
 
+        // Brilliant pure white metallic edge highlight that makes it POP on silver
         ctx.strokeStyle = '#FFFFFF';
-        ctx.lineWidth = 3.0;
+        ctx.lineWidth = 3.5;
         ctx.strokeText('SILVER MILESTONE', cx, silverTextY);
+        ctx.restore();
 
-        bCtx.font = '900 italic 104px "Plus Jakarta Sans", "Montserrat", system-ui, sans-serif';
+        bCtx.save();
+        bCtx.font = titleFont;
         bCtx.letterSpacing = '8px';
         bCtx.textAlign = 'center';
         bCtx.textBaseline = 'middle';
         bCtx.fillStyle = '#FFFFFF';
         bCtx.fillText('SILVER MILESTONE', cx, silverTextY);
+        bCtx.restore();
 
         ctx.restore();
       }
@@ -715,9 +764,12 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       color: 0xFFFFFF,
       map: bronzeTextures.colorMap,
       bumpMap: bronzeTextures.bumpMap,
-      bumpScale: 0.035,
-      metalness: 0.25,
+      bumpScale: 0.018,
+      metalness: 0.15,
       roughness: 0.35,
+      emissive: new THREE.Color(0xFFFFFF),
+      emissiveMap: bronzeTextures.colorMap,
+      emissiveIntensity: 0.28,
       transparent: true,
       opacity: startAsSilver ? 0.0 : 1.0,
       depthWrite: false,
@@ -731,9 +783,12 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       color: 0xFFFFFF,
       map: silverTextures.colorMap,
       bumpMap: silverTextures.bumpMap,
-      bumpScale: 0.035,
-      metalness: 0.25,
+      bumpScale: 0.018,
+      metalness: 0.15,
       roughness: 0.32,
+      emissive: new THREE.Color(0xFFFFFF),
+      emissiveMap: silverTextures.colorMap,
+      emissiveIntensity: 0.28,
       transparent: true,
       opacity: startAsSilver ? 1.0 : 0.0,
       depthWrite: false,
@@ -1194,11 +1249,11 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
           ) : (
             <div className={`bme-fallback-shield ${activeTier === 'silver' ? 'bme-fallback-shield-silver' : ''}`}>
               <div className="flex items-center justify-center gap-2 mb-2">
-                <img src="/assets/logos/gdg-logo.png" alt="GDG" className="w-5 h-5 object-contain" />
-                <span className="text-[11px] font-bold tracking-widest text-slate-200 uppercase">GDG OC NECN</span>
+                <img src="/assets/logos/gdg-logo.png" alt="GDG" className="w-6 h-auto object-contain" />
+                <span className={`text-[12px] font-black tracking-widest uppercase ${activeTier === 'silver' ? 'text-slate-900 drop-shadow-sm' : 'text-[#1D0803] drop-shadow-sm'}`}>GDG OC NECN</span>
               </div>
-              <img src="/assets/logos/google-cloud-logo.png" alt="Google Cloud" className="w-20 h-20 object-contain mx-auto mb-2" />
-              <div className="text-2xl font-black italic tracking-wider text-white">
+              <img src="/assets/logos/google-cloud-logo.png" alt="Google Cloud" className="w-20 h-20 object-contain mx-auto mb-2 drop-shadow-md" />
+              <div className={`text-2xl font-black italic tracking-wider ${activeTier === 'silver' ? 'text-slate-900 drop-shadow-sm' : 'text-[#1D0803] drop-shadow-sm'}`}>
                 {activeTier === 'silver' ? 'SILVER MILESTONE' : 'BRONZE MILESTONE'}
               </div>
             </div>
