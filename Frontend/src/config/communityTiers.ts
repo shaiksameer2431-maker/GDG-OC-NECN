@@ -86,3 +86,58 @@ export const COMMUNITY_BRONZE_TIER = {
     borderGlow: 'rgba(184, 115, 69, 0.45)',
   },
 };
+
+export interface CommunitySilverMilestoneConfig {
+  milestoneTitle: string;
+  collegeName: string;
+  organization: string;
+  program: string;
+  badgeThreshold: number;
+  studentTarget: number;
+  actualStudentsCompleted5Plus: number;
+  tagline: {
+    prefix: string;
+    learn: string;
+    build: string;
+    grow: string;
+  };
+  colors: {
+    background: string;
+    cardBg: string;
+    silverAccent: string;
+    silverDark: string;
+    silverHighlight: string;
+    googleBlue: string;
+    googleRed: string;
+    googleYellow: string;
+    googleGreen: string;
+  };
+}
+
+export const COMMUNITY_SILVER_MILESTONE: CommunitySilverMilestoneConfig = {
+  milestoneTitle: 'SILVER MILESTONE ACHIEVED',
+  collegeName: 'Narayana Engineering College, Nellore',
+  organization: 'GDG on Campus – Narayana Engineering College, Nellore',
+  program: 'Google Cloud Learn with Communities 2026',
+  badgeThreshold: 5,
+  studentTarget: 100,
+  actualStudentsCompleted5Plus: 129,
+  tagline: {
+    prefix: 'Together, we',
+    learn: 'Learn.',
+    build: 'Build.',
+    grow: 'Grow.',
+  },
+  colors: {
+    background: '#F8FAFC',
+    cardBg: '#FFFFFF',
+    silverAccent: '#94A3B8',
+    silverDark: '#1E293B',
+    silverHighlight: '#F1F5F9',
+    googleBlue: '#4285F4',
+    googleRed: '#EA4335',
+    googleYellow: '#FBBC04',
+    googleGreen: '#34A853',
+  },
+};
+

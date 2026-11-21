@@ -525,10 +525,13 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
       </section>
 
       {/* =========================================================================
-          COMMUNITY MILESTONE: 3D BRONZE MILESTONE ACHIEVED SHOWCASE
+          COMMUNITY MILESTONE: 3D CHAPTER MILESTONE SHOWCASE (Bronze & Silver)
           Dedicated section in Overview (distinct and separate from Intro)
           ========================================================================= */}
-      <BronzeMilestoneExperience onExploreLeaderboard={() => onNavigate('leaderboard')} />
+      <BronzeMilestoneExperience
+        initialTier="silver"
+        onExploreLeaderboard={() => onNavigate('leaderboard')}
+      />
 
       {/* =========================================================================
           SECTION 4: LEARNING PATH & 10-COURSE GRID
