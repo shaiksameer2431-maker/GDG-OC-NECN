@@ -86,10 +86,10 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     }
 
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-    const maxDpr = isMobile ? 1.75 : 2.0;
+    const maxDpr = isMobile ? 2.0 : 2.5;
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxDpr));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.35;
+    renderer.toneMappingExposure = 1.30;
     container.innerHTML = '';
     container.appendChild(renderer.domElement);
     renderer.domElement.className = 'bme-canvas-element';
@@ -115,24 +115,163 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     adjustCamera(width, height);
 
     // -------------------------------------------------------------------------
-    // PROCEDURAL TEXTURE GENERATION (BRONZE & SILVER SHIELD FACES)
+    // VECTOR LOGO HELPERS (GDG BRACKETS & GOOGLE CLOUD EMBLEM)
+    // -------------------------------------------------------------------------
+    const drawGdgBrackets = (
+      ctx: CanvasRenderingContext2D,
+      x: number,
+      y: number,
+      size: number
+    ) => {
+      const s = size;
+      const lw = s * 0.26;
+      const len = s * 0.58;
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.lineWidth = lw;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      // Left bracket < (Red top, Blue bottom)
+      ctx.strokeStyle = '#EA4335';
+      ctx.beginPath();
+      ctx.moveTo(-s * 0.08, -len);
+      ctx.lineTo(-s * 0.55, 0);
+      ctx.stroke();
+
+      ctx.strokeStyle = '#4285F4';
+      ctx.beginPath();
+      ctx.moveTo(-s * 0.55, 0);
+      ctx.lineTo(-s * 0.08, len);
+      ctx.stroke();
+
+      // Right bracket > (Green top, Yellow bottom)
+      ctx.strokeStyle = '#34A853';
+      ctx.beginPath();
+      ctx.moveTo(s * 0.08, -len);
+      ctx.lineTo(s * 0.55, 0);
+      ctx.stroke();
+
+      ctx.strokeStyle = '#FBBC04';
+      ctx.beginPath();
+      ctx.moveTo(s * 0.55, 0);
+      ctx.lineTo(s * 0.08, len);
+      ctx.stroke();
+
+      ctx.restore();
+    };
+
+    const drawGoogleCloudLogo = (
+      ctx: CanvasRenderingContext2D,
+      cx: number,
+      cy: number,
+      scale: number,
+      innerCutoutColor: string
+    ) => {
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.scale(scale, scale);
+
+      // Ambient drop shadow under the cloud
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.32)';
+      ctx.shadowBlur = 28;
+      ctx.shadowOffsetY = 12;
+
+      // 1. Crisp white cloud base backing plate
+      ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath();
+      ctx.arc(-82, 22, 68, 0, Math.PI * 2);   // Left lobe
+      ctx.arc(-10, -36, 84, 0, Math.PI * 2);  // Top center-left apex lobe
+      ctx.arc(82, -8, 68, 0, Math.PI * 2);    // Top right lobe
+      ctx.arc(114, 32, 54, 0, Math.PI * 2);   // Far right lobe
+      ctx.arc(-116, 36, 50, 0, Math.PI * 2);  // Far left lobe
+      ctx.rect(-116, 20, 230, 68);            // Connecting bottom base
+      ctx.fill();
+
+      ctx.shadowColor = 'transparent';
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetY = 0;
+
+      // 2. Google Red Lobe (Left: #EA4335)
+      ctx.fillStyle = '#EA4335';
+      ctx.beginPath();
+      ctx.arc(-72, 24, 56, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 3. Google Blue Lobe (Top apex: #4285F4)
+      ctx.fillStyle = '#4285F4';
+      ctx.beginPath();
+      ctx.arc(-8, -28, 70, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 4. Google Green Lobe (Right: #34A853)
+      ctx.fillStyle = '#34A853';
+      ctx.beginPath();
+      ctx.arc(70, 4, 58, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 5. Google Yellow Lobe (Bottom: #FBBC04)
+      ctx.fillStyle = '#FBBC04';
+      ctx.beginPath();
+      ctx.arc(4, 40, 52, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 6. Inner Cutout (revealing background to form the cloud loop)
+      ctx.fillStyle = innerCutoutColor;
+      ctx.beginPath();
+      ctx.arc(-2, 10, 38, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    };
+
+    const drawGoogleCloudLogoBump = (
+      ctx: CanvasRenderingContext2D,
+      cx: number,
+      cy: number,
+      scale: number
+    ) => {
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.scale(scale, scale);
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath();
+      ctx.arc(-82, 22, 68, 0, Math.PI * 2);
+      ctx.arc(-10, -36, 84, 0, Math.PI * 2);
+      ctx.arc(82, -8, 68, 0, Math.PI * 2);
+      ctx.arc(114, 32, 54, 0, Math.PI * 2);
+      ctx.arc(-116, 36, 50, 0, Math.PI * 2);
+      ctx.rect(-116, 20, 230, 68);
+      ctx.fill();
+
+      ctx.fillStyle = '#404040';
+      ctx.beginPath();
+      ctx.arc(-2, 10, 38, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    };
+
+    // -------------------------------------------------------------------------
+    // ULTRA HIGH-RES PROCEDURAL TEXTURE GENERATION (2048x2048 RETINA CLARITY)
     // -------------------------------------------------------------------------
     const createShieldTextures = (tier: 'bronze' | 'silver') => {
       const cCanvas = document.createElement('canvas');
-      cCanvas.width = 1024;
-      cCanvas.height = 1024;
+      cCanvas.width = 2048;
+      cCanvas.height = 2048;
       const ctx = cCanvas.getContext('2d');
 
       const bCanvas = document.createElement('canvas');
-      bCanvas.width = 1024;
-      bCanvas.height = 1024;
+      bCanvas.width = 2048;
+      bCanvas.height = 2048;
       const bCtx = bCanvas.getContext('2d');
 
       if (!ctx || !bCtx) return { colorMap: null, bumpMap: null };
 
-      const cx = 512;
-      const cy = 512;
-      const hexRadius = 450;
+      const cx = 1024;
+      const cy = 1024;
+      const hexRadius = 900;
 
       const drawHexPath = (targetCtx: CanvasRenderingContext2D, r: number) => {
         targetCtx.beginPath();
@@ -149,290 +288,284 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       if (tier === 'bronze') {
         // Base Canvas Fill (Copper-bronze)
         ctx.fillStyle = '#8E523A';
-        ctx.fillRect(0, 0, 1024, 1024);
+        ctx.fillRect(0, 0, 2048, 2048);
         bCtx.fillStyle = '#404040';
-        bCtx.fillRect(0, 0, 1024, 1024);
+        bCtx.fillRect(0, 0, 2048, 2048);
 
         ctx.save();
         drawHexPath(ctx, hexRadius);
         ctx.clip();
 
         // Satin Warm Copper-Bronze Radial Gradient Base
-        const grad = ctx.createRadialGradient(cx, cy - 50, 30, cx, cy, hexRadius);
+        const grad = ctx.createRadialGradient(cx, cy - 100, 60, cx, cy, hexRadius);
         grad.addColorStop(0, '#FFF2E6');
         grad.addColorStop(0.18, '#EEC39C');
         grad.addColorStop(0.48, '#CC9873');
         grad.addColorStop(0.78, '#B17656');
         grad.addColorStop(1, '#8E523A');
         ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, 1024, 1024);
+        ctx.fillRect(0, 0, 2048, 2048);
 
-        // Top Header: "GDG ON CAMPUS"
-        ctx.font = 'bold 38px "Plus Jakarta Sans", "Arial Black", sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.shadowColor = 'rgba(40, 15, 6, 0.9)';
-        ctx.shadowBlur = 10;
-        ctx.shadowOffsetY = 3;
-        ctx.fillStyle = '#FFFFFF';
-        ctx.fillText('GDG ON CAMPUS', cx, cy - 230);
-        ctx.shadowBlur = 0;
-        ctx.shadowOffsetY = 0;
-
-        bCtx.font = 'bold 38px "Plus Jakarta Sans", "Arial Black", sans-serif';
-        bCtx.textAlign = 'center';
-        bCtx.textBaseline = 'middle';
-        bCtx.fillStyle = '#FFFFFF';
-        bCtx.fillText('GDG ON CAMPUS', cx, cy - 230);
-
-        // Top Sub-header Pill: "NECN"
-        const pillW = 150;
-        const pillH = 40;
+        // TOP HEADER PILL: [GDG Logo < >] GDG OC NECN
+        const pillW = 760;
+        const pillH = 104;
         const pillX = cx - pillW / 2;
-        const pillY = cy - 182;
-        ctx.fillStyle = '#5A2612';
+        const pillY = cy - 470;
+        ctx.fillStyle = 'rgba(45, 18, 8, 0.94)';
         ctx.strokeStyle = '#EEC39C';
-        ctx.lineWidth = 2.5;
+        ctx.lineWidth = 4;
         ctx.beginPath();
-        ctx.roundRect(pillX, pillY, pillW, pillH, 20);
+        ctx.roundRect(pillX, pillY, pillW, pillH, 52);
         ctx.fill();
         ctx.stroke();
 
-        ctx.font = '900 22px "Plus Jakarta Sans", monospace, sans-serif';
-        ctx.fillStyle = '#FFFDF8';
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
-        ctx.shadowBlur = 4;
-        ctx.fillText('NECN', cx, pillY + pillH / 2);
+        // GDG Brackets Logo beside GDG OC NECN inside top pill
+        drawGdgBrackets(ctx, pillX + 80, pillY + pillH / 2, 58);
+
+        // Header Text: "GDG OC NECN"
+        ctx.font = '900 48px "Plus Jakarta Sans", "Montserrat", system-ui, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.letterSpacing = '3px';
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+        ctx.shadowBlur = 8;
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillText('GDG OC NECN', pillX + 144, pillY + pillH / 2 + 1);
         ctx.shadowBlur = 0;
 
-        // MULTICOLOR GDG BRACKETS LOGO: { < / > }
-        const logoY = cy - 35;
-        ctx.font = '900 120px "Plus Jakarta Sans", "Montserrat", sans-serif';
+        // Bump map for top header pill & text
+        bCtx.fillStyle = '#FFFFFF';
+        bCtx.beginPath();
+        bCtx.roundRect(pillX, pillY, pillW, pillH, 52);
+        bCtx.fill();
+        bCtx.font = '900 48px "Plus Jakarta Sans", "Montserrat", system-ui, sans-serif';
+        bCtx.textAlign = 'left';
+        bCtx.textBaseline = 'middle';
+        bCtx.letterSpacing = '3px';
+        bCtx.fillStyle = '#404040';
+        bCtx.fillText('GDG OC NECN', pillX + 144, pillY + pillH / 2 + 1);
+
+        // CENTER: GOOGLE CLOUD MULTICOLOR LOGO (In place of old GDG logo)
+        const cloudY = cy - 80;
+        drawGoogleCloudLogo(ctx, cx, cloudY, 1.45, '#CC9873');
+        drawGoogleCloudLogoBump(bCtx, cx, cloudY, 1.45);
+
+        // ENGRAVED BRONZE TEXT: "BRONZE"
+        const bronzeTextY = cy + 246;
+        ctx.font = '900 italic 196px "Plus Jakarta Sans", "Impact", sans-serif';
+        ctx.letterSpacing = '12px';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
-        ctx.fillStyle = '#4285F4'; ctx.shadowColor = 'rgba(66, 133, 244, 0.45)'; ctx.shadowBlur = 12;
-        ctx.fillText('{', cx - 140, logoY);
-        ctx.fillStyle = '#EA4335'; ctx.shadowColor = 'rgba(234, 67, 53, 0.45)';
-        ctx.fillText('<', cx - 55, logoY);
-        ctx.fillStyle = '#FBBC04'; ctx.shadowColor = 'rgba(251, 188, 4, 0.45)';
-        ctx.fillText('>', cx + 55, logoY);
-        ctx.fillStyle = '#34A853'; ctx.shadowColor = 'rgba(52, 168, 83, 0.45)';
-        ctx.fillText('}', cx + 140, logoY);
-        ctx.shadowBlur = 0;
-
-        bCtx.font = '900 120px "Plus Jakarta Sans", "Montserrat", sans-serif';
-        bCtx.textAlign = 'center';
-        bCtx.textBaseline = 'middle';
-        bCtx.fillStyle = '#FFFFFF';
-        bCtx.fillText('{ < > }', cx, logoY);
-
-        // ENGRAVED TEXT: "BRONZE"
-        ctx.font = '900 italic 96px "Plus Jakarta Sans", "Impact", sans-serif';
-        ctx.letterSpacing = '6px';
         ctx.shadowColor = 'rgba(35, 12, 4, 0.95)';
-        ctx.shadowBlur = 14;
-        ctx.shadowOffsetY = 6;
+        ctx.shadowBlur = 28;
+        ctx.shadowOffsetY = 12;
         ctx.fillStyle = '#2A0E05';
-        ctx.fillText('BRONZE', cx, cy + 124);
+        ctx.fillText('BRONZE', cx, bronzeTextY + 8);
         ctx.shadowBlur = 0;
         ctx.shadowOffsetY = 0;
 
-        const bronzeGrad = ctx.createLinearGradient(cx - 190, cy + 90, cx + 190, cy + 135);
+        const bronzeGrad = ctx.createLinearGradient(cx - 380, bronzeTextY - 60, cx + 380, bronzeTextY + 60);
         bronzeGrad.addColorStop(0, '#FFFFFF');
         bronzeGrad.addColorStop(0.25, '#FFF0E0');
         bronzeGrad.addColorStop(0.55, '#EEC39C');
         bronzeGrad.addColorStop(0.85, '#CC9873');
         bronzeGrad.addColorStop(1, '#8E523A');
         ctx.fillStyle = bronzeGrad;
-        ctx.fillText('BRONZE', cx, cy + 120);
+        ctx.fillText('BRONZE', cx, bronzeTextY);
 
         ctx.strokeStyle = '#FFFFFF';
-        ctx.lineWidth = 2.0;
-        ctx.strokeText('BRONZE', cx, cy + 120);
+        ctx.lineWidth = 4.0;
+        ctx.strokeText('BRONZE', cx, bronzeTextY);
 
-        bCtx.font = '900 italic 96px "Plus Jakarta Sans", "Impact", sans-serif';
-        bCtx.letterSpacing = '6px';
-        bCtx.fillStyle = '#FFFFFF';
-        bCtx.fillText('BRONZE', cx, cy + 120);
-
-        // Ribbon pill: "★ MILESTONE ACHIEVED ★"
-        const ribW = 460;
-        const ribH = 50;
-        const ribX = cx - ribW / 2;
-        const ribY = cy + 175;
-        ctx.fillStyle = 'rgba(50, 20, 8, 0.85)';
-        ctx.strokeStyle = '#EEC39C';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.roundRect(ribX, ribY, ribW, ribH, 25);
-        ctx.fill();
-        ctx.stroke();
-
-        ctx.font = '900 28px "Plus Jakarta Sans", sans-serif';
-        ctx.letterSpacing = '5px';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
-        ctx.shadowBlur = 6;
-        ctx.fillStyle = '#FFFFFF';
-        ctx.fillText('★ MILESTONE ACHIEVED ★', cx, ribY + ribH / 2 + 1);
-        ctx.shadowBlur = 0;
-
-        bCtx.font = '900 28px "Plus Jakarta Sans", sans-serif';
-        bCtx.letterSpacing = '5px';
+        bCtx.font = '900 italic 196px "Plus Jakarta Sans", "Impact", sans-serif';
+        bCtx.letterSpacing = '12px';
         bCtx.textAlign = 'center';
         bCtx.textBaseline = 'middle';
         bCtx.fillStyle = '#FFFFFF';
-        bCtx.fillText('★ MILESTONE ACHIEVED ★', cx, ribY + ribH / 2 + 1);
+        bCtx.fillText('BRONZE', cx, bronzeTextY);
+
+        // RIBBON PILL: "★ MILESTONE ACHIEVED ★"
+        const ribW = 960;
+        const ribH = 104;
+        const ribX = cx - ribW / 2;
+        const ribY = cy + 344;
+        ctx.fillStyle = 'rgba(45, 18, 8, 0.90)';
+        ctx.strokeStyle = '#EEC39C';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.roundRect(ribX, ribY, ribW, ribH, 52);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.font = '900 52px "Plus Jakarta Sans", sans-serif';
+        ctx.letterSpacing = '8px';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+        ctx.shadowBlur = 10;
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillText('★ MILESTONE ACHIEVED ★', cx, ribY + ribH / 2 + 2);
+        ctx.shadowBlur = 0;
+
+        bCtx.font = '900 52px "Plus Jakarta Sans", sans-serif';
+        bCtx.letterSpacing = '8px';
+        bCtx.textAlign = 'center';
+        bCtx.textBaseline = 'middle';
+        bCtx.fillStyle = '#FFFFFF';
+        bCtx.fillText('★ MILESTONE ACHIEVED ★', cx, ribY + ribH / 2 + 2);
 
         ctx.restore();
       } else {
-        // SILVER TEXTURE
+        // SILVER TEXTURE (2048x2048 Razor-Sharp Platinum Silver)
         ctx.fillStyle = '#64748B';
-        ctx.fillRect(0, 0, 1024, 1024);
+        ctx.fillRect(0, 0, 2048, 2048);
         bCtx.fillStyle = '#404040';
-        bCtx.fillRect(0, 0, 1024, 1024);
+        bCtx.fillRect(0, 0, 2048, 2048);
 
         ctx.save();
         drawHexPath(ctx, hexRadius);
         ctx.clip();
 
         // Satin Platinum-Silver Radial Gradient Base
-        const silverGradBase = ctx.createRadialGradient(cx, cy - 60, 30, cx, cy, hexRadius);
+        const silverGradBase = ctx.createRadialGradient(cx, cy - 120, 60, cx, cy, hexRadius);
         silverGradBase.addColorStop(0, '#FFFFFF');
         silverGradBase.addColorStop(0.18, '#F8FAFC');
         silverGradBase.addColorStop(0.48, '#E2E8F0');
         silverGradBase.addColorStop(0.78, '#CBD5E1');
         silverGradBase.addColorStop(1, '#94A3B8');
         ctx.fillStyle = silverGradBase;
-        ctx.fillRect(0, 0, 1024, 1024);
+        ctx.fillRect(0, 0, 2048, 2048);
 
-        // Top Header: "GDG ON CAMPUS"
-        ctx.font = 'bold 38px "Plus Jakarta Sans", "Arial Black", sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.shadowColor = 'rgba(15, 23, 42, 0.85)';
-        ctx.shadowBlur = 10;
-        ctx.shadowOffsetY = 3;
-        ctx.fillStyle = '#FFFFFF';
-        ctx.fillText('GDG ON CAMPUS', cx, cy - 230);
-        ctx.shadowBlur = 0;
-        ctx.shadowOffsetY = 0;
-
-        bCtx.font = 'bold 38px "Plus Jakarta Sans", "Arial Black", sans-serif';
-        bCtx.textAlign = 'center';
-        bCtx.textBaseline = 'middle';
-        bCtx.fillStyle = '#FFFFFF';
-        bCtx.fillText('GDG ON CAMPUS', cx, cy - 230);
-
-        // Top Sub-header Pill: "NECN"
-        const pillW = 150;
-        const pillH = 40;
+        // TOP HEADER PILL: [GDG Logo < >] GDG OC NECN
+        const pillW = 760;
+        const pillH = 104;
         const pillX = cx - pillW / 2;
-        const pillY = cy - 182;
-        ctx.fillStyle = '#0F172A';
+        const pillY = cy - 470;
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.95)';
         ctx.strokeStyle = '#E2E8F0';
-        ctx.lineWidth = 2.5;
+        ctx.lineWidth = 4;
         ctx.beginPath();
-        ctx.roundRect(pillX, pillY, pillW, pillH, 20);
+        ctx.roundRect(pillX, pillY, pillW, pillH, 52);
         ctx.fill();
         ctx.stroke();
 
-        ctx.font = '900 22px "Plus Jakarta Sans", monospace, sans-serif';
-        ctx.fillStyle = '#F8FAFC';
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
-        ctx.shadowBlur = 4;
-        ctx.fillText('NECN', cx, pillY + pillH / 2);
+        // GDG Brackets Logo beside GDG OC NECN inside top pill
+        drawGdgBrackets(ctx, pillX + 80, pillY + pillH / 2, 58);
+
+        // Header Text: "GDG OC NECN"
+        ctx.font = '900 48px "Plus Jakarta Sans", "Montserrat", system-ui, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.letterSpacing = '3px';
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+        ctx.shadowBlur = 8;
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillText('GDG OC NECN', pillX + 144, pillY + pillH / 2 + 1);
         ctx.shadowBlur = 0;
 
-        // MULTICOLOR GDG BRACKETS LOGO: { < / > }
-        const logoY = cy - 35;
-        ctx.font = '900 120px "Plus Jakarta Sans", "Montserrat", sans-serif';
+        // Bump map for top header pill & text
+        bCtx.fillStyle = '#FFFFFF';
+        bCtx.beginPath();
+        bCtx.roundRect(pillX, pillY, pillW, pillH, 52);
+        bCtx.fill();
+        bCtx.font = '900 48px "Plus Jakarta Sans", "Montserrat", system-ui, sans-serif';
+        bCtx.textAlign = 'left';
+        bCtx.textBaseline = 'middle';
+        bCtx.letterSpacing = '3px';
+        bCtx.fillStyle = '#404040';
+        bCtx.fillText('GDG OC NECN', pillX + 144, pillY + pillH / 2 + 1);
+
+        // CENTER: GOOGLE CLOUD MULTICOLOR LOGO (In place of old GDG logo)
+        const cloudY = cy - 80;
+        drawGoogleCloudLogo(ctx, cx, cloudY, 1.45, '#CBD5E1');
+        drawGoogleCloudLogoBump(bCtx, cx, cloudY, 1.45);
+
+        // ENGRAVED TEXT: "SILVER"
+        const silverTextY = cy + 246;
+        ctx.font = '900 italic 196px "Plus Jakarta Sans", "Impact", sans-serif';
+        ctx.letterSpacing = '12px';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
-        ctx.fillStyle = '#4285F4'; ctx.shadowColor = 'rgba(66, 133, 244, 0.45)'; ctx.shadowBlur = 12;
-        ctx.fillText('{', cx - 140, logoY);
-        ctx.fillStyle = '#EA4335'; ctx.shadowColor = 'rgba(234, 67, 53, 0.45)';
-        ctx.fillText('<', cx - 55, logoY);
-        ctx.fillStyle = '#FBBC04'; ctx.shadowColor = 'rgba(251, 188, 4, 0.45)';
-        ctx.fillText('>', cx + 55, logoY);
-        ctx.fillStyle = '#34A853'; ctx.shadowColor = 'rgba(52, 168, 83, 0.45)';
-        ctx.fillText('}', cx + 140, logoY);
-        ctx.shadowBlur = 0;
-
-        bCtx.font = '900 120px "Plus Jakarta Sans", "Montserrat", sans-serif';
-        bCtx.textAlign = 'center';
-        bCtx.textBaseline = 'middle';
-        bCtx.fillStyle = '#FFFFFF';
-        bCtx.fillText('{ < > }', cx, logoY);
-
-        // ENGRAVED TEXT: "SILVER"
-        ctx.font = '900 italic 96px "Plus Jakarta Sans", "Impact", sans-serif';
-        ctx.letterSpacing = '6px';
         ctx.shadowColor = 'rgba(15, 23, 42, 0.95)';
-        ctx.shadowBlur = 14;
-        ctx.shadowOffsetY = 6;
+        ctx.shadowBlur = 28;
+        ctx.shadowOffsetY = 12;
         ctx.fillStyle = '#0F172A';
-        ctx.fillText('SILVER', cx, cy + 124);
+        ctx.fillText('SILVER', cx, silverTextY + 8);
         ctx.shadowBlur = 0;
         ctx.shadowOffsetY = 0;
 
-        const silverGradText = ctx.createLinearGradient(cx - 190, cy + 90, cx + 190, cy + 135);
+        const silverGradText = ctx.createLinearGradient(cx - 380, silverTextY - 60, cx + 380, silverTextY + 60);
         silverGradText.addColorStop(0, '#FFFFFF');
         silverGradText.addColorStop(0.25, '#F8FAFC');
         silverGradText.addColorStop(0.55, '#E2E8F0');
         silverGradText.addColorStop(0.85, '#CBD5E1');
         silverGradText.addColorStop(1, '#64748B');
         ctx.fillStyle = silverGradText;
-        ctx.fillText('SILVER', cx, cy + 120);
+        ctx.fillText('SILVER', cx, silverTextY);
 
         ctx.strokeStyle = '#FFFFFF';
-        ctx.lineWidth = 2.0;
-        ctx.strokeText('SILVER', cx, cy + 120);
+        ctx.lineWidth = 4.0;
+        ctx.strokeText('SILVER', cx, silverTextY);
 
-        bCtx.font = '900 italic 96px "Plus Jakarta Sans", "Impact", sans-serif';
-        bCtx.letterSpacing = '6px';
-        bCtx.fillStyle = '#FFFFFF';
-        bCtx.fillText('SILVER', cx, cy + 120);
-
-        // Ribbon pill: "★ SILVER MILESTONE ACHIEVED ★"
-        const ribW = 500;
-        const ribH = 50;
-        const ribX = cx - ribW / 2;
-        const ribY = cy + 175;
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.90)';
-        ctx.strokeStyle = '#E2E8F0';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.roundRect(ribX, ribY, ribW, ribH, 25);
-        ctx.fill();
-        ctx.stroke();
-
-        ctx.font = '900 26px "Plus Jakarta Sans", sans-serif';
-        ctx.letterSpacing = '4px';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
-        ctx.shadowBlur = 6;
-        ctx.fillStyle = '#FFFFFF';
-        ctx.fillText('★ SILVER MILESTONE ACHIEVED ★', cx, ribY + ribH / 2 + 1);
-        ctx.shadowBlur = 0;
-
-        bCtx.font = '900 26px "Plus Jakarta Sans", sans-serif';
-        bCtx.letterSpacing = '4px';
+        bCtx.font = '900 italic 196px "Plus Jakarta Sans", "Impact", sans-serif';
+        bCtx.letterSpacing = '12px';
         bCtx.textAlign = 'center';
         bCtx.textBaseline = 'middle';
         bCtx.fillStyle = '#FFFFFF';
-        bCtx.fillText('★ SILVER MILESTONE ACHIEVED ★', cx, ribY + ribH / 2 + 1);
+        bCtx.fillText('SILVER', cx, silverTextY);
+
+        // RIBBON PILL: "★ SILVER MILESTONE ACHIEVED ★"
+        const ribW = 1040;
+        const ribH = 104;
+        const ribX = cx - ribW / 2;
+        const ribY = cy + 344;
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.94)';
+        ctx.strokeStyle = '#E2E8F0';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.roundRect(ribX, ribY, ribW, ribH, 52);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.font = '900 50px "Plus Jakarta Sans", sans-serif';
+        ctx.letterSpacing = '7px';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+        ctx.shadowBlur = 10;
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillText('★ SILVER MILESTONE ACHIEVED ★', cx, ribY + ribH / 2 + 2);
+        ctx.shadowBlur = 0;
+
+        bCtx.font = '900 50px "Plus Jakarta Sans", sans-serif';
+        bCtx.letterSpacing = '7px';
+        bCtx.textAlign = 'center';
+        bCtx.textBaseline = 'middle';
+        bCtx.fillStyle = '#FFFFFF';
+        bCtx.fillText('★ SILVER MILESTONE ACHIEVED ★', cx, ribY + ribH / 2 + 2);
 
         ctx.restore();
       }
 
+      // Generate canvas texture with 16x anisotropic filtering for razor-sharp clarity
+      const maxAnisotropy = renderer.capabilities.getMaxAnisotropy();
+
       const colorTexture = new THREE.CanvasTexture(cCanvas);
       colorTexture.colorSpace = THREE.SRGBColorSpace;
+      colorTexture.anisotropy = maxAnisotropy;
+      colorTexture.minFilter = THREE.LinearMipmapLinearFilter;
+      colorTexture.magFilter = THREE.LinearFilter;
+      colorTexture.generateMipmaps = true;
+      colorTexture.needsUpdate = true;
+
       const bumpTexture = new THREE.CanvasTexture(bCanvas);
+      bumpTexture.anisotropy = maxAnisotropy;
+      bumpTexture.minFilter = THREE.LinearMipmapLinearFilter;
+      bumpTexture.magFilter = THREE.LinearFilter;
+      bumpTexture.generateMipmaps = true;
+      bumpTexture.needsUpdate = true;
 
       return { colorMap: colorTexture, bumpMap: bumpTexture };
     };
