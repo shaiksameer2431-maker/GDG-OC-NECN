@@ -288,8 +288,8 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       bCtx.clearRect(0, 0, 2048, 2048);
 
       if (tier === 'bronze') {
-        // Base Canvas Fill (Warm Copper-Bronze)
-        ctx.fillStyle = '#6E3822';
+        // Base Canvas Fill (Warm Copper-Bronze matching reference)
+        ctx.fillStyle = '#825139';
         ctx.fillRect(0, 0, 2048, 2048);
         bCtx.fillStyle = '#404040';
         bCtx.fillRect(0, 0, 2048, 2048);
@@ -298,14 +298,36 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
         drawHexPath(ctx, cx, cy, hexRadius);
         ctx.clip();
 
-        // Satin Warm Copper-Bronze Radial Gradient Base (High Contrast Definition)
-        const grad = ctx.createRadialGradient(cx, cy - 80, 80, cx, cy, hexRadius);
-        grad.addColorStop(0, '#C9825E');
-        grad.addColorStop(0.35, '#A45D3B');
-        grad.addColorStop(0.70, '#7A3C20');
-        grad.addColorStop(1, '#4A1D0B');
-        ctx.fillStyle = grad;
+        // Diagonal Linear Gradient matching the reference bronze medal
+        const bronzeGrad = ctx.createLinearGradient(
+          cx - hexRadius * 0.75,
+          cy - hexRadius * 0.75,
+          cx + hexRadius * 0.75,
+          cy + hexRadius * 0.75
+        );
+        bronzeGrad.addColorStop(0, '#F8CCA9');
+        bronzeGrad.addColorStop(0.20, '#EEB694');
+        bronzeGrad.addColorStop(0.50, '#E9AE90');
+        bronzeGrad.addColorStop(0.75, '#DB9073');
+        bronzeGrad.addColorStop(1, '#BE624D');
+        ctx.fillStyle = bronzeGrad;
         ctx.fillRect(0, 0, 2048, 2048);
+
+        // Distinct Metallic Bevel Rim Ring (matching reference bronze rim)
+        ctx.strokeStyle = '#974029';
+        ctx.lineWidth = 14;
+        drawHexPath(ctx, cx, cy, hexRadius - 10);
+        ctx.stroke();
+
+        ctx.strokeStyle = '#FED7AA';
+        ctx.lineWidth = 5;
+        drawHexPath(ctx, cx, cy, hexRadius - 20);
+        ctx.stroke();
+
+        ctx.strokeStyle = '#AD563D';
+        ctx.lineWidth = 4;
+        drawHexPath(ctx, cx, cy, hexRadius - 26);
+        ctx.stroke();
 
         // TOP HEADER PILL: [GDG Logo] GDG OC NECN
         const pillW = 820;
@@ -313,7 +335,7 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
         const pillX = cx - pillW / 2;
         const pillY = cy - 470;
         ctx.fillStyle = 'rgba(45, 18, 8, 0.94)';
-        ctx.strokeStyle = '#EEC39C';
+        ctx.strokeStyle = '#D98664';
         ctx.lineWidth = 4;
         ctx.beginPath();
         ctx.roundRect(pillX, pillY, pillW, pillH, 52);
@@ -364,7 +386,7 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
           ctx.shadowOffsetY = 0;
         } else {
           const cloudY = cy - 80;
-          drawGoogleCloudLogo(ctx, cx, cloudY, 1.45, '#7A3C20');
+          drawGoogleCloudLogo(ctx, cx, cloudY, 1.45, '#AD563D');
           drawGoogleCloudLogoBump(bCtx, cx, cloudY, 1.45);
         }
 
@@ -375,24 +397,24 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
-        ctx.shadowColor = 'rgba(25, 8, 3, 0.95)';
-        ctx.shadowBlur = 20;
-        ctx.shadowOffsetY = 8;
+        ctx.shadowColor = 'rgba(40, 15, 8, 0.55)';
+        ctx.shadowBlur = 16;
+        ctx.shadowOffsetY = 6;
         ctx.fillStyle = '#1D0803';
-        ctx.fillText('BRONZE MILESTONE', cx, bronzeTextY + 6);
+        ctx.fillText('BRONZE MILESTONE', cx, bronzeTextY + 4);
         ctx.shadowBlur = 0;
         ctx.shadowOffsetY = 0;
 
-        const bronzeGrad = ctx.createLinearGradient(cx - 380, bronzeTextY - 40, cx + 380, bronzeTextY + 40);
-        bronzeGrad.addColorStop(0, '#FFF5EB');
-        bronzeGrad.addColorStop(0.30, '#FED7AA');
-        bronzeGrad.addColorStop(0.65, '#FDBA74');
-        bronzeGrad.addColorStop(1, '#FB923C');
-        ctx.fillStyle = bronzeGrad;
+        const textGrad = ctx.createLinearGradient(cx - 350, bronzeTextY - 40, cx + 350, bronzeTextY + 40);
+        textGrad.addColorStop(0, '#2A0E05');
+        textGrad.addColorStop(0.40, '#4A1D0D');
+        textGrad.addColorStop(0.70, '#6C2B16');
+        textGrad.addColorStop(1, '#2A0E05');
+        ctx.fillStyle = textGrad;
         ctx.fillText('BRONZE MILESTONE', cx, bronzeTextY);
 
-        ctx.strokeStyle = '#2A0E05';
-        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = '#FFF5EB';
+        ctx.lineWidth = 3.0;
         ctx.strokeText('BRONZE MILESTONE', cx, bronzeTextY);
 
         bCtx.font = '900 italic 104px "Plus Jakarta Sans", "Montserrat", system-ui, sans-serif';
@@ -404,8 +426,8 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
 
         ctx.restore();
       } else {
-        // SILVER TEXTURE (2048x2048 Authentic Metallic Steel & Platinum Silver)
-        ctx.fillStyle = '#1E293B';
+        // SILVER TEXTURE (Exact match to reference silver medal)
+        ctx.fillStyle = '#9C9C9C';
         ctx.fillRect(0, 0, 2048, 2048);
         bCtx.fillStyle = '#404040';
         bCtx.fillRect(0, 0, 2048, 2048);
@@ -414,22 +436,45 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
         drawHexPath(ctx, cx, cy, hexRadius);
         ctx.clip();
 
-        // Satin Deep Metallic Steel-Silver Radial Gradient Base (Sculpted Metallic Contrast)
-        const silverGradBase = ctx.createRadialGradient(cx, cy - 80, 80, cx, cy, hexRadius);
-        silverGradBase.addColorStop(0, '#64748B');    // Cool metallic slate highlight
-        silverGradBase.addColorStop(0.35, '#475569'); // Satin deep steel silver
-        silverGradBase.addColorStop(0.70, '#334155'); // Rich gunmetal silver
-        silverGradBase.addColorStop(1, '#1E293B');    // Dark sculpted bevel border
-        ctx.fillStyle = silverGradBase;
+        // Diagonal Linear Gradient matching the reference silver medal
+        // From top-left highlight (#FAFAFA) down to bottom-right brushed shadow (#C1C1C1)
+        const silverGrad = ctx.createLinearGradient(
+          cx - hexRadius * 0.75,
+          cy - hexRadius * 0.75,
+          cx + hexRadius * 0.75,
+          cy + hexRadius * 0.75
+        );
+        silverGrad.addColorStop(0, '#FAFAFA');
+        silverGrad.addColorStop(0.20, '#F5F5F5');
+        silverGrad.addColorStop(0.50, '#EAEAEA');
+        silverGrad.addColorStop(0.75, '#DADADA');
+        silverGrad.addColorStop(1, '#C1C1C1');
+        ctx.fillStyle = silverGrad;
         ctx.fillRect(0, 0, 2048, 2048);
+
+        // Defined Metallic Bevel Rim Ring (matching reference silver outer ring)
+        ctx.strokeStyle = '#929292';
+        ctx.lineWidth = 14;
+        drawHexPath(ctx, cx, cy, hexRadius - 10);
+        ctx.stroke();
+
+        ctx.strokeStyle = '#FFFFFF';
+        ctx.lineWidth = 5;
+        drawHexPath(ctx, cx, cy, hexRadius - 20);
+        ctx.stroke();
+
+        ctx.strokeStyle = '#C0C0C0';
+        ctx.lineWidth = 4;
+        drawHexPath(ctx, cx, cy, hexRadius - 26);
+        ctx.stroke();
 
         // TOP HEADER PILL: [GDG Logo] GDG OC NECN
         const pillW = 820;
         const pillH = 104;
         const pillX = cx - pillW / 2;
         const pillY = cy - 470;
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.95)';
-        ctx.strokeStyle = '#94A3B8';
+        ctx.fillStyle = 'rgba(20, 25, 35, 0.94)';
+        ctx.strokeStyle = '#A8A8A8';
         ctx.lineWidth = 4;
         ctx.beginPath();
         ctx.roundRect(pillX, pillY, pillW, pillH, 52);
@@ -466,49 +511,49 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
         bCtx.fillStyle = '#404040';
         bCtx.fillText('GDG OC NECN', pillX + 128, pillY + pillH / 2 + 1);
 
-        // CENTER: GOOGLE CLOUD MULTICOLOR LOGO (High vibrancy & saturation on dark steel)
+        // CENTER: GOOGLE CLOUD MULTICOLOR LOGO
         if (cloudImg.complete && cloudImg.naturalWidth > 0) {
           const cloudW = 460;
           const cloudH = 460;
           const cloudX = cx - cloudW / 2;
           const cloudY = cy - 200;
-          ctx.shadowColor = 'rgba(0, 0, 0, 0.45)';
-          ctx.shadowBlur = 28;
-          ctx.shadowOffsetY = 12;
+          ctx.shadowColor = 'rgba(0, 0, 0, 0.35)';
+          ctx.shadowBlur = 24;
+          ctx.shadowOffsetY = 10;
           ctx.drawImage(cloudImg, cloudX, cloudY, cloudW, cloudH);
           ctx.shadowBlur = 0;
           ctx.shadowOffsetY = 0;
         } else {
           const cloudY = cy - 80;
-          drawGoogleCloudLogo(ctx, cx, cloudY, 1.45, '#334155');
+          drawGoogleCloudLogo(ctx, cx, cloudY, 1.45, '#C0C0C0');
           drawGoogleCloudLogoBump(bCtx, cx, cloudY, 1.45);
         }
 
-        // ENGRAVED SINGLE TITLE: "SILVER MILESTONE" (BRILLIANT GLEAMING WHITE-SILVER ON SLATE)
+        // ENGRAVED SINGLE TITLE: "SILVER MILESTONE" (CHISELED HIGH CONTRAST)
         const silverTextY = cy + 320;
         ctx.font = '900 italic 104px "Plus Jakarta Sans", "Montserrat", system-ui, sans-serif';
         ctx.letterSpacing = '8px';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.95)';
-        ctx.shadowBlur = 22;
-        ctx.shadowOffsetY = 8;
-        ctx.fillStyle = '#0B1120';
-        ctx.fillText('SILVER MILESTONE', cx, silverTextY + 6);
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.45)';
+        ctx.shadowBlur = 16;
+        ctx.shadowOffsetY = 6;
+        ctx.fillStyle = '#0F172A';
+        ctx.fillText('SILVER MILESTONE', cx, silverTextY + 4);
         ctx.shadowBlur = 0;
         ctx.shadowOffsetY = 0;
 
-        const silverGradText = ctx.createLinearGradient(cx - 380, silverTextY - 40, cx + 380, silverTextY + 40);
-        silverGradText.addColorStop(0, '#FFFFFF');
-        silverGradText.addColorStop(0.30, '#F8FAFC');
-        silverGradText.addColorStop(0.60, '#E2E8F0');
-        silverGradText.addColorStop(1, '#CBD5E1');
-        ctx.fillStyle = silverGradText;
+        const textGrad = ctx.createLinearGradient(cx - 350, silverTextY - 40, cx + 350, silverTextY + 40);
+        textGrad.addColorStop(0, '#1E293B');
+        textGrad.addColorStop(0.40, '#334155');
+        textGrad.addColorStop(0.70, '#475569');
+        textGrad.addColorStop(1, '#1E293B');
+        ctx.fillStyle = textGrad;
         ctx.fillText('SILVER MILESTONE', cx, silverTextY);
 
-        ctx.strokeStyle = '#0F172A';
-        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = '#FFFFFF';
+        ctx.lineWidth = 3.0;
         ctx.strokeText('SILVER MILESTONE', cx, silverTextY);
 
         bCtx.font = '900 italic 104px "Plus Jakarta Sans", "Montserrat", system-ui, sans-serif';
@@ -584,51 +629,51 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     let currentMorphProgress = startAsSilver ? 1.0 : 0.0;
     let targetMorphProgress = startAsSilver ? 1.0 : 0.0;
 
-    // Palette Colors - Rich Metallic Contrast (Deep Sculpted Medal Framing)
-    const cBronzeBase = new THREE.Color(0x7A3C20);
-    const cSilverBase = new THREE.Color(0x334155);
+    // Palette Colors - Exact match to reference medal colors
+    const cBronzeBase = new THREE.Color(0x825139);
+    const cSilverBase = new THREE.Color(0x929292);
 
-    const cBronzeFrame = new THREE.Color(0xA45D3B);
-    const cSilverFrame = new THREE.Color(0x64748B);
+    const cBronzeFrame = new THREE.Color(0xD98664);
+    const cSilverFrame = new THREE.Color(0xC7C7C7);
 
-    const cBronzeRidge = new THREE.Color(0xD97706);
-    const cSilverRidge = new THREE.Color(0xCBD5E1);
+    const cBronzeRidge = new THREE.Color(0xEEB694);
+    const cSilverRidge = new THREE.Color(0xE5E5E5);
 
-    const cBronzeBack = new THREE.Color(0x4A1D0B);
-    const cSilverBack = new THREE.Color(0x1E293B);
+    const cBronzeBack = new THREE.Color(0x6E2C18);
+    const cSilverBack = new THREE.Color(0x7A7A7A);
 
     const cBronzeRivet = new THREE.Color(0xFED7AA);
-    const cSilverRivet = new THREE.Color(0xF1F5F9);
+    const cSilverRivet = new THREE.Color(0xFFFFFF);
 
     // Dynamic Materials
     const baseMat = new THREE.MeshStandardMaterial({
       color: startAsSilver ? cSilverBase.clone() : cBronzeBase.clone(),
-      metalness: startAsSilver ? 0.78 : 0.35,
-      roughness: startAsSilver ? 0.28 : 0.38,
+      metalness: startAsSilver ? 0.85 : 0.40,
+      roughness: startAsSilver ? 0.20 : 0.32,
     });
 
     const frameMat = new THREE.MeshStandardMaterial({
       color: startAsSilver ? cSilverFrame.clone() : cBronzeFrame.clone(),
-      metalness: startAsSilver ? 0.82 : 0.38,
-      roughness: startAsSilver ? 0.22 : 0.28,
+      metalness: startAsSilver ? 0.88 : 0.42,
+      roughness: startAsSilver ? 0.16 : 0.26,
     });
 
     const ridgeMat = new THREE.MeshStandardMaterial({
       color: startAsSilver ? cSilverRidge.clone() : cBronzeRidge.clone(),
-      metalness: startAsSilver ? 0.88 : 0.40,
-      roughness: startAsSilver ? 0.16 : 0.20,
+      metalness: startAsSilver ? 0.92 : 0.45,
+      roughness: startAsSilver ? 0.12 : 0.18,
     });
 
     const backMat = new THREE.MeshStandardMaterial({
       color: startAsSilver ? cSilverBack.clone() : cBronzeBack.clone(),
-      metalness: startAsSilver ? 0.75 : 0.32,
-      roughness: startAsSilver ? 0.30 : 0.40,
+      metalness: startAsSilver ? 0.78 : 0.35,
+      roughness: startAsSilver ? 0.24 : 0.36,
     });
 
     const rivetMat = new THREE.MeshStandardMaterial({
       color: startAsSilver ? cSilverRivet.clone() : cBronzeRivet.clone(),
-      metalness: startAsSilver ? 0.90 : 0.42,
-      roughness: startAsSilver ? 0.10 : 0.20,
+      metalness: startAsSilver ? 0.95 : 0.45,
+      roughness: startAsSilver ? 0.10 : 0.18,
     });
 
     // 1. Foundation Hexagon Plate (Layer 1)
@@ -670,7 +715,7 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
       color: 0xFFFFFF,
       map: bronzeTextures.colorMap,
       bumpMap: bronzeTextures.bumpMap,
-      bumpScale: 0.040,
+      bumpScale: 0.035,
       metalness: 0.25,
       roughness: 0.35,
       transparent: true,
@@ -681,14 +726,14 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     bronzeFaceMesh.position.z = 0.14;
     shieldGroup.add(bronzeFaceMesh);
 
-    // Silver Front Face (Rich, Sculpted, High Contrast & High Legibility)
+    // Silver Front Face (Exact Match to Reference Silver Medal)
     const silverFaceMat = new THREE.MeshStandardMaterial({
       color: 0xFFFFFF,
       map: silverTextures.colorMap,
       bumpMap: silverTextures.bumpMap,
-      bumpScale: 0.040,
-      metalness: 0.28,
-      roughness: 0.30,
+      bumpScale: 0.035,
+      metalness: 0.25,
+      roughness: 0.32,
       transparent: true,
       opacity: startAsSilver ? 1.0 : 0.0,
       depthWrite: false,
@@ -763,33 +808,33 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
     }
 
     // -------------------------------------------------------------------------
-    // BALANCED CINEMATIC LIGHTING (CALIBRATED TO PREVENT WASH-OUT / OVEREXPOSURE)
+    // BALANCED CINEMATIC LIGHTING (CALIBRATED FOR EXACT METALLIC FIDELITY)
     // -------------------------------------------------------------------------
-    const ambientLight = new THREE.AmbientLight(0xFFFFFF, 1.2);
+    const ambientLight = new THREE.AmbientLight(0xFFFFFF, 1.05);
     scene.add(ambientLight);
 
-    // Front Direct Light (Clear, natural fill without overexposure)
-    const frontDirectLight = new THREE.DirectionalLight(0xFFFFFF, 0.9);
+    // Front Direct Light (Subtle, balanced fill)
+    const frontDirectLight = new THREE.DirectionalLight(0xFFFFFF, 0.55);
     frontDirectLight.position.set(0, 0, 7.0);
     scene.add(frontDirectLight);
 
-    // Key Light (Angled top-right to create authentic metallic highlights and bevel reflections)
-    const keyLight = new THREE.DirectionalLight(0xFFFFFF, 1.8);
-    keyLight.position.set(4, 5, 5);
+    // Key Light (Angled top-right key light creating genuine metallic highlights)
+    const keyLight = new THREE.DirectionalLight(0xFFFFFF, 1.45);
+    keyLight.position.set(3.5, 4.5, 4.5);
     scene.add(keyLight);
 
     // Fill Light (Soft cool fill from bottom-left)
-    const fillLight = new THREE.DirectionalLight(0xD8E2F0, 1.0);
-    fillLight.position.set(-4, -3, 3);
+    const fillLight = new THREE.DirectionalLight(0xD8E2F0, 0.75);
+    fillLight.position.set(-3.5, -2.5, 2.5);
     scene.add(fillLight);
 
     // Rim Light (Google Blue rim accent from behind)
-    const rimLight = new THREE.DirectionalLight(0x4285F4, 0.8);
+    const rimLight = new THREE.DirectionalLight(0x4285F4, 0.65);
     rimLight.position.set(0, -3, -4);
     scene.add(rimLight);
 
     // Sweep Light (Specular gleam that sweeps across the medal)
-    const sweepLight = new THREE.PointLight(0xFFFFFF, 1.6, 9);
+    const sweepLight = new THREE.PointLight(0xFFFFFF, 1.3, 8);
     sweepLight.position.set(-3.5, 1.2, 2.4);
     scene.add(sweepLight);
 
@@ -926,12 +971,12 @@ export const BronzeMilestoneExperience: React.FC<BronzeMilestoneExperienceProps>
         backMat.color.lerpColors(cBronzeBack, cSilverBack, currentMorphProgress);
         rivetMat.color.lerpColors(cBronzeRivet, cSilverRivet, currentMorphProgress);
 
-        baseMat.metalness = THREE.MathUtils.lerp(0.35, 0.78, currentMorphProgress);
-        baseMat.roughness = THREE.MathUtils.lerp(0.35, 0.28, currentMorphProgress);
-        frameMat.metalness = THREE.MathUtils.lerp(0.38, 0.82, currentMorphProgress);
-        frameMat.roughness = THREE.MathUtils.lerp(0.28, 0.22, currentMorphProgress);
-        ridgeMat.metalness = THREE.MathUtils.lerp(0.40, 0.88, currentMorphProgress);
-        ridgeMat.roughness = THREE.MathUtils.lerp(0.20, 0.16, currentMorphProgress);
+        baseMat.metalness = THREE.MathUtils.lerp(0.40, 0.85, currentMorphProgress);
+        baseMat.roughness = THREE.MathUtils.lerp(0.32, 0.20, currentMorphProgress);
+        frameMat.metalness = THREE.MathUtils.lerp(0.42, 0.88, currentMorphProgress);
+        frameMat.roughness = THREE.MathUtils.lerp(0.26, 0.16, currentMorphProgress);
+        ridgeMat.metalness = THREE.MathUtils.lerp(0.45, 0.92, currentMorphProgress);
+        ridgeMat.roughness = THREE.MathUtils.lerp(0.18, 0.12, currentMorphProgress);
 
         // Cross-fade Face Textures
         bronzeFaceMat.opacity = Math.max(0, 1 - currentMorphProgress);
