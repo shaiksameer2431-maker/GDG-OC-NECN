@@ -98,102 +98,81 @@ export const DeadlineCountdown: React.FC<DeadlineCountdownProps> = ({
   }
 
   // =========================================================================
-  // 2. FOCUSED FLUID GLASS TIMER WITH NEON LIGHTING BORDER
-  // Contains ONLY the 4 pods in fluid glassmorphism with vivid neon border lightings.
+  // 2. FOCUSED FLUID GLASS TIMER WITH NEON COLOR-CHANGING BORDERS
+  // Pure floating fluid glass pods with animated neon color-shifting borders.
+  // Zero outer background card for a clean, seamless, transparent presentation.
   // =========================================================================
   return (
     <div 
-      className={`w-full max-w-lg relative select-none ${className}`}
+      className={`w-full max-w-md relative select-none ${className}`}
       title="Official Campaign Deadline: 23 November 2026, 4:59 PM IST"
     >
-      {/* Ambient Neon Backlight Bloom (Soft diffuse aura) */}
-      <div 
-        className="absolute -inset-1.5 bg-gradient-to-r from-[#00F0FF]/35 via-[#3B82F6]/25 to-[#FF2E74]/35 rounded-[1.75rem] blur-xl opacity-75 pointer-events-none" 
-        aria-hidden="true" 
-      />
-
-      {/* Outer Neon Lighting Border Frame */}
-      <div className="relative rounded-2xl sm:rounded-3xl p-[1.5px] neon-lighting-chassis overflow-hidden">
+      <div className="grid grid-cols-4 gap-2 sm:gap-2.5 relative z-10">
         
-        {/* Inner Fluid Glass Plate */}
-        <div className="neon-lighting-inner p-2 min-[380px]:p-2.5 sm:p-3 relative overflow-hidden">
+        {/* POD 1: DAYS (Fluid Glass + Animated Neon Border) */}
+        <div className="fluid-neon-border-box neon-delay-1 p-2 sm:p-3 flex flex-col items-center justify-center relative overflow-hidden group/pod">
+          {/* Top Neon Pip */}
+          <div className="w-5 min-[380px]:w-6 sm:w-7 h-1 rounded-full bg-[#00F0FF] shadow-[0_0_8px_#00F0FF] mb-1 sm:mb-1.5" />
           
-          {/* Specular Top Glass Reflection */}
-          <div 
-            className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-90" 
-            aria-hidden="true" 
-          />
+          {/* Number */}
+          <span className="font-mono font-black text-2xl min-[380px]:text-3xl sm:text-4xl text-[#008AA8] fluid-neon-cyan leading-none tracking-tight">
+            {pad(timeLeft.days)}
+          </span>
 
-          {/* =========================================================================
-              THE 4 FLUID GLASS PODS (DAYS · HOURS · MINS · SECS)
-              ========================================================================= */}
-          <div className="grid grid-cols-4 gap-1.5 min-[380px]:gap-2 sm:gap-2.5 relative z-10">
-            
-            {/* POD 1: DAYS (Fluid Glass + Neon Cyan Accent) */}
-            <div className="smooth-glass-pod pod-cyan rounded-xl sm:rounded-2xl p-2 min-[380px]:p-2.5 sm:p-3.5 flex flex-col items-center justify-center relative overflow-hidden group/pod">
-              {/* Neon Top Pip */}
-              <div className="w-5 min-[380px]:w-6 sm:w-8 h-1 rounded-full bg-[#00F0FF] shadow-[0_0_8px_#00F0FF,0_0_14px_rgba(0,240,255,0.7)] mb-1 sm:mb-1.5" />
-              
-              {/* Neon Number */}
-              <span className="font-mono font-black text-2xl min-[380px]:text-3xl sm:text-4xl text-[#008AA8] fluid-neon-cyan leading-none tracking-tight">
-                {pad(timeLeft.days)}
-              </span>
-
-              {/* Subtitle */}
-              <span className="text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-mono font-black tracking-[0.2em] text-slate-500 uppercase mt-1 sm:mt-1.5">
-                DAYS
-              </span>
-            </div>
-
-            {/* POD 2: HOURS (Fluid Glass + Neon Electric Blue Accent) */}
-            <div className="smooth-glass-pod pod-blue rounded-xl sm:rounded-2xl p-2 min-[380px]:p-2.5 sm:p-3.5 flex flex-col items-center justify-center relative overflow-hidden group/pod">
-              {/* Neon Top Pip */}
-              <div className="w-5 min-[380px]:w-6 sm:w-8 h-1 rounded-full bg-[#3B82F6] shadow-[0_0_8px_#3B82F6,0_0_14px_rgba(59,130,246,0.7)] mb-1 sm:mb-1.5" />
-              
-              {/* Neon Number */}
-              <span className="font-mono font-black text-2xl min-[380px]:text-3xl sm:text-4xl text-[#1D4ED8] fluid-neon-blue leading-none tracking-tight">
-                {pad(timeLeft.hours)}
-              </span>
-
-              {/* Subtitle */}
-              <span className="text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-mono font-black tracking-[0.2em] text-slate-500 uppercase mt-1 sm:mt-1.5">
-                HOURS
-              </span>
-            </div>
-
-            {/* POD 3: MINUTES (Fluid Glass + Neon Warm Amber Accent) */}
-            <div className="smooth-glass-pod pod-amber rounded-xl sm:rounded-2xl p-2 min-[380px]:p-2.5 sm:p-3.5 flex flex-col items-center justify-center relative overflow-hidden group/pod">
-              {/* Neon Top Pip */}
-              <div className="w-5 min-[380px]:w-6 sm:w-8 h-1 rounded-full bg-[#FBBF24] shadow-[0_0_8px_#FBBF24,0_0_14px_rgba(251,191,36,0.7)] mb-1 sm:mb-1.5" />
-              
-              {/* Neon Number */}
-              <span className="font-mono font-black text-2xl min-[380px]:text-3xl sm:text-4xl text-[#B45309] fluid-neon-amber leading-none tracking-tight">
-                {pad(timeLeft.minutes)}
-              </span>
-
-              {/* Subtitle */}
-              <span className="text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-mono font-black tracking-[0.2em] text-slate-500 uppercase mt-1 sm:mt-1.5">
-                MINS
-              </span>
-            </div>
-
-            {/* POD 4: SECONDS (Fluid Glass + Neon Vivid Ruby Accent) */}
-            <div className="smooth-glass-pod pod-rose rounded-xl sm:rounded-2xl p-2 min-[380px]:p-2.5 sm:p-3.5 flex flex-col items-center justify-center relative overflow-hidden group/pod">
-              {/* Neon Top Pip */}
-              <div className="w-5 min-[380px]:w-6 sm:w-8 h-1 rounded-full bg-[#FF2E74] shadow-[0_0_8px_#FF2E74,0_0_16px_rgba(255,46,116,0.8)] mb-1 sm:mb-1.5" />
-              
-              {/* Neon Number */}
-              <span className="font-mono font-black text-2xl min-[380px]:text-3xl sm:text-4xl text-[#E11D48] fluid-neon-rose leading-none tracking-tight">
-                {pad(timeLeft.seconds)}
-              </span>
-
-              {/* Subtitle */}
-              <span className="text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-mono font-black tracking-[0.2em] text-[#E11D48] uppercase mt-1 sm:mt-1.5">
-                SECS
-              </span>
-            </div>
-          </div>
+          {/* Subtitle */}
+          <span className="text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-mono font-black tracking-[0.2em] text-slate-500 uppercase mt-1 sm:mt-1.5">
+            DAYS
+          </span>
         </div>
+
+        {/* POD 2: HOURS (Fluid Glass + Animated Neon Border) */}
+        <div className="fluid-neon-border-box neon-delay-2 p-2 sm:p-3 flex flex-col items-center justify-center relative overflow-hidden group/pod">
+          {/* Top Neon Pip */}
+          <div className="w-5 min-[380px]:w-6 sm:w-7 h-1 rounded-full bg-[#3B82F6] shadow-[0_0_8px_#3B82F6] mb-1 sm:mb-1.5" />
+          
+          {/* Number */}
+          <span className="font-mono font-black text-2xl min-[380px]:text-3xl sm:text-4xl text-[#1D4ED8] fluid-neon-blue leading-none tracking-tight">
+            {pad(timeLeft.hours)}
+          </span>
+
+          {/* Subtitle */}
+          <span className="text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-mono font-black tracking-[0.2em] text-slate-500 uppercase mt-1 sm:mt-1.5">
+            HOURS
+          </span>
+        </div>
+
+        {/* POD 3: MINUTES (Fluid Glass + Animated Neon Border) */}
+        <div className="fluid-neon-border-box neon-delay-3 p-2 sm:p-3 flex flex-col items-center justify-center relative overflow-hidden group/pod">
+          {/* Top Neon Pip */}
+          <div className="w-5 min-[380px]:w-6 sm:w-7 h-1 rounded-full bg-[#A855F7] shadow-[0_0_8px_#A855F7] mb-1 sm:mb-1.5" />
+          
+          {/* Number */}
+          <span className="font-mono font-black text-2xl min-[380px]:text-3xl sm:text-4xl text-[#9333EA] fluid-neon-amber leading-none tracking-tight">
+            {pad(timeLeft.minutes)}
+          </span>
+
+          {/* Subtitle */}
+          <span className="text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-mono font-black tracking-[0.2em] text-slate-500 uppercase mt-1 sm:mt-1.5">
+            MINS
+          </span>
+        </div>
+
+        {/* POD 4: SECONDS (Fluid Glass + Animated Neon Border) */}
+        <div className="fluid-neon-border-box neon-delay-4 p-2 sm:p-3 flex flex-col items-center justify-center relative overflow-hidden group/pod">
+          {/* Top Neon Pip */}
+          <div className="w-5 min-[380px]:w-6 sm:w-7 h-1 rounded-full bg-[#FF2E74] shadow-[0_0_8px_#FF2E74] mb-1 sm:mb-1.5" />
+          
+          {/* Number */}
+          <span className="font-mono font-black text-2xl min-[380px]:text-3xl sm:text-4xl text-[#E11D48] fluid-neon-rose leading-none tracking-tight">
+            {pad(timeLeft.seconds)}
+          </span>
+
+          {/* Subtitle */}
+          <span className="text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-mono font-black tracking-[0.2em] text-[#E11D48] uppercase mt-1 sm:mt-1.5">
+            SECS
+          </span>
+        </div>
+
       </div>
     </div>
   );

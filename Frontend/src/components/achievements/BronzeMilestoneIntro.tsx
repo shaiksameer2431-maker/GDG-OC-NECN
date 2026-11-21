@@ -21,7 +21,7 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
     onPreloadRef.current = onPreload;
   });
 
-  // Dedicated Gold Celebration Paper Effects & Choreographed Sequence
+  // Dedicated Gold Celebration Paper Effects & Choreographed 10-Second Sequence
   useEffect(() => {
     if (!confettiCanvasRef.current) return;
 
@@ -45,16 +45,16 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
     ];
 
     // =========================================================================
-    // CHOREOGRAPHED TIMELINE:
-    // 0.0s - 1.5s: Bronze enters
-    // 1.5s - 3.2s: Bronze remains visible and floating
-    // 3.2s - 5.0s: Bronze transforms to Silver
-    // 3.35s - 4.5s: GOLD celebration paper effects activate during transformation
-    // 5.0s - 7.6s: Silver prominently highlighted
-    // 7.6s - 8.8s: Preload and smooth exit dissolve into Overview dashboard
+    // EXACT 10-SECOND PLAN TIMELINE:
+    // 0.0s - 1.0s: Bronze quick entrance (scale 0.60 -> 1.0)
+    // 1.0s - 2.0s: Bronze brief showcase (reduced bronze timeline)
+    // 2.0s - 3.8s: Bronze transforms to Silver (360° spin & specular flare)
+    // 2.2s - 3.4s: GOLD celebration paper effects activate during transformation
+    // 3.8s - 8.8s: SILVER BADGE PROMINENTLY SHOWCASED FOR 5.0 FULL SECONDS!
+    // 8.8s - 10.0s: Preload and smooth exit dissolve into Overview dashboard
     // =========================================================================
 
-    // Cannon 1 (Left): Fires upward towards center during transformation (3.35s)
+    // Cannon 1 (Left): Fires upward towards center during transformation (2.20s)
     const goldBlastTimer1 = setTimeout(() => {
       partyConfetti({
         particleCount: 45,
@@ -69,9 +69,9 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
         ticks: 240,
         disableForReducedMotion: true,
       });
-    }, 3350);
+    }, 2200);
 
-    // Cannon 2 (Right): Fires upward towards center during transformation (3.45s)
+    // Cannon 2 (Right): Fires upward towards center during transformation (2.30s)
     const goldBlastTimer2 = setTimeout(() => {
       partyConfetti({
         particleCount: 45,
@@ -86,9 +86,9 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
         ticks: 240,
         disableForReducedMotion: true,
       });
-    }, 3450);
+    }, 2300);
 
-    // Apex Starburst (Center): Celebrates the reveal of the Silver achievement (3.80s)
+    // Apex Starburst (Center): Celebrates the reveal of the Silver achievement (2.70s)
     const goldBlastTimer3 = setTimeout(() => {
       partyConfetti({
         particleCount: 50,
@@ -102,9 +102,9 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
         ticks: 260,
         disableForReducedMotion: true,
       });
-    }, 3800);
+    }, 2700);
 
-    // Gentle Flutter / Streamer Drift: Natural slow-falling paper drift (4.30s)
+    // Gentle Flutter / Streamer Drift: Natural slow-falling paper drift (3.20s)
     const goldBlastTimer4 = setTimeout(() => {
       partyConfetti({
         particleCount: 30,
@@ -116,26 +116,26 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
         startVelocity: 14,
         gravity: 0.65,
         drift: 0.05,
-        ticks: 280,
+        ticks: 300,
         disableForReducedMotion: true,
       });
-    }, 4300);
+    }, 3200);
 
-    // Preload Overview page DOM at 7.6 seconds
+    // Preload Overview page DOM at 8.8 seconds
     const preloadTimer = setTimeout(() => {
       onPreloadRef.current?.();
-    }, 7600);
+    }, 8800);
 
-    // Smooth exit dissolve transition starts at 8.0 seconds
+    // Smooth exit dissolve transition starts at 9.2 seconds
     const exitTimer = setTimeout(() => {
       setIsExiting(true);
-    }, 8000);
+    }, 9200);
 
-    // 8.8 seconds total intro duration: cleanly transition & reveal website
+    // 10.0 seconds total intro duration: cleanly transition & reveal website
     const completeTimer = setTimeout(() => {
       partyConfetti.reset();
       onCompleteRef.current?.();
-    }, 8800);
+    }, 10000);
 
     return () => {
       clearTimeout(goldBlastTimer1);
@@ -149,15 +149,6 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
     };
   }, []);
 
-  // Instant skip action
-  const handleSkip = () => {
-    partyConfettiRef.current?.reset();
-    setIsExiting(true);
-    setTimeout(() => {
-      onCompleteRef.current?.();
-    }, 300);
-  };
-
   return (
     <div
       className={`bmi-overlay ${isExiting ? 'bmi-exiting' : ''}`}
@@ -165,16 +156,6 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({ onCo
       aria-modal="true"
       aria-label="Official Chapter Milestone Achievement Introduction"
     >
-      {/* Skip Button for quick navigation */}
-      <button
-        onClick={handleSkip}
-        className="bmi-skip-btn"
-        aria-label="Skip intro to Overview dashboard"
-      >
-        <span>Skip to Dashboard</span>
-        <span>→</span>
-      </button>
-
       {/* Dedicated High-Z-Index Confetti Canvas: Gold celebration paper renders cleanly in front */}
       <canvas ref={confettiCanvasRef} className="bmi-confetti-canvas" aria-hidden="true" />
 
