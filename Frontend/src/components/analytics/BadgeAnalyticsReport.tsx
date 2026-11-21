@@ -161,7 +161,7 @@ export const BadgeAnalyticsReport: React.FC<BadgeAnalyticsReportProps> = ({
 
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-50 text-amber-900 border border-amber-200/80 shadow-2xs">
               <Calendar className="w-3 h-3 text-amber-600" />
-              <span>Updated on: 20 Nov 2026</span>
+              <span>Updated on: 21 Nov 2026</span>
             </span>
           </div>
 
