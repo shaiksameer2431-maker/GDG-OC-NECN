@@ -67,7 +67,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({
     return students.filter(student => {
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
-        const matchesName = matchesSearchQuery(searchQuery, student.fullName, student.id);
+        const matchesName = matchesSearchQuery(searchQuery, student.fullName, student.id, student.milestone, student.redemptionStatus);
         const matchesBadge = Array.isArray(student.skillBadges) && student.skillBadges.some(b => b.toLowerCase().includes(q));
         if (!matchesName && !matchesBadge) {
           return false;

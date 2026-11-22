@@ -6,11 +6,11 @@ import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
 
 const STORAGE_KEYS = {
-  STUDENTS: 'necn_cloud_champions_students_v21',
-  ADMIN_VAULT: 'necn_cloud_champions_vault_v21',
-  IMPORT_LOGS: 'necn_cloud_champions_import_logs_v21',
-  ADMIN_TOKEN: 'necn_cloud_champions_admin_token_v21',
-  COURSE_PROGRESS: 'necn_cloud_champions_course_progress_v21',
+  STUDENTS: 'necn_cloud_champions_students_v22',
+  ADMIN_VAULT: 'necn_cloud_champions_vault_v22',
+  IMPORT_LOGS: 'necn_cloud_champions_import_logs_v22',
+  ADMIN_TOKEN: 'necn_cloud_champions_admin_token_v22',
+  COURSE_PROGRESS: 'necn_cloud_champions_course_progress_v22',
 };
 
 // Initial import history log
@@ -40,7 +40,7 @@ class StorageService {
   private init() {
     try {
       // Clear legacy storage versions to prevent stale caches
-      ['necn_cloud_champions_students_v1', 'necn_cloud_champions_students_v2', 'necn_cloud_champions_students_v3', 'necn_cloud_champions_students_v4', 'necn_cloud_champions_students_v5', 'necn_cloud_champions_students_v6', 'necn_cloud_champions_students_v7', 'necn_cloud_champions_students_v8', 'necn_cloud_champions_students_v9', 'necn_cloud_champions_students_v10', 'necn_cloud_champions_students_v11', 'necn_cloud_champions_students_v12', 'necn_cloud_champions_students_v13', 'necn_cloud_champions_students_v14', 'necn_cloud_champions_students_v15', 'necn_cloud_champions_students_v16', 'necn_cloud_champions_students_v17', 'necn_cloud_champions_students_v18', 'necn_cloud_champions_students_v19', 'necn_cloud_champions_students_v20', 'necn_students'].forEach(k => {
+      ['necn_cloud_champions_students_v1', 'necn_cloud_champions_students_v2', 'necn_cloud_champions_students_v3', 'necn_cloud_champions_students_v4', 'necn_cloud_champions_students_v5', 'necn_cloud_champions_students_v6', 'necn_cloud_champions_students_v7', 'necn_cloud_champions_students_v8', 'necn_cloud_champions_students_v9', 'necn_cloud_champions_students_v10', 'necn_cloud_champions_students_v11', 'necn_cloud_champions_students_v12', 'necn_cloud_champions_students_v13', 'necn_cloud_champions_students_v14', 'necn_cloud_champions_students_v15', 'necn_cloud_champions_students_v16', 'necn_cloud_champions_students_v17', 'necn_cloud_champions_students_v18', 'necn_cloud_champions_students_v19', 'necn_cloud_champions_students_v20', 'necn_cloud_champions_students_v21', 'necn_students'].forEach(k => {
         try { localStorage.removeItem(k); } catch { }
       });
 
@@ -135,25 +135,22 @@ class StorageService {
     };
 
     this.students.sort((a, b) => {
-      // 1. OFFICIAL COHORT REDEMPTION PRIORITY #1:
-      // In Google Cloud Learn with Communities, a student MUST redeem their official cohort
-      // access code to be eligible for the official cohort podium, swags, and ranking.
-      // Redeemed students ALWAYS rank ahead of unredeemed students!
+      // 1. Points (descending) - Higher Total Verified Points
+      if (b.points !== a.points) return b.points - a.points;
+
+      // 2. Badges (descending) - Total Verified Skill Badges Completed
+      if (b.skillBadgeCount !== a.skillBadgeCount) return b.skillBadgeCount - a.skillBadgeCount;
+
+      // 3. Milestone level (descending) - Highest Milestone Tier Achieved (M3 > M2 > M1)
+      const mDiff = getMilestoneRank(b.milestone) - getMilestoneRank(a.milestone);
+      if (mDiff !== 0) return mDiff;
+
+      // 4. Redemption Status Tie-Breaker: Active access code redemption prioritized among ties
       const aRedeemed = a.redemptionStatus === 'Redeemed';
       const bRedeemed = b.redemptionStatus === 'Redeemed';
       if (aRedeemed !== bRedeemed) {
         return aRedeemed ? -1 : 1;
       }
-
-      // 2. Points (descending)
-      if (b.points !== a.points) return b.points - a.points;
-
-      // 3. Badges (descending)
-      if (b.skillBadgeCount !== a.skillBadgeCount) return b.skillBadgeCount - a.skillBadgeCount;
-
-      // 4. Milestone level (descending)
-      const mDiff = getMilestoneRank(b.milestone) - getMilestoneRank(a.milestone);
-      if (mDiff !== 0) return mDiff;
 
       // 5. Google Skills Profile Status All Good
       if ((b.googleSkillsProfileStatus === 'All Good') !== (a.googleSkillsProfileStatus === 'All Good')) {
@@ -161,6 +158,10 @@ class StorageService {
       }
 
       return a.fullName.localeCompare(b.fullName);
+    });
+
+    this.students.forEach((s, idx) => {
+      s.rank = idx + 1;
     });
 
     this.students.forEach((s, idx) => {

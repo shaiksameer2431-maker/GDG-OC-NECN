@@ -221,16 +221,27 @@ const getMilestoneRank = (m) => {
 };
 
 studentsList.sort((a, b) => {
+  // 1. Points (descending) - Higher Total Verified Points
+  if (b.points !== a.points) return b.points - a.points;
+
+  // 2. Skill Badges (descending) - Total Verified Skill Badges Completed
+  if (b.skill_badge_count !== a.skill_badge_count) return b.skill_badge_count - a.skill_badge_count;
+
+  // 3. Milestone level (descending) - Highest Milestone Tier Achieved (M3 > M2 > M1)
+  const mDiff = getMilestoneRank(b.milestone) - getMilestoneRank(a.milestone);
+  if (mDiff !== 0) return mDiff;
+
+  // 4. Redemption Status Tie-Breaker: Active access code redemption prioritized among ties
   const aRedeemed = a.redemption_status === 'Redeemed';
   const bRedeemed = b.redemption_status === 'Redeemed';
   if (aRedeemed !== bRedeemed) return aRedeemed ? -1 : 1;
-  if (b.points !== a.points) return b.points - a.points;
-  if (b.skill_badge_count !== a.skill_badge_count) return b.skill_badge_count - a.skill_badge_count;
-  const mDiff = getMilestoneRank(b.milestone) - getMilestoneRank(a.milestone);
-  if (mDiff !== 0) return mDiff;
+
+  // 5. Google Skills Profile Status All Good
   if ((b.google_skills_profile_status === 'All Good') !== (a.google_skills_profile_status === 'All Good')) {
     return b.google_skills_profile_status === 'All Good' ? 1 : -1;
   }
+
+  // 6. Alphabetical sorting
   return a.full_name.localeCompare(b.full_name);
 });
 
