@@ -6,23 +6,23 @@ import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
 
 const STORAGE_KEYS = {
-  STUDENTS: 'necn_cloud_champions_students_v22',
-  ADMIN_VAULT: 'necn_cloud_champions_vault_v22',
-  IMPORT_LOGS: 'necn_cloud_champions_import_logs_v22',
-  ADMIN_TOKEN: 'necn_cloud_champions_admin_token_v22',
-  COURSE_PROGRESS: 'necn_cloud_champions_course_progress_v22',
+  STUDENTS: 'necn_cloud_champions_students_v23',
+  ADMIN_VAULT: 'necn_cloud_champions_vault_v23',
+  IMPORT_LOGS: 'necn_cloud_champions_import_logs_v23',
+  ADMIN_TOKEN: 'necn_cloud_champions_admin_token_v23',
+  COURSE_PROGRESS: 'necn_cloud_champions_course_progress_v23',
 };
 
 // Initial import history log
 const INITIAL_IMPORT_LOG: ImportLog = {
-  id: 'imp-017',
-  filename: 'GDGC-NECNL [22 Nov].csv',
+  id: 'imp-018',
+  filename: 'GDGC-NECNL [23 Nov].csv',
   fileType: 'CSV',
   insertedCount: 438,
   updatedCount: 0,
   unchangedCount: 0,
   rejectedCount: 0,
-  importedAt: '2026-11-22T15:20:00.000Z',
+  importedAt: '2026-11-23T11:22:00.000Z',
   importedBy: 'system',
   errorSummary: []
 };
@@ -40,7 +40,7 @@ class StorageService {
   private init() {
     try {
       // Clear legacy storage versions to prevent stale caches
-      ['necn_cloud_champions_students_v1', 'necn_cloud_champions_students_v2', 'necn_cloud_champions_students_v3', 'necn_cloud_champions_students_v4', 'necn_cloud_champions_students_v5', 'necn_cloud_champions_students_v6', 'necn_cloud_champions_students_v7', 'necn_cloud_champions_students_v8', 'necn_cloud_champions_students_v9', 'necn_cloud_champions_students_v10', 'necn_cloud_champions_students_v11', 'necn_cloud_champions_students_v12', 'necn_cloud_champions_students_v13', 'necn_cloud_champions_students_v14', 'necn_cloud_champions_students_v15', 'necn_cloud_champions_students_v16', 'necn_cloud_champions_students_v17', 'necn_cloud_champions_students_v18', 'necn_cloud_champions_students_v19', 'necn_cloud_champions_students_v20', 'necn_cloud_champions_students_v21', 'necn_students'].forEach(k => {
+      ['necn_cloud_champions_students_v1', 'necn_cloud_champions_students_v2', 'necn_cloud_champions_students_v3', 'necn_cloud_champions_students_v4', 'necn_cloud_champions_students_v5', 'necn_cloud_champions_students_v6', 'necn_cloud_champions_students_v7', 'necn_cloud_champions_students_v8', 'necn_cloud_champions_students_v9', 'necn_cloud_champions_students_v10', 'necn_cloud_champions_students_v11', 'necn_cloud_champions_students_v12', 'necn_cloud_champions_students_v13', 'necn_cloud_champions_students_v14', 'necn_cloud_champions_students_v15', 'necn_cloud_champions_students_v16', 'necn_cloud_champions_students_v17', 'necn_cloud_champions_students_v18', 'necn_cloud_champions_students_v19', 'necn_cloud_champions_students_v20', 'necn_cloud_champions_students_v21', 'necn_cloud_champions_students_v22', 'necn_students'].forEach(k => {
         try { localStorage.removeItem(k); } catch { }
       });
 
