@@ -669,4 +669,74 @@
   50% { opacity: 0.45; transform: scale(0.85); filter: drop-shadow(0 0 2px #FF2E74); }
 }
 
+/* =========================================================================
+   CAMPAIGN CLOSURE CELEBRATION VISUAL ANIMATIONS
+   Subtle, accessible, hardware-accelerated animations for the closure visual
+   ========================================================================= */
+@keyframes celebrationFloatSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(3deg);
+  }
+}
+
+@keyframes celebrationFloatFast {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(-4deg);
+  }
+}
+
+@keyframes celebrationSparkle {
+  0%, 100% {
+    opacity: 0.55;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes celebrationGlowPulse {
+  0%, 100% {
+    opacity: 0.65;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.06);
+  }
+}
+
+.anim-celebration-float-slow {
+  animation: celebrationFloatSlow 4.5s ease-in-out infinite;
+}
+
+.anim-celebration-float-fast {
+  animation: celebrationFloatFast 3.4s ease-in-out infinite;
+}
+
+.anim-celebration-sparkle {
+  animation: celebrationSparkle 2.6s ease-in-out infinite;
+}
+
+.anim-celebration-glow {
+  animation: celebrationGlowPulse 5.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-celebration-float-slow,
+  .anim-celebration-float-fast,
+  .anim-celebration-sparkle,
+  .anim-celebration-glow {
+    animation: none !important;
+  }
+}
+
+
 

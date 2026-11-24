@@ -301,7 +301,7 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
               Same Labs. Bigger Opportunities!
             </div>
 
-            {/* Official Campaign Deadline Countdown (23 Nov 4:59 PM IST) */}
+            {/* Official Campaign Closure Announcement & Community Celebratory Showcase */}
             <div className="pt-2 sm:pt-3 w-full max-w-lg">
               <DeadlineCountdown
                 variant="card"
