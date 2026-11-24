@@ -135,6 +135,19 @@ rows.forEach((r, idx) => {
   const badgeCount = parseInt(badgeCountRaw, 10) || 0;
   const parsedBadges = extractBadges(badgeNamesRaw);
 
+  // Normalize milestone tier to maintain platform fidelity:
+  // 10 Badges = Milestone 3 (Ultimate 10-Badge Master Achievers, +300 pts)
+  // 5 to 9 Badges = Milestone 2 (5+ Badges Completed, +200 pts)
+  // 3 to 4 Badges = Milestone 1 (3+ Badges Completed, +100 pts)
+  let resolvedMilestone = 'No Milestone';
+  if (milestoneRaw === 'Milestone 3' || badgeCount >= 10) {
+    resolvedMilestone = 'Milestone 3';
+  } else if (milestoneRaw === 'Milestone 2' || badgeCount >= 5) {
+    resolvedMilestone = 'Milestone 2';
+  } else if (milestoneRaw === 'Milestone 1' || badgeCount >= 3) {
+    resolvedMilestone = 'Milestone 1';
+  }
+
   if (matchedStudentId && studentMap.has(matchedStudentId)) {
     const s = studentMap.get(matchedStudentId);
     let changed = false;
@@ -144,7 +157,7 @@ rows.forEach((r, idx) => {
     if (skillsStatus && s.google_skills_profile_status !== skillsStatus) { s.google_skills_profile_status = skillsStatus; changed = true; }
     if (devUrl && s.google_developer_profile_url !== devUrl) { s.google_developer_profile_url = devUrl; changed = true; }
     if (redemptionStatus !== s.redemption_status) { s.redemption_status = redemptionStatus; changed = true; }
-    if (milestoneRaw && s.milestone !== milestoneRaw) { s.milestone = milestoneRaw; changed = true; }
+    if (resolvedMilestone && s.milestone !== resolvedMilestone) { s.milestone = resolvedMilestone; changed = true; }
     if (badgeCount !== s.skill_badge_count) { s.skill_badge_count = badgeCount; changed = true; }
     if (JSON.stringify(s.skill_badges) !== JSON.stringify(parsedBadges)) { s.skill_badges = parsedBadges; changed = true; }
     if (gearBadges && s.gear_badges !== gearBadges) { s.gear_badges = gearBadges; changed = true; }
@@ -172,7 +185,7 @@ rows.forEach((r, idx) => {
       google_developer_profile_url: devUrl,
       google_developer_profile_status: devStatus,
       redemption_status: redemptionStatus,
-      milestone: milestoneRaw || 'No Milestone',
+      milestone: resolvedMilestone || 'No Milestone',
       gear_badges: gearBadges,
       skill_badge_count: badgeCount,
       skill_badges: parsedBadges,

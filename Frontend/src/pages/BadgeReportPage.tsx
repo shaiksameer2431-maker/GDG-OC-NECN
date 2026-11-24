@@ -55,7 +55,7 @@ export const BadgeReportPage: React.FC<BadgeReportPageProps> = ({
             </div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-2xs">
               <Calendar className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Updated on: 23 Nov 2026</span>
+              <span>Updated on: 24 Nov 2026</span>
             </div>
           </div>
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
