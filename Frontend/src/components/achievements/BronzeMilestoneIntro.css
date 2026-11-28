@@ -1,23 +1,20 @@
 /* =========================================================================
    GDG ON CAMPUS NECN — FULL-SCREEN LUXURY NEON GOLD CELEBRATION
    - Pure Full-Screen Immersive Neon Experience (NO scene tags, NO caption counters, NO headers)
-   - Exactly matches the reference image (media_1795861002889_69e74b9a.jpg)
+   - Official Coherent Newsroom Photonics Laser Background with Living Motion Animation
+   - Streaming photon particles, traveling laser pulses, and optical data glyphs
    - 100% Hollow, glowing rounded glass neon tube typography
    - Deep cinematic luxury vignette ambient wall
-   - Smooth optical gas ionization & luminous neon breathing
    ========================================================================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Nunito:wght@800;900&family=Plus+Jakarta+Sans:wght@800;900&display=swap');
 
-/* Main Full-Screen Luxury Stage with Official Coherent Photonics Hero Graphics */
+/* Main Full-Screen Luxury Stage */
 .bmi-overlay {
   position: fixed;
   inset: 0;
   z-index: 99999;
   background-color: #05020B;
-  background: 
-    radial-gradient(ellipse at 50% 50%, rgba(5, 2, 11, 0.22) 0%, rgba(3, 1, 8, 0.48) 100%),
-    url('../../assets/coherent-photonics-bg.jpg') center center / cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,13 +31,68 @@
   pointer-events: none;
 }
 
+/* Official Coherent Photonics HD Background Video Loop */
+.bmi-bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  z-index: 0;
+  filter: brightness(0.94) contrast(1.08);
+}
+
+/* Fallback Animated Coherent Photonics Background Layer */
+.bmi-bg-animated-layer {
+  position: absolute;
+  inset: -6%;
+  width: 112%;
+  height: 112%;
+  background: 
+    radial-gradient(ellipse at 50% 50%, rgba(5, 2, 11, 0.16) 0%, rgba(3, 1, 8, 0.44) 100%),
+    url('../../assets/coherent-photonics-bg.jpg') center center / cover no-repeat;
+  animation: coherentVideoDrift 18s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes coherentVideoDrift {
+  0% {
+    transform: scale(1.01) translate(0%, 0%);
+    filter: brightness(1) contrast(1.04) hue-rotate(0deg);
+  }
+  33% {
+    transform: scale(1.05) translate(-1.2%, -0.8%);
+    filter: brightness(1.12) contrast(1.08) hue-rotate(6deg);
+  }
+  66% {
+    transform: scale(1.06) translate(0.6%, -1.4%);
+    filter: brightness(1.16) contrast(1.1) hue-rotate(-4deg);
+  }
+  100% {
+    transform: scale(1.02) translate(-0.5%, -0.5%);
+    filter: brightness(1.04) contrast(1.06) hue-rotate(0deg);
+  }
+}
+
 /* Subtle Optical Laser Vignette to maximize neon tube glow and legibility */
 .bmi-ambient-wall {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 50%, transparent 45%, rgba(3, 1, 8, 0.5) 100%);
+  background: radial-gradient(circle at 50% 50%, transparent 45%, rgba(3, 1, 8, 0.52) 100%);
   pointer-events: none;
   z-index: 1;
+}
+
+/* Dedicated Photonics Laser Wave & Particle Canvas */
+.bmi-photon-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none;
+  z-index: 2;
 }
 
 /* Confetti Layer for Gold Celebrations */
@@ -86,14 +138,13 @@
 
 /* -------------------------------------------------------------------------
    AUTHENTIC HOLLOW GLASS NEON TUBE TYPOGRAPHY
-   (EXACTLY MATCHING "NEON" IN media_1795861002889_69e74b9a.jpg)
-   - 100% Transparent hollow interior showing the dark ambient background
+   - 100% Transparent hollow interior showing the photonics background
    - Stroke contoured onto rounded letterforms
    - Multi-stage optical glow (white filament core + colored gas bloom)
    - Deep cast shadow directly onto the back wall (NO rectangular blur smudges)
    ------------------------------------------------------------------------- */
 
-/* 1. Hot Pink / Magenta Neon Tube (Reference Image "NEON") */
+/* 1. Hot Pink / Magenta Neon Tube */
 .bmi-tube-pink {
   -webkit-text-stroke: 3px #FF66AA;
   text-shadow:

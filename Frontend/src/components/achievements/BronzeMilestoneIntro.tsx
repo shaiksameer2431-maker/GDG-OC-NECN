@@ -59,6 +59,15 @@ const LUXURY_CAPTIONS: LuxuryCaption[] = [
   { text: 'GDG ON-CAMPUS\nNECN', theme: 'gold', duration: 5000, isCelebration: true },
 ];
 
+interface LaserPhoton {
+  t: number;
+  speed: number;
+  size: number;
+  color: string;
+  glyph?: string;
+  offset: number;
+}
+
 /**
  * Concentric Multi-Tube Neon Cloud Logo Component
  * Modeled on the concentric neon heart reference
@@ -157,8 +166,11 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
   const [isExiting, setIsExiting] = useState<boolean>(false);
 
   const confettiCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const photonCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const partyConfettiRef = useRef<confetti.CreateTypes | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const animFrameRef = useRef<number | null>(null);
 
   const onCompleteRef = useRef(onComplete);
   const onPreloadRef = useRef(onPreload);
@@ -189,6 +201,163 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
 
     return () => {
       partyConfetti.reset();
+    };
+  }, []);
+
+  // Ensure HD video autoplay plays reliably across all browsers
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {
+        // Autoplay policy fallback handled cleanly
+      });
+    }
+  }, []);
+
+  // -------------------------------------------------------------------------
+  // COHERENT PHOTONICS LASER ANIMATION ENGINE
+  // Renders real streaming photons, fiber-optic laser pulses, and data particles
+  // traveling along the curved trajectory of the Coherent hero graphic
+  // -------------------------------------------------------------------------
+  useEffect(() => {
+    const canvas = photonCanvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    const handleResize = () => {
+      if (!canvas) return;
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', handleResize);
+
+    // Quadratic Bezier Curve evaluation for the Coherent photonics arc
+    const getCurvePoint = (t: number, offset: number) => {
+      const p0 = { x: width * 0.04, y: height * 0.08 };
+      const p1 = { x: width * 0.36, y: height * 0.94 };
+      const p2 = { x: width * 0.98, y: height * 0.58 };
+
+      const u = 1 - t;
+      const tt = t * t;
+      const uu = u * u;
+
+      // Base point on quadratic bezier
+      const bx = uu * p0.x + 2 * u * t * p1.x + tt * p2.x;
+      const by = uu * p0.y + 2 * u * t * p1.y + tt * p2.y;
+
+      // Normal vector to create multiple concentric fiber cables
+      const dx = 2 * u * (p1.x - p0.x) + 2 * t * (p2.x - p1.x);
+      const dy = 2 * u * (p1.y - p0.y) + 2 * t * (p2.y - p1.y);
+      const len = Math.hypot(dx, dy) || 1;
+      const nx = -dy / len;
+      const ny = dx / len;
+
+      return {
+        x: bx + nx * offset,
+        y: by + ny * offset,
+      };
+    };
+
+    // Initialize 48 streaming laser photons
+    const laserColors = ['#00F0FF', '#FF007F', '#A855F7', '#3B82F6', '#FFFFFF'];
+    const photons: LaserPhoton[] = [];
+    for (let i = 0; i < 48; i++) {
+      photons.push({
+        t: Math.random(),
+        speed: 0.0018 + Math.random() * 0.0035,
+        size: 1.5 + Math.random() * 2.8,
+        color: laserColors[Math.floor(Math.random() * laserColors.length)],
+        glyph: i % 7 === 0 ? (Math.random() > 0.5 ? '1' : '0') : undefined,
+        offset: (Math.random() - 0.5) * 55, // Spreads across multiple fiber strands
+      });
+    }
+
+    let isRunning = true;
+    let laserPulseT = 0;
+
+    const render = () => {
+      if (!isRunning) return;
+      ctx.clearRect(0, 0, width, height);
+
+      // 1. Advance & Draw Traveling Soliton Laser Wave Pulse
+      laserPulseT += 0.0045;
+      if (laserPulseT > 1) laserPulseT = 0;
+
+      const pulseHead = getCurvePoint(laserPulseT, 0);
+      const pulseGrad = ctx.createRadialGradient(
+        pulseHead.x,
+        pulseHead.y,
+        0,
+        pulseHead.x,
+        pulseHead.y,
+        width * 0.18
+      );
+      pulseGrad.addColorStop(0, 'rgba(0, 240, 255, 0.45)');
+      pulseGrad.addColorStop(0.35, 'rgba(255, 0, 127, 0.28)');
+      pulseGrad.addColorStop(0.7, 'rgba(168, 85, 247, 0.12)');
+      pulseGrad.addColorStop(1, 'transparent');
+
+      ctx.save();
+      ctx.fillStyle = pulseGrad;
+      ctx.beginPath();
+      ctx.arc(pulseHead.x, pulseHead.y, width * 0.18, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // 2. Advance & Draw Streaming Photons
+      ctx.font = 'bold 11px monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      photons.forEach((p) => {
+        // Advance progress
+        const prevT = p.t;
+        p.t += p.speed;
+        if (p.t > 1) {
+          p.t = 0;
+          p.offset = (Math.random() - 0.5) * 55;
+        }
+
+        const curr = getCurvePoint(p.t, p.offset);
+        const prev = getCurvePoint(Math.max(0, prevT - 0.025), p.offset);
+
+        ctx.save();
+        ctx.strokeStyle = p.color;
+        ctx.fillStyle = p.color;
+        ctx.shadowColor = p.color;
+        ctx.shadowBlur = p.size * 5;
+
+        // Glowing light streak tail
+        ctx.lineWidth = p.size;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(prev.x, prev.y);
+        ctx.lineTo(curr.x, curr.y);
+        ctx.stroke();
+
+        // Spark / Glyph at the head
+        if (p.glyph) {
+          ctx.fillText(p.glyph, curr.x, curr.y);
+        } else {
+          ctx.beginPath();
+          ctx.arc(curr.x, curr.y, p.size * 0.9, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      });
+
+      animFrameRef.current = requestAnimationFrame(render);
+    };
+
+    animFrameRef.current = requestAnimationFrame(render);
+
+    return () => {
+      isRunning = false;
+      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
@@ -319,13 +488,33 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
       aria-label="Google Cloud Gold Milestone Celebration"
       onClick={advanceNext} // Click anywhere to step forward
     >
-      {/* 1. Deep Ambient Dark Luxury Wall */}
+      {/* 1. Official Coherent Photonics HD Video Loop */}
+      <video
+        ref={videoRef}
+        className="bmi-bg-video"
+        autoPlay
+        loop
+        muted
+        playsInline
+        poster="/coherent-photonics-bg.jpg"
+        aria-hidden="true"
+      >
+        <source src="/coherent-bg.mp4" type="video/mp4" />
+      </video>
+
+      {/* 2. Living Animated Coherent Photonics Video Layer (Fallback & ambient drift) */}
+      <div className="bmi-bg-animated-layer" aria-hidden="true" />
+
+      {/* 3. Optical Laser Vignette */}
       <div className="bmi-ambient-wall" aria-hidden="true" />
 
-      {/* 2. Confetti Canvas */}
+      {/* 4. Real 60FPS Streaming Photonics Laser & Data Pulse Canvas */}
+      <canvas ref={photonCanvasRef} className="bmi-photon-canvas" aria-hidden="true" />
+
+      {/* 5. Confetti Canvas */}
       <canvas ref={confettiCanvasRef} className="bmi-confetti-canvas" aria-hidden="true" />
 
-      {/* 3. Pure Full-Screen Center Stage */}
+      {/* 5. Pure Full-Screen Center Stage */}
       <main className="bmi-fullscreen-stage">
         <div
           key={captionIndex}
