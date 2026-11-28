@@ -13,14 +13,14 @@ import { AboutPage } from './pages/AboutPage';
 import { BadgeReportPage } from './pages/BadgeReportPage';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { Luxury3DView } from './components/luxury/Luxury3DView';
-import { BronzeMilestoneIntro } from './components/achievements/BronzeMilestoneIntro';
+import { GoldJourneyIntro } from './components/achievements/GoldJourneyIntro';
 
 export function App() {
   const [currentTab, setCurrentTab] = useState<string>('overview');
   const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null);
 
-  // Full-screen Bronze Milestone Intro (auto-plays on initial page load / refresh, then fades into website)
-  const [showBronzeIntro, setShowBronzeIntro] = useState<boolean>(true);
+  // Cinematic Gold Journey Intro (auto-plays on initial page load / refresh, then fades into the celebration website)
+  const [showGoldIntro, setShowGoldIntro] = useState<boolean>(true);
   const [preloadOverview, setPreloadOverview] = useState<boolean>(false);
 
   const handlePreloadIntro = useCallback(() => {
@@ -28,7 +28,7 @@ export function App() {
   }, []);
 
   const handleCompleteIntro = useCallback(() => {
-    setShowBronzeIntro(false);
+    setShowGoldIntro(false);
     try {
       window.scrollTo(0, 0);
     } catch {
@@ -150,9 +150,9 @@ export function App() {
   return (
     <div className="relative min-h-screen bg-[#F4F8FD] text-slate-900 flex flex-col antialiased font-sans selection:bg-blue-500/20 selection:text-blue-700">
       
-      {/* FULL-SCREEN ANIMATED BRONZE MILESTONE ACHIEVEMENT INTRO (7-second dedicated celebratory intro) */}
-      {showBronzeIntro && (
-        <BronzeMilestoneIntro
+      {/* CINEMATIC GOLD JOURNEY INTRO WITH LIQUID GLASS TYPE AND FIREWORKS */}
+      {showGoldIntro && (
+        <GoldJourneyIntro
           onPreload={handlePreloadIntro}
           onComplete={handleCompleteIntro}
         />
@@ -183,7 +183,7 @@ export function App() {
       {/* MAIN CONTAINER (Fluid scaling across mobile and desktop) */}
       <main className={`relative z-10 flex-grow w-full max-w-6xl xl:max-w-7xl mx-auto px-3 sm:px-4 md:px-6 ${isPosterHome || isLuxury3DTab ? 'p-0 pb-0' : 'pb-24 md:pb-16 pt-6 md:pt-24'}`}>
         <ErrorBoundary>
-          {isPosterHome && (!showBronzeIntro || preloadOverview) && (
+          {isPosterHome && (!showGoldIntro || preloadOverview) && (
             <OverviewPage
               stats={stats}
               topStudents={students}

@@ -1,4 +1,5 @@
 import React from 'react';
+import type { CohortStats } from '../../types';
 import { Trophy, Award, Sparkles, Star, Users, CheckCircle2 } from 'lucide-react';
 
 // =============================================================================
@@ -32,6 +33,7 @@ export interface DeadlineCountdownProps {
   variant?: 'card' | 'compact';
   className?: string;
   onExploreClick?: () => void;
+  stats?: Pick<CohortStats, 'totalRegistered' | 'totalSkillBadges' | 'milestone3Count'>;
 }
 
 /**
@@ -46,6 +48,7 @@ export const DeadlineCountdown: React.FC<DeadlineCountdownProps> = ({
   variant = 'card',
   className = '',
   onExploreClick,
+  stats,
 }) => {
   // ===========================================================================
   // 1. COMPACT VARIANT (For Sub-headers, Navigation Pills, Status Bars)
@@ -185,7 +188,7 @@ export const DeadlineCountdown: React.FC<DeadlineCountdownProps> = ({
           <div className="p-2 sm:p-2.5 rounded-xl bg-white/45 backdrop-blur-md border border-[#4285F4]/30 flex flex-col items-center text-center transition-transform hover:-translate-y-0.5 shadow-2xs">
             <div className="flex items-center gap-1 text-[#1D4ED8] mb-0.5">
               <Award className="w-3.5 h-3.5 text-[#4285F4]" />
-              <span className="text-[12px] sm:text-sm font-black font-mono">2,340</span>
+              <span className="text-[12px] sm:text-sm font-black font-mono">{(stats?.totalSkillBadges ?? 2340).toLocaleString('en-IN')}</span>
             </div>
             <span className="text-[9px] sm:text-[10px] font-bold text-slate-700 uppercase tracking-tight">
               Badges Earned
@@ -196,7 +199,7 @@ export const DeadlineCountdown: React.FC<DeadlineCountdownProps> = ({
           <div className="p-2 sm:p-2.5 rounded-xl bg-white/45 backdrop-blur-md border border-[#FBBC04]/40 flex flex-col items-center text-center transition-transform hover:-translate-y-0.5 shadow-2xs">
             <div className="flex items-center gap-1 text-[#B45309] mb-0.5">
               <Trophy className="w-3.5 h-3.5 text-[#FBBC04]" />
-              <span className="text-[12px] sm:text-sm font-black font-mono">207</span>
+              <span className="text-[12px] sm:text-sm font-black font-mono">{(stats?.milestone3Count ?? 207).toLocaleString('en-IN')}</span>
             </div>
             <span className="text-[9px] sm:text-[10px] font-bold text-slate-700 uppercase tracking-tight">
               M3 Champions
@@ -207,7 +210,7 @@ export const DeadlineCountdown: React.FC<DeadlineCountdownProps> = ({
           <div className="p-2 sm:p-2.5 rounded-xl bg-white/45 backdrop-blur-md border border-[#34A853]/30 flex flex-col items-center text-center transition-transform hover:-translate-y-0.5 shadow-2xs">
             <div className="flex items-center gap-1 text-[#15803D] mb-0.5">
               <Users className="w-3.5 h-3.5 text-[#34A853]" />
-              <span className="text-[12px] sm:text-sm font-black font-mono">438</span>
+              <span className="text-[12px] sm:text-sm font-black font-mono">{(stats?.totalRegistered ?? 438).toLocaleString('en-IN')}</span>
             </div>
             <span className="text-[9px] sm:text-[10px] font-bold text-slate-700 uppercase tracking-tight">
               Champions

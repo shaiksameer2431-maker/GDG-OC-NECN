@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&display=swap');
+
+.gold-journey-overlay {
+  --gj-gold:#F6D889; --gj-ice:#EAF4FF;
+  position:fixed; inset:0; z-index:100000; overflow:hidden; display:grid; place-items:center;
+  color:#f8fbff; isolation:isolate; font-family:'Manrope','DM Sans',sans-serif;
+  background:
+    radial-gradient(ellipse at 50% 48%,rgba(63,94,139,.2),transparent 47%),
+    radial-gradient(ellipse at 82% 8%,rgba(70,135,255,.17),transparent 34%),
+    linear-gradient(135deg,#080F1C 0%,#101D31 48%,#080D18 100%);
+  transition:opacity 1.2s ease,filter 1.2s ease,transform 1.2s ease;
+}
+.gold-journey-exiting{opacity:0;filter:blur(12px);transform:scale(1.035);pointer-events:none}
+.gold-journey-fireworks{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.gold-journey-aurora{position:absolute;inset:-30%;z-index:-1;pointer-events:none;opacity:.72;filter:blur(60px);
+  background:conic-gradient(from 100deg at 50% 50%,transparent 0deg,rgba(46,115,230,.12) 55deg,transparent 105deg,rgba(246,216,137,.11) 175deg,transparent 225deg,rgba(75,190,154,.1) 300deg,transparent 360deg);
+  animation:gjAurora 24s linear infinite}
+.gold-journey-glass-orbit{position:absolute;z-index:0;pointer-events:none;border:1px solid rgba(221,239,255,.11);border-radius:50%;box-shadow:inset 0 0 45px rgba(130,180,255,.025),0 0 35px rgba(130,180,255,.035);transform:rotate(-23deg)}
+.gold-journey-orbit-one{width:min(76vw,920px);height:min(76vw,920px);right:-23%;top:-42%}
+.gold-journey-orbit-two{width:min(54vw,660px);height:min(54vw,660px);right:-10%;top:-21%;border-style:dashed;animation:gjOrbit 60s linear infinite}
+.gold-journey-content{position:relative;z-index:3;width:min(100% - 48px,1080px);min-height:min(690px,88vh);display:flex;flex-direction:column;justify-content:space-between;padding:36px 0 32px;animation:gjEnter .9s cubic-bezier(.18,.78,.22,1) both}
+.gold-journey-brand{display:flex;align-items:center;gap:13px;color:rgba(237,245,255,.72);font-size:10px;font-weight:800;letter-spacing:.18em;text-shadow:0 0 14px rgba(150,195,255,.22)}
+.gold-journey-gdg-mark{font-size:30px;line-height:1;color:#EA7770;font-weight:800;letter-spacing:-.15em;text-shadow:0 0 15px rgba(234,67,53,.45)}
+.gold-journey-gdg-mark b{color:#70D19A}
+.gold-journey-divider{height:16px;width:1px;background:rgba(255,255,255,.26)}
+.gold-journey-copy{position:relative;max-width:980px;padding:54px 48px 48px;border-radius:34px;
+  background:linear-gradient(135deg,rgba(255,255,255,.105),rgba(255,255,255,.025) 55%,rgba(125,168,230,.065));
+  border:1px solid rgba(226,240,255,.23);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.23),inset 0 -1px 0 rgba(255,255,255,.035),0 28px 90px rgba(0,0,0,.22),0 0 36px rgba(92,157,255,.09);
+  backdrop-filter:blur(26px) saturate(155%);-webkit-backdrop-filter:blur(26px) saturate(155%);
+}
+.gold-journey-copy:before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+  background:linear-gradient(118deg,rgba(255,255,255,.52),rgba(138,189,255,.18) 26%,transparent 55%,rgba(246,216,137,.28));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.gold-journey-kicker{display:flex;align-items:center;gap:12px;color:#B8D9FF;font-size:10px;font-weight:800;letter-spacing:.24em;margin-bottom:24px;text-shadow:0 0 18px rgba(100,170,255,.5)}
+.gold-journey-kicker i{width:7px;height:7px;border-radius:50%;background:#9ED0FF;box-shadow:0 0 7px #9ED0FF,0 0 18px #5C9EFF}
+.gold-journey-copy h1{margin:0;color:#F8FBFF;font-family:'Manrope',sans-serif;font-size:clamp(40px,6.7vw,82px);line-height:1.06;letter-spacing:-.065em;font-weight:800;text-wrap:balance;
+  -webkit-text-stroke:.55px rgba(235,246,255,.78);text-shadow:0 1px 0 rgba(255,255,255,.22),0 0 22px rgba(122,179,255,.24),0 0 54px rgba(89,151,255,.12)}
+.gold-journey-copy h1 em{font-style:normal;color:transparent;-webkit-text-stroke:1px #A9D1FF;
+  background:linear-gradient(100deg,#F7FBFF 0%,#9BCBFF 38%,#E5F3FF 58%,#8CB8F4 100%);-webkit-background-clip:text;background-clip:text;
+  filter:drop-shadow(0 0 12px rgba(107,173,255,.42))}
+.gold-journey-copy h1 strong{font-weight:800;color:transparent;-webkit-text-stroke:1px #FFE9A9;
+  background:linear-gradient(100deg,#FFF9E8 0%,#F4D27C 34%,#FFF1C5 55%,#D6A947 100%);-webkit-background-clip:text;background-clip:text;
+  filter:drop-shadow(0 0 13px rgba(245,198,89,.65)) drop-shadow(0 0 34px rgba(245,198,89,.28))}
+.gold-journey-copy p{max-width:680px;color:rgba(232,241,253,.78);font-size:clamp(14px,1.4vw,17px);line-height:1.85;margin:26px 0 0;font-weight:500;text-shadow:0 1px 12px rgba(0,0,0,.3)}
+.gold-journey-achievement-stats{display:flex;align-items:center;gap:26px;margin-top:34px;padding-top:24px;border-top:1px solid rgba(255,232,177,.2)}
+.gold-journey-achievement-stats div{display:flex;flex-direction:column;gap:4px}
+.gold-journey-achievement-stats strong{font-size:clamp(27px,4vw,43px);line-height:1;color:#FFE6A0;letter-spacing:-.06em;text-shadow:0 0 22px rgba(255,206,99,.4)}
+.gold-journey-achievement-stats span{font-size:9px;font-weight:800;letter-spacing:.18em;color:rgba(255,244,214,.65)}
+.gold-journey-achievement-stats>i{height:34px;width:1px;background:rgba(255,235,190,.2)}
+.gold-journey-footer{display:flex;align-items:center;justify-content:space-between;gap:20px;color:rgba(229,240,255,.48);font-size:9px;font-weight:800;letter-spacing:.2em}
+.gold-journey-progress{display:flex;gap:8px}
+.gold-journey-progress i{width:24px;height:2px;background:rgba(255,255,255,.2);transition:background .45s,width .45s,box-shadow .45s}
+.gold-journey-progress i.is-active{width:42px;background:#B8D9FF;box-shadow:0 0 10px rgba(128,187,255,.8)}
+.gold-journey-victory .gold-journey-progress i.is-active{background:#F6D889;box-shadow:0 0 12px rgba(255,216,137,.9)}
+.gold-journey-bottom-note{position:absolute;z-index:3;bottom:18px;right:28px;color:rgba(222,235,252,.35);font-size:8px;font-weight:800;letter-spacing:.2em}
+.gold-journey-bottom-note b{color:#E8C36E;margin:0 5px}
+.gold-journey-victory .gold-journey-copy{border-color:rgba(255,226,158,.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 28px 100px rgba(0,0,0,.3),0 0 55px rgba(242,190,75,.18)}
+.gold-journey-victory .gold-journey-kicker{color:#F7DB9A;text-shadow:0 0 18px rgba(255,208,104,.65)}
+@keyframes gjEnter{from{opacity:0;transform:translateY(28px) scale(.985);filter:blur(12px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+@keyframes gjAurora{to{transform:rotate(360deg)}}
+@keyframes gjOrbit{to{transform:rotate(337deg)}}
+@media(max-width:640px){
+ .gold-journey-content{width:calc(100% - 28px);min-height:min(690px,91vh);padding:22px 0 30px}
+ .gold-journey-brand{gap:8px;font-size:8px;letter-spacing:.1em;flex-wrap:wrap}
+ .gold-journey-gdg-mark{font-size:25px}
+ .gold-journey-copy{padding:38px 23px 32px;border-radius:25px}
+ .gold-journey-kicker{font-size:8px;letter-spacing:.15em;line-height:1.6;margin-bottom:20px}
+ .gold-journey-copy h1{font-size:clamp(34px,9.5vw,53px);letter-spacing:-.06em}
+ .gold-journey-copy p{font-size:13px;line-height:1.75;margin-top:20px}
+ .gold-journey-achievement-stats{gap:12px;margin-top:26px;padding-top:20px}
+ .gold-journey-achievement-stats strong{font-size:clamp(23px,7vw,32px)}
+ .gold-journey-achievement-stats span{font-size:7px;letter-spacing:.1em}
+ .gold-journey-footer{font-size:7px;letter-spacing:.1em}
+ .gold-journey-progress{gap:4px}.gold-journey-progress i{width:13px}.gold-journey-progress i.is-active{width:22px}
+ .gold-journey-bottom-note{left:15px;right:auto;bottom:10px;font-size:6px;letter-spacing:.14em}
+ .gold-journey-orbit-one{width:120vw;height:120vw;right:-75%;top:-15%}
+ .gold-journey-orbit-two{width:90vw;height:90vw;right:-50%;top:0}
+}
+@media(prefers-reduced-motion:reduce){.gold-journey-orbit-two,.gold-journey-aurora{animation:none}.gold-journey-content{animation:none}}
