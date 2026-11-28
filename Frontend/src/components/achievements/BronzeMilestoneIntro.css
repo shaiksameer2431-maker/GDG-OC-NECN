@@ -9,12 +9,15 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Nunito:wght@800;900&family=Plus+Jakarta+Sans:wght@800;900&display=swap');
 
-/* Main Full-Screen Luxury Stage */
+/* Main Full-Screen Luxury Stage with Exact Uploaded Fluid Gradient Background */
 .bmi-overlay {
   position: fixed;
   inset: 0;
   z-index: 99999;
-  background: radial-gradient(circle at 50% 50%, #1A0720 0%, #0E0312 50%, #050108 100%);
+  background-color: #0E0312;
+  background: 
+    radial-gradient(ellipse at 50% 50%, rgba(10, 2, 18, 0.32) 0%, rgba(6, 1, 14, 0.55) 100%),
+    url('../../assets/neon-celebration-bg.jpg') center center / cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -31,13 +34,11 @@
   pointer-events: none;
 }
 
-/* Subtle Deep Wall Vignette & Light Depth */
+/* Subtle Deep Vignette Overlay to enhance contrast and text glow */
 .bmi-ambient-wall {
   position: absolute;
   inset: 0;
-  background: 
-    radial-gradient(ellipse at 50% 50%, rgba(255, 0, 127, 0.09) 0%, transparent 65%),
-    radial-gradient(circle at 50% 25%, rgba(0, 240, 255, 0.05) 0%, transparent 60%);
+  background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(5, 1, 10, 0.45) 100%);
   pointer-events: none;
   z-index: 1;
 }
