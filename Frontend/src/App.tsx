@@ -13,7 +13,7 @@ import { AboutPage } from './pages/AboutPage';
 import { BadgeReportPage } from './pages/BadgeReportPage';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { Luxury3DView } from './components/luxury/Luxury3DView';
-import { CinematicGoldCelebrationIntro } from './components/achievements/CinematicGoldCelebrationIntro';
+import { BronzeMilestoneIntro } from './components/achievements/BronzeMilestoneIntro';
 
 export function App() {
   const [currentTab, setCurrentTab] = useState<string>('overview');
@@ -150,9 +150,9 @@ export function App() {
   return (
     <div className="relative min-h-screen bg-[#F4F8FD] text-slate-900 flex flex-col antialiased font-sans selection:bg-blue-500/20 selection:text-blue-700">
       
-      {/* FULL-SCREEN PREMIUM CINEMATIC GOLD MILESTONE CELEBRATION INTRO */}
+      {/* FULL-SCREEN ANIMATED BRONZE MILESTONE ACHIEVEMENT INTRO (7-second dedicated celebratory intro) */}
       {showBronzeIntro && (
-        <CinematicGoldCelebrationIntro
+        <BronzeMilestoneIntro
           onPreload={handlePreloadIntro}
           onComplete={handleCompleteIntro}
         />
