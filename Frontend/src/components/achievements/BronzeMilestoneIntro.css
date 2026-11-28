@@ -291,47 +291,266 @@
 }
 
 /* -------------------------------------------------------------------------
-   BLENDER & PREMIERE PRO STYLE 3D PERSPECTIVE ZOOM + NEON IGNITION STRIKE
+   PREMIERE PRO / BLENDER STYLE MOTION REVEAL & WORD STAGGER
+   3D perspective camera snap + high-voltage neon strike
    ------------------------------------------------------------------------- */
-@keyframes neonIgniteIn {
+@keyframes neonPremiereReveal {
   0% {
     opacity: 0;
-    transform: perspective(900px) rotateX(6deg) scale(1.12);
-    filter: brightness(0.55) blur(10px);
+    transform: perspective(900px) scale(1.18) rotateX(7deg);
+    filter: blur(12px) brightness(0.5);
   }
-  14% {
+  18% {
     opacity: 0.95;
-    filter: brightness(2.4) blur(3px);
+    filter: blur(2px) brightness(2.6);
   }
-  24% {
+  28% {
     opacity: 0.35;
-    filter: brightness(0.85) blur(6px);
+    filter: blur(5px) brightness(0.85);
   }
-  34% {
+  40% {
     opacity: 1;
-    filter: brightness(2.6) blur(1px);
-  }
-  46% {
-    opacity: 0.8;
-    filter: brightness(1.2) blur(2px);
+    filter: blur(0px) brightness(2.4);
   }
   60% {
-    opacity: 1;
-    transform: perspective(900px) rotateX(1deg) scale(1.02);
-    filter: brightness(1.4) blur(0px);
+    transform: perspective(900px) scale(1.02) rotateX(1deg);
+    filter: brightness(1.3);
   }
   100% {
     opacity: 1;
-    transform: perspective(900px) rotateX(0deg) scale(1);
-    filter: brightness(1) blur(0px);
+    transform: perspective(900px) scale(1) rotateX(0deg);
+    filter: brightness(1);
   }
 }
 
-.bmi-neon-ignite {
-  animation: neonIgniteIn 0.68s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.bmi-neon-premiere-reveal {
+  animation: neonPremiereReveal 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
+}
+
+@keyframes wordPopIn {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.92);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+.bmi-word-pop {
+  animation: wordPopIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* -------------------------------------------------------------------------
+   CONTINUOUS LINE-ART NEON TECHNOLOGY ILLUSTRATIONS (IMAGES 1, 5, 6)
+   ------------------------------------------------------------------------- */
+.bmi-tech-art-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 0 12px rgba(255, 0, 127, 0.75)) drop-shadow(0 0 24px rgba(0, 240, 255, 0.55));
+}
+
+@keyframes lineDrawIn {
+  0% {
+    stroke-dashoffset: 200;
+    opacity: 0.2;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+.bmi-line-draw {
+  stroke-dasharray: 200;
+  animation: lineDrawIn 1.2s ease-out forwards;
+}
+
+/* -------------------------------------------------------------------------
+   AUTHENTIC ILLUMINATED NEON TUBE TYPOGRAPHY (MATCHING LAST IMAGE REFERENCE)
+   - Thin outlined typography with rounded tube caps
+   - White-hot inner core line
+   - Vibrant pink, magenta, cyan, violet, lime, gold edges
+   - Soft glowing diffusion and realistic cast drop shadow
+   ------------------------------------------------------------------------- */
+
+/* 1. Bright Pink / Magenta Neon Tube (Exact Last Image Reference "NEON") */
+.bmi-neon-lastref-pink {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: transparent !important;
+  color: #2D0518;
+  -webkit-text-stroke: 2.8px #FF007F;
+  paint-order: stroke fill;
+  text-shadow: 
+    0 0 2px #FFFFFF,
+    0 0 6px #FFA0C8,
+    0 0 14px #FF007F,
+    0 0 28px #FF007F,
+    0 0 55px rgba(255, 0, 127, 0.8),
+    0 0 90px rgba(255, 0, 127, 0.45);
+  filter: drop-shadow(0 4px 10px rgba(15, 23, 42, 0.35)) drop-shadow(0 0 18px rgba(255, 0, 127, 0.85));
+  display: inline-block;
+  max-width: 100%;
+}
+
+/* 2. Deep Magenta / Fuchsia Neon Tube */
+.bmi-neon-lastref-magenta {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: transparent !important;
+  color: #240212;
+  -webkit-text-stroke: 2.8px #E1006A;
+  paint-order: stroke fill;
+  text-shadow: 
+    0 0 2px #FFFFFF,
+    0 0 6px #FF88C2,
+    0 0 14px #E1006A,
+    0 0 28px #E1006A,
+    0 0 55px rgba(225, 0, 106, 0.8),
+    0 0 90px rgba(225, 0, 106, 0.45);
+  filter: drop-shadow(0 4px 10px rgba(15, 23, 42, 0.35)) drop-shadow(0 0 18px rgba(225, 0, 106, 0.85));
+  display: inline-block;
+  max-width: 100%;
+}
+
+/* 3. Electric Cyan Neon Tube (Image 3 "NEXUS" / Image 4) */
+.bmi-neon-lastref-cyan {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: transparent !important;
+  color: #031D2E;
+  -webkit-text-stroke: 2.8px #00F0FF;
+  paint-order: stroke fill;
+  text-shadow: 
+    0 0 2px #FFFFFF,
+    0 0 6px #80F8FF,
+    0 0 14px #00F0FF,
+    0 0 28px #00C8FF,
+    0 0 55px rgba(0, 240, 255, 0.8),
+    0 0 90px rgba(0, 200, 255, 0.45);
+  filter: drop-shadow(0 4px 10px rgba(15, 23, 42, 0.35)) drop-shadow(0 0 18px rgba(0, 240, 255, 0.85));
+  display: inline-block;
+  max-width: 100%;
+}
+
+/* 4. Electric Cobalt Blue Neon Tube (Image 2 Heart Outer Arc) */
+.bmi-neon-lastref-blue {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: transparent !important;
+  color: #051533;
+  -webkit-text-stroke: 2.8px #3B82F6;
+  paint-order: stroke fill;
+  text-shadow: 
+    0 0 2px #FFFFFF,
+    0 0 6px #93C5FD,
+    0 0 14px #3B82F6,
+    0 0 28px #1D4ED8,
+    0 0 55px rgba(59, 130, 246, 0.8),
+    0 0 90px rgba(29, 78, 216, 0.45);
+  filter: drop-shadow(0 4px 10px rgba(15, 23, 42, 0.35)) drop-shadow(0 0 18px rgba(59, 130, 246, 0.85));
+  display: inline-block;
+  max-width: 100%;
+}
+
+/* 5. Neon Violet / Purple Neon Tube (Image 2 & Image 4) */
+.bmi-neon-lastref-violet {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: transparent !important;
+  color: #1A0830;
+  -webkit-text-stroke: 2.8px #A855F7;
+  paint-order: stroke fill;
+  text-shadow: 
+    0 0 2px #FFFFFF,
+    0 0 6px #D8B4FE,
+    0 0 14px #A855F7,
+    0 0 28px #7E22CE,
+    0 0 55px rgba(168, 85, 247, 0.8),
+    0 0 90px rgba(126, 34, 206, 0.45);
+  filter: drop-shadow(0 4px 10px rgba(15, 23, 42, 0.35)) drop-shadow(0 0 18px rgba(168, 85, 247, 0.85));
+  display: inline-block;
+  max-width: 100%;
+}
+
+/* 6. Electric Lime Neon Tube (Image 6 & Image 7) */
+.bmi-neon-lastref-lime {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: transparent !important;
+  color: #032410;
+  -webkit-text-stroke: 2.8px #00FF88;
+  paint-order: stroke fill;
+  text-shadow: 
+    0 0 2px #FFFFFF,
+    0 0 6px #A7F3D0,
+    0 0 14px #00FF88,
+    0 0 28px #10B981,
+    0 0 55px rgba(0, 255, 136, 0.8),
+    0 0 90px rgba(16, 185, 129, 0.45);
+  filter: drop-shadow(0 4px 10px rgba(15, 23, 42, 0.35)) drop-shadow(0 0 18px rgba(0, 255, 136, 0.85));
+  display: inline-block;
+  max-width: 100%;
+}
+
+/* 7. 24K Metallic Gold Neon Tube (Scene 5 "WE REACHED GOLD!") */
+.bmi-neon-lastref-gold {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  background: transparent !important;
+  color: #1C0A00;
+  -webkit-text-stroke: 3.4px #FFD700;
+  paint-order: stroke fill;
+  text-shadow: 
+    0 0 3px #FFFFFF,
+    0 0 8px #FFF59D,
+    0 0 18px #FFD700,
+    0 0 34px #FF8F00,
+    0 0 65px rgba(255, 111, 0, 0.9),
+    0 0 110px rgba(255, 111, 0, 0.5);
+  filter: drop-shadow(0 4px 10px rgba(15, 23, 42, 0.35)) drop-shadow(0 0 24px rgba(255, 193, 7, 0.95));
+  animation: bmiClimaxPulse 2.4s ease-in-out infinite;
+  display: inline-block;
+  max-width: 100%;
+}
+
+/* 8. Concentric Rainbow Neon Climax (Finale "✦ WE MADE IT HAPPEN ✦") */
+.bmi-neon-lastref-rainbow {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #00F0FF 0%, #3B82F6 28%, #A855F7 55%, #FF007F 82%, #FFD700 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 2.4px rgba(255, 255, 255, 0.95);
+  paint-order: stroke fill;
+  filter: drop-shadow(0 0 14px rgba(0, 240, 255, 0.95)) drop-shadow(0 0 28px rgba(255, 0, 127, 0.85)) drop-shadow(0 0 45px rgba(255, 215, 0, 0.7));
+  animation: bmiRainbowPulse 3s ease-in-out infinite;
+  display: inline-block;
+  max-width: 100%;
 }
 
 /* -------------------------------------------------------------------------

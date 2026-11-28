@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import confetti from 'canvas-confetti';
-import { Trophy, Award, Users, Sparkles, ArrowRight, ChevronRight } from 'lucide-react';
+import { Trophy, Award, Users, Sparkles, ArrowRight, ChevronRight, Terminal, Heart, Code2 } from 'lucide-react';
 import './BronzeMilestoneIntro.css';
 
 interface BronzeMilestoneIntroProps {
@@ -8,99 +8,96 @@ interface BronzeMilestoneIntroProps {
   onPreload?: () => void;
 }
 
+interface CaptionItem {
+  text: string;
+  theme: 'pink-magenta' | 'cyan-magenta' | 'lime-cyan' | 'blue-violet' | 'gold' | 'showcase' | 'rainbow';
+  illustration?: 'journey' | 'code' | 'unity' | 'community' | 'trophy' | 'cloud';
+}
+
 interface SceneData {
   tag: string;
-  theme: 'cyan-magenta' | 'amber-pink' | 'lime-cyan' | 'blue-magenta' | 'gold' | 'showcase' | 'rainbow';
-  lines: string[];
+  captions: CaptionItem[];
   isGold: boolean;
 }
 
-// Exact updated captions provided by user with multi-line stacking for cinematic impact
+// Master Cinematic Caption Sequence (7 Scenes with exact captions requested)
 const CINEMATIC_SCENES: SceneData[] = [
-  // Scene 1 — The Beginning (Cyan & Magenta neon theme)
+  // Scene 1 — The Journey
   {
-    tag: 'SCENE 1 — THE BEGINNING',
-    theme: 'cyan-magenta',
-    lines: [
-      'IT WAS NEVER\nAN EASY JOURNEY.',
-      'EVERY CHALLENGE\nMADE US STRONGER.',
-      'BUT WE NEVER\nGAVE UP.',
-    ],
+    tag: 'SCENE 1 — THE JOURNEY',
     isGold: false,
+    captions: [
+      { text: 'IT WAS NEVER\nAN EASY JOURNEY.', theme: 'pink-magenta', illustration: 'journey' },
+      { text: 'EVERY CHALLENGE\nMADE US STRONGER.', theme: 'cyan-magenta', illustration: 'journey' },
+      { text: 'BUT WE NEVER\nGAVE UP.', theme: 'pink-magenta', illustration: 'journey' },
+    ],
   },
-  // Scene 2 — The Struggle (Amber & Hot Pink neon theme)
+  // Scene 2 — The Struggle
   {
     tag: 'SCENE 2 — THE STRUGGLE',
-    theme: 'amber-pink',
-    lines: [
-      'COUNTLESS LABS.',
-      'LATE NIGHTS.',
-      'ONE GOAL.',
-      'WE KEPT MOVING\nFORWARD.',
-    ],
     isGold: false,
+    captions: [
+      { text: 'COUNTLESS LABS.', theme: 'blue-violet', illustration: 'code' },
+      { text: 'LATE NIGHTS.', theme: 'pink-magenta', illustration: 'code' },
+      { text: 'ONE GOAL.', theme: 'cyan-magenta', illustration: 'code' },
+      { text: 'WE KEPT MOVING\nFORWARD.', theme: 'pink-magenta', illustration: 'code' },
+    ],
   },
-  // Scene 3 — The Unity (Electric Lime & Cyan neon theme)
+  // Scene 3 — The Unity
   {
     tag: 'SCENE 3 — THE UNITY',
-    theme: 'lime-cyan',
-    lines: [
-      "WE DIDN'T\nDO IT ALONE.",
-      'WE LEARNED\nTOGETHER.',
-      'EVERY EFFORT\nCOUNTED.',
-    ],
     isGold: false,
+    captions: [
+      { text: "WE DIDN'T\nDO IT ALONE.", theme: 'lime-cyan', illustration: 'unity' },
+      { text: 'WE LEARNED\nTOGETHER.', theme: 'cyan-magenta', illustration: 'unity' },
+      { text: 'EVERY EFFORT\nCOUNTED.', theme: 'lime-cyan', illustration: 'unity' },
+    ],
   },
-  // Scene 4 — The Turning Point (Electric Blue & Vivid Magenta theme)
+  // Scene 4 — The Turning Point
   {
     tag: 'SCENE 4 — THE TURNING POINT',
-    theme: 'blue-magenta',
-    lines: [
-      '438 STUDENTS.',
-      'ONE COMMUNITY.',
-      'ONE\nUNSTOPPABLE\nTEAM.',
-      'AND FINALLY...',
-    ],
     isGold: false,
+    captions: [
+      { text: '438 STUDENTS.', theme: 'cyan-magenta', illustration: 'community' },
+      { text: 'ONE COMMUNITY.', theme: 'pink-magenta', illustration: 'community' },
+      { text: 'ONE\nUNSTOPPABLE\nTEAM.', theme: 'cyan-magenta', illustration: 'community' },
+      { text: 'AND FINALLY...', theme: 'blue-violet', illustration: 'community' },
+    ],
   },
-  // Scene 5 — The Gold Reveal (24K Gold & Sunburst theme)
+  // Scene 5 — The Gold Reveal (The Climax)
   {
     tag: 'SCENE 5 — THE GOLD REVEAL',
-    theme: 'gold',
-    lines: [
-      'THE WAIT IS OVER.',
-      'WE DID IT!',
-      'WE REACHED\nGOLD!',
-    ],
     isGold: true,
+    captions: [
+      { text: 'THE WAIT IS OVER.', theme: 'gold', illustration: 'trophy' },
+      { text: 'WE DID IT!', theme: 'gold', illustration: 'trophy' },
+      { text: 'WE REACHED\nGOLD!', theme: 'gold', illustration: 'trophy' },
+    ],
   },
-  // Scene 6 — Achievement Showcase (Multi-neon metric pods)
+  // Scene 6 — The Achievement
   {
-    tag: 'SCENE 6 — ACHIEVEMENT SHOWCASE',
-    theme: 'showcase',
-    lines: [
-      '280 ACHIEVERS.',
-      '2,661\nSKILL BADGES.',
-      '112% OF OUR\nTARGET.',
-    ],
+    tag: 'SCENE 6 — THE ACHIEVEMENT',
     isGold: true,
+    captions: [
+      { text: '280 ACHIEVERS.', theme: 'gold', illustration: 'trophy' },
+      { text: '2,661\nSKILL BADGES.', theme: 'showcase', illustration: 'trophy' },
+    ],
   },
-  // Scene 7 / Finale — Victory & Unity (Concentric Rainbow Neon spectrum)
+  // Scene 7 — The Finale & Victory Screen
   {
     tag: 'GDG ON-CAMPUS NECN',
-    theme: 'rainbow',
-    lines: [
-      'THIS GOLD BELONGS\nTO EVERYONE.',
-      'ONE TEAM.',
-      'ONE COMMUNITY.',
-      'ONE GOLDEN MILESTONE.',
-      'WE MADE IT HAPPEN.',
-    ],
     isGold: true,
+    captions: [
+      { text: 'THIS GOLD BELONGS\nTO EVERYONE.', theme: 'rainbow', illustration: 'cloud' },
+      { text: 'ONE TEAM.', theme: 'cyan-magenta', illustration: 'cloud' },
+      { text: 'ONE COMMUNITY.', theme: 'pink-magenta', illustration: 'cloud' },
+      { text: 'ONE GOLDEN\nMILESTONE.', theme: 'gold', illustration: 'cloud' },
+      { text: 'WE MADE IT HAPPEN.', theme: 'rainbow', illustration: 'cloud' },
+    ],
   },
 ];
 
-// Spark particle interface for multi-color particle engine
+// Spark particle interface
 interface Spark {
   x: number;
   y: number;
@@ -114,9 +111,19 @@ interface Spark {
   isBurst?: boolean;
 }
 
+// Flowing Energy Trail Interface (Image 7 Reference)
+interface EnergyTrail {
+  points: { x: number; y: number }[];
+  color: string;
+  width: number;
+  speed: number;
+  angle: number;
+  phase: number;
+}
+
 /**
  * Concentric Multi-Tube Neon Cloud Logo Component
- * Modeled directly on the concentric multi-tube neon style of Image 2 (Gradient Cyan -> Blue -> Purple -> Magenta)
+ * Modeled directly on the concentric neon heart in Image 2
  */
 export const ConcentricNeonCloud: React.FC<{ size?: number; className?: string }> = ({
   size = 64,
@@ -133,7 +140,6 @@ export const ConcentricNeonCloud: React.FC<{ size?: number; className?: string }
       aria-label="Google Cloud Neon Logo"
     >
       <defs>
-        {/* Continuous Multi-Color Neon Gradient (Image 2 aesthetic) */}
         <linearGradient id="bmiNeonCloudGrad" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#00F0FF" />
           <stop offset="28%" stopColor="#3B82F6" />
@@ -142,7 +148,6 @@ export const ConcentricNeonCloud: React.FC<{ size?: number; className?: string }
           <stop offset="100%" stopColor="#FF3366" />
         </linearGradient>
 
-        {/* Multi-layer Neon Glow Filter */}
         <filter id="bmiNeonGlowFilter" x="-40%" y="-40%" width="180%" height="180%">
           <feGaussianBlur stdDeviation="3.5" result="coloredBlur" />
           <feMerge>
@@ -160,7 +165,7 @@ export const ConcentricNeonCloud: React.FC<{ size?: number; className?: string }
         strokeWidth="7"
         strokeLinecap="round"
         strokeLinejoin="round"
-        opacity="0.45"
+        opacity="0.5"
         filter="url(#bmiNeonGlowFilter)"
       />
 
@@ -168,7 +173,7 @@ export const ConcentricNeonCloud: React.FC<{ size?: number; className?: string }
       <path
         d="M 38 78 C 24 78 14 66 14 52 C 14 39 24 28 37 27 C 42 15 54 8 68 8 C 84 8 98 19 101 34 C 105 32 110 31 115 31 C 130 31 142 43 142 58 C 142 59 142 60 142 61 C 145 61 146 61 146 61 C 151 61 156 66 156 71 C 156 75 151 78 146 78 Z"
         stroke="url(#bmiNeonCloudGrad)"
-        strokeWidth="3.4"
+        strokeWidth="3.6"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -206,23 +211,127 @@ export const ConcentricNeonCloud: React.FC<{ size?: number; className?: string }
   );
 };
 
+/**
+ * Continuous Line-Art Neon Technology Illustration Component
+ * Modeled on Image 1 (Guitar outline), Image 5 (AI Hand), Image 6 (Neon Hand)
+ */
+const NeonTechIllustration: React.FC<{ type?: string }> = ({ type }) => {
+  switch (type) {
+    case 'journey':
+      return (
+        <div className="bmi-tech-art-wrap" aria-hidden="true">
+          <svg className="w-20 h-20 sm:w-28 sm:h-28" viewBox="0 0 100 100" fill="none">
+            <path
+              d="M 10 75 Q 30 25 50 50 T 90 25"
+              stroke="#FF007F"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              className="bmi-line-draw"
+            />
+            <circle cx="90" cy="25" r="4" fill="#00F0FF" className="animate-ping" />
+            <circle cx="90" cy="25" r="3" fill="#FFFFFF" />
+            <path
+              d="M 25 85 L 50 45 L 75 85"
+              stroke="#00F0FF"
+              strokeWidth="2"
+              strokeDasharray="4 4"
+              opacity="0.7"
+            />
+          </svg>
+        </div>
+      );
+    case 'code':
+      return (
+        <div className="bmi-tech-art-wrap" aria-hidden="true">
+          <svg className="w-20 h-20 sm:w-28 sm:h-28" viewBox="0 0 100 100" fill="none">
+            <rect
+              x="15"
+              y="20"
+              width="70"
+              height="50"
+              rx="6"
+              stroke="#A855F7"
+              strokeWidth="2.5"
+              fill="none"
+              className="bmi-line-draw"
+            />
+            <path d="M 15 32 L 85 32" stroke="#A855F7" strokeWidth="1.5" />
+            <path d="M 30 45 L 42 55 L 30 65" stroke="#00F0FF" strokeWidth="2.5" strokeLinecap="round" />
+            <path d="M 50 65 L 68 65" stroke="#FF007F" strokeWidth="2.5" strokeLinecap="round" />
+          </svg>
+        </div>
+      );
+    case 'unity':
+      return (
+        <div className="bmi-tech-art-wrap" aria-hidden="true">
+          <svg className="w-20 h-20 sm:w-28 sm:h-28" viewBox="0 0 100 100" fill="none">
+            <circle cx="35" cy="40" r="14" stroke="#00FF88" strokeWidth="2.5" className="bmi-line-draw" />
+            <circle cx="65" cy="40" r="14" stroke="#00F0FF" strokeWidth="2.5" className="bmi-line-draw" />
+            <path
+              d="M 25 78 C 25 62 45 62 50 62 C 55 62 75 62 75 78"
+              stroke="#FF007F"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+            />
+            <circle cx="50" cy="50" r="3" fill="#FFFFFF" className="animate-pulse" />
+          </svg>
+        </div>
+      );
+    case 'community':
+      return (
+        <div className="bmi-tech-art-wrap" aria-hidden="true">
+          <svg className="w-20 h-20 sm:w-28 sm:h-28" viewBox="0 0 100 100" fill="none">
+            <circle cx="50" cy="50" r="32" stroke="#00F0FF" strokeWidth="2" strokeDasharray="6 4" />
+            <circle cx="50" cy="22" r="5" fill="#FF007F" />
+            <circle cx="75" cy="62" r="5" fill="#00FF88" />
+            <circle cx="25" cy="62" r="5" fill="#FFB800" />
+            <path d="M 50 22 L 75 62 L 25 62 Z" stroke="#A855F7" strokeWidth="1.8" fill="none" />
+          </svg>
+        </div>
+      );
+    case 'trophy':
+      return (
+        <div className="bmi-tech-art-wrap" aria-hidden="true">
+          <svg className="w-24 h-24 sm:w-32 sm:h-32" viewBox="0 0 100 100" fill="none">
+            <path
+              d="M 30 20 L 70 20 C 70 45 58 55 50 60 C 42 55 30 45 30 20 Z"
+              stroke="#FFD700"
+              strokeWidth="3"
+              strokeLinecap="round"
+              className="bmi-line-draw"
+            />
+            <path d="M 30 30 C 18 30 18 45 30 48" stroke="#FFA500" strokeWidth="2.5" strokeLinecap="round" />
+            <path d="M 70 30 C 82 30 82 45 70 48" stroke="#FFA500" strokeWidth="2.5" strokeLinecap="round" />
+            <path d="M 50 60 L 50 75 M 35 75 L 65 75" stroke="#FFD700" strokeWidth="3" strokeLinecap="round" />
+            <circle cx="50" cy="38" r="4" fill="#FFFFFF" className="animate-ping" />
+          </svg>
+        </div>
+      );
+    case 'cloud':
+    default:
+      return null;
+  }
+};
+
 export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
   onComplete,
   onPreload,
 }) => {
   // Scene & Sentence Tracking
   const [currentSceneIndex, setCurrentSceneIndex] = useState<number>(0);
-  const [currentSentenceIndex, setCurrentSentenceIndex] = useState<number>(0);
+  const [currentCaptionIndex, setCurrentCaptionIndex] = useState<number>(0);
   const [isExiting, setIsExiting] = useState<boolean>(false);
 
   // Canvases
   const confettiCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const sparksCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const trailsCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const partyConfettiRef = useRef<confetti.CreateTypes | null>(null);
-  const sentenceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const captionTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Multi-color sparks ref
+  // Particles & Trails Ref
   const sparksRef = useRef<Spark[]>([]);
+  const trailsRef = useRef<EnergyTrail[]>([]);
   const animFrameRef = useRef<number | null>(null);
 
   const onCompleteRef = useRef(onComplete);
@@ -264,7 +373,7 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
     if (!party) return;
 
     party({
-      particleCount: 65,
+      particleCount: 70,
       angle: 60,
       spread: 65,
       origin: { x: 0.1, y: 0.8 },
@@ -277,7 +386,7 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
     });
 
     party({
-      particleCount: 65,
+      particleCount: 70,
       angle: 120,
       spread: 65,
       origin: { x: 0.9, y: 0.8 },
@@ -291,20 +400,20 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
 
     setTimeout(() => {
       party({
-        particleCount: 85,
-        spread: 105,
+        particleCount: 95,
+        spread: 110,
         origin: { x: 0.5, y: 0.35 },
         colors: multiNeonCelebrationColors,
-        scalar: 1.25,
-        startVelocity: 34,
+        scalar: 1.3,
+        startVelocity: 35,
         gravity: 0.72,
         ticks: 260,
         disableForReducedMotion: true,
       });
-    }, 300);
+    }, 280);
   }, []);
 
-  // Multi-Color Neon Sparks Engine (Cyan, Pink, Purple, Lime, Gold particles)
+  // Multi-Color Neon Sparks Engine + Flowing Energy Trails (Images 2, 6, 7)
   useEffect(() => {
     const canvas = sparksCanvasRef.current;
     if (!canvas) return;
@@ -323,16 +432,16 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
 
     const multiNeonColors = ['#00F0FF', '#FF007F', '#A855F7', '#00FF88', '#FFD700', '#FFFFFF'];
 
-    // Spawn initial floating ambient multi-color embers
-    const ambientCount = 42;
+    // Spawn floating ambient sparks
+    const ambientCount = 44;
     const sparks: Spark[] = [];
     for (let i = 0; i < ambientCount; i++) {
       sparks.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.75,
+        vx: (Math.random() - 0.5) * 0.8,
         vy: -0.6 - Math.random() * 1.3,
-        size: 1.3 + Math.random() * 2.6,
+        size: 1.3 + Math.random() * 2.8,
         color: multiNeonColors[Math.floor(Math.random() * multiNeonColors.length)],
         alpha: Math.random() * 0.85,
         maxAlpha: 0.45 + Math.random() * 0.55,
@@ -342,12 +451,53 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
     }
     sparksRef.current = sparks;
 
+    // Initialize 8 Flowing Energy Trails (Image 7 Reference)
+    const trails: EnergyTrail[] = [];
+    const trailColors = ['rgba(0,240,255,0.22)', 'rgba(255,0,127,0.20)', 'rgba(168,85,247,0.20)', 'rgba(0,255,136,0.18)'];
+    for (let i = 0; i < 8; i++) {
+      trails.push({
+        points: [],
+        color: trailColors[i % trailColors.length],
+        width: 1.5 + Math.random() * 2,
+        speed: 0.008 + Math.random() * 0.012,
+        angle: (i * Math.PI) / 4,
+        phase: Math.random() * Math.PI * 2,
+      });
+    }
+    trailsRef.current = trails;
+
     // Animation Loop
     let isRunning = true;
+    let time = 0;
     const render = () => {
       if (!isRunning) return;
       ctx.clearRect(0, 0, width, height);
+      time += 0.016;
 
+      // 1. Draw Flowing Energy Trails (Image 7 Reference)
+      const centerX = width / 2;
+      const centerY = height * 0.48;
+      trailsRef.current.forEach((t) => {
+        ctx.save();
+        ctx.strokeStyle = t.color;
+        ctx.lineWidth = t.width;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+
+        const baseRadius = min(width, height) * 0.28;
+        for (let a = 0; a <= Math.PI * 2; a += 0.2) {
+          const r = baseRadius + Math.sin(a * 3 + time * t.speed * 20 + t.phase) * 35;
+          const px = centerX + Math.cos(a + t.angle) * r;
+          const py = centerY + Math.sin(a + t.angle) * (r * 0.65);
+          if (a === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        }
+        ctx.closePath();
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      // 2. Draw Sparks & Particles
       const activeSparks = sparksRef.current;
       for (let i = activeSparks.length - 1; i >= 0; i--) {
         const s = activeSparks[i];
@@ -355,8 +505,8 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
         s.y += s.vy;
 
         if (s.isBurst) {
-          s.vx *= 0.96;
-          s.vy *= 0.96;
+          s.vx *= 0.95;
+          s.vy *= 0.95;
           s.alpha -= s.decay;
 
           if (s.alpha <= 0) {
@@ -364,12 +514,10 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
             continue;
           }
         } else {
-          // Floating ambient embers
           s.alpha += (Math.random() - 0.5) * 0.04;
           if (s.alpha < 0.15) s.alpha = 0.15;
           if (s.alpha > s.maxAlpha) s.alpha = s.maxAlpha;
 
-          // Wrap around top
           if (s.y < -10) {
             s.y = height + 10;
             s.x = Math.random() * width;
@@ -378,11 +526,10 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
           if (s.x > width + 10) s.x = -10;
         }
 
-        // Draw glowing particle spark
         ctx.save();
         ctx.globalAlpha = Math.max(0, s.alpha);
         ctx.shadowColor = s.color;
-        ctx.shadowBlur = s.size * 5;
+        ctx.shadowBlur = s.size * 6;
         ctx.fillStyle = s.color;
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
@@ -402,7 +549,12 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
     };
   }, []);
 
-  // Burst multi-color neon sparks from text center on sentence change
+  // Helper function for min
+  function min(a: number, b: number) {
+    return a < b ? a : b;
+  }
+
+  // Burst multi-color neon sparks on caption change
   const triggerSparksBurst = useCallback(() => {
     const canvas = sparksCanvasRef.current;
     if (!canvas) return;
@@ -410,49 +562,49 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
     const centerX = window.innerWidth / 2;
     const centerY = window.innerHeight * 0.48;
     const multiNeonColors = ['#00F0FF', '#FF007F', '#A855F7', '#00FF88', '#FFD700', '#FFFFFF'];
-    const burstCount = 32;
+    const burstCount = 36;
 
     for (let i = 0; i < burstCount; i++) {
       const angle = Math.random() * Math.PI * 2;
-      const speed = 2.8 + Math.random() * 6.2;
+      const speed = 3.0 + Math.random() * 6.5;
       sparksRef.current.push({
         x: centerX + (Math.random() - 0.5) * 180,
         y: centerY + (Math.random() - 0.5) * 60,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed - 0.9,
-        size: 1.6 + Math.random() * 3.0,
+        size: 1.6 + Math.random() * 3.2,
         color: multiNeonColors[Math.floor(Math.random() * multiNeonColors.length)],
         alpha: 0.98,
         maxAlpha: 1.0,
-        decay: 0.018 + Math.random() * 0.02,
+        decay: 0.02 + Math.random() * 0.022,
         isBurst: true,
       });
     }
   }, []);
 
-  // Advance to next sentence or next scene
+  // Advance to next caption or scene
   const advanceNext = useCallback(() => {
     const activeScene = CINEMATIC_SCENES[currentSceneIndex];
     if (!activeScene) return;
 
     triggerSparksBurst();
 
-    if (currentSentenceIndex < activeScene.lines.length - 1) {
-      const nextIdx = currentSentenceIndex + 1;
-      setCurrentSentenceIndex(nextIdx);
+    if (currentCaptionIndex < activeScene.captions.length - 1) {
+      const nextIdx = currentCaptionIndex + 1;
+      setCurrentCaptionIndex(nextIdx);
 
       // Gold / multi-neon confetti on major climaxes
-      if (currentSceneIndex === 4 && nextIdx === activeScene.lines.length - 1) {
+      if (currentSceneIndex === 4 && nextIdx === activeScene.captions.length - 1) {
         fireMultiNeonCelebration();
       }
-      if (currentSceneIndex === 6 && nextIdx === activeScene.lines.length - 1) {
+      if (currentSceneIndex === 6 && nextIdx === activeScene.captions.length - 1) {
         fireMultiNeonCelebration();
       }
     } else {
       if (currentSceneIndex < CINEMATIC_SCENES.length - 1) {
         const nextSceneIdx = currentSceneIndex + 1;
         setCurrentSceneIndex(nextSceneIdx);
-        setCurrentSentenceIndex(0);
+        setCurrentCaptionIndex(0);
 
         if (nextSceneIdx >= 5) {
           onPreloadRef.current?.();
@@ -465,13 +617,13 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
         }, 1100);
       }
     }
-  }, [currentSceneIndex, currentSentenceIndex, fireMultiNeonCelebration, triggerSparksBurst]);
+  }, [currentSceneIndex, currentCaptionIndex, fireMultiNeonCelebration, triggerSparksBurst]);
 
   // Jump directly to specific scene
   const jumpToScene = useCallback(
     (sceneIdx: number) => {
       setCurrentSceneIndex(sceneIdx);
-      setCurrentSentenceIndex(0);
+      setCurrentCaptionIndex(0);
       triggerSparksBurst();
 
       if (sceneIdx === 4 || sceneIdx === 6) {
@@ -484,23 +636,23 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
     [fireMultiNeonCelebration, triggerSparksBurst]
   );
 
-  // Automated sentence pacing:
-  // Non-climax sentences: 2.4s; Climax sentences: 3.8s
+  // Quick Cinematic Caption Pacing (~1.6s to 2.2s per user prompt)
   useEffect(() => {
-    if (sentenceTimerRef.current) clearTimeout(sentenceTimerRef.current);
+    if (captionTimerRef.current) clearTimeout(captionTimerRef.current);
 
     const activeScene = CINEMATIC_SCENES[currentSceneIndex];
     if (!activeScene) return;
 
-    const isLastSentenceOfScene = currentSentenceIndex === activeScene.lines.length - 1;
-    const duration = isLastSentenceOfScene ? 3800 : 2400;
+    const isLastCaptionOfScene = currentCaptionIndex === activeScene.captions.length - 1;
+    // Fast cinematic trailer rhythm: 1.8s for standard lines, 3.2s for major climaxes
+    const duration = isLastCaptionOfScene ? 3200 : 1800;
 
-    sentenceTimerRef.current = setTimeout(advanceNext, duration);
+    captionTimerRef.current = setTimeout(advanceNext, duration);
 
     return () => {
-      if (sentenceTimerRef.current) clearTimeout(sentenceTimerRef.current);
+      if (captionTimerRef.current) clearTimeout(captionTimerRef.current);
     };
-  }, [currentSceneIndex, currentSentenceIndex, advanceNext]);
+  }, [currentSceneIndex, currentCaptionIndex, advanceNext]);
 
   // Skip directly to website
   const handleSkip = useCallback(() => {
@@ -512,39 +664,38 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
   }, []);
 
   const activeScene = CINEMATIC_SCENES[currentSceneIndex];
-  const activeLine = activeScene.lines[currentSentenceIndex] || '';
-  const isClimaxSentence = currentSentenceIndex === activeScene.lines.length - 1;
-  const isFinalScreen = currentSceneIndex === 6 && isClimaxSentence;
+  const activeCaption = activeScene.captions[currentCaptionIndex];
+  const activeLine = activeCaption?.text || '';
+  const isClimaxCaption = currentCaptionIndex === activeScene.captions.length - 1;
+  const isFinalScreen = currentSceneIndex === 6 && isClimaxCaption;
 
   /**
-   * Helper to assign multi-color neon styling per line based on scene theme:
-   * Mirrors Image 3 (Cyan + Magenta), Image 6 (Multi-neon wire tubes), Image 7 (Rainbow streaks)
+   * Assigns authentic illuminated neon tube classes matching the Last Image reference
    */
   const getLineNeonClass = (lineIdx: number, totalLines: number, isClimax: boolean): string => {
     if (isClimax) {
-      if (activeScene.theme === 'gold') return 'bmi-neon-gold-climax';
-      if (activeScene.theme === 'rainbow') return 'bmi-neon-rainbow-climax';
-      return 'bmi-neon-dual-climax';
+      if (activeScene.isGold || activeCaption?.theme === 'gold') return 'bmi-neon-lastref-gold';
+      if (activeCaption?.theme === 'rainbow') return 'bmi-neon-lastref-rainbow';
+      return 'bmi-neon-lastref-pink';
     }
 
-    switch (activeScene.theme) {
+    switch (activeCaption?.theme) {
+      case 'pink-magenta':
+        return lineIdx % 2 === 0 ? 'bmi-neon-lastref-pink' : 'bmi-neon-lastref-magenta';
       case 'cyan-magenta':
-        return lineIdx % 2 === 0 ? 'bmi-neon-cyan' : 'bmi-neon-magenta';
-      case 'amber-pink':
-        return lineIdx % 2 === 0 ? 'bmi-neon-amber' : 'bmi-neon-pink';
+        return lineIdx % 2 === 0 ? 'bmi-neon-lastref-cyan' : 'bmi-neon-lastref-pink';
       case 'lime-cyan':
-        return lineIdx % 2 === 0 ? 'bmi-neon-lime' : 'bmi-neon-cyan';
-      case 'blue-magenta':
-        return lineIdx % 2 === 0 ? 'bmi-neon-blue' : 'bmi-neon-magenta';
+        return lineIdx % 2 === 0 ? 'bmi-neon-lastref-lime' : 'bmi-neon-lastref-cyan';
+      case 'blue-violet':
+        return lineIdx % 2 === 0 ? 'bmi-neon-lastref-blue' : 'bmi-neon-lastref-violet';
       case 'gold':
-        return 'bmi-neon-gold';
+        return 'bmi-neon-lastref-gold';
       case 'showcase':
-        if (currentSentenceIndex === 0) return 'bmi-neon-amber';
-        if (currentSentenceIndex === 1) return 'bmi-neon-cyan';
-        return 'bmi-neon-lime';
+        if (currentCaptionIndex === 0) return 'bmi-neon-lastref-gold';
+        return 'bmi-neon-lastref-cyan';
       case 'rainbow':
       default:
-        return lineIdx % 2 === 0 ? 'bmi-neon-cyan' : 'bmi-neon-magenta';
+        return lineIdx % 2 === 0 ? 'bmi-neon-lastref-pink' : 'bmi-neon-lastref-cyan';
     }
   };
 
@@ -559,19 +710,19 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
       {/* 1. EXACT Same Background Ambient Radial Glow */}
       <div className="bmi-bg-radial" aria-hidden="true" />
 
-      {/* 2. Volumetric Multi-Color God Rays (Rotating light beams matching reference) */}
+      {/* 2. Fluid Abstract Light Waves & Volumetric God Rays (Images 4 & 7) */}
       <div className="bmi-volumetric-container" aria-hidden="true">
-        <div className={`bmi-volumetric-rays bmi-rays-${activeScene.theme}`} />
+        <div className={`bmi-volumetric-rays bmi-rays-${activeCaption?.theme || 'gold'}`} />
         <div className="bmi-central-flare" />
       </div>
 
-      {/* 3. Multi-Color Golden/Cyan/Magenta Sparks Canvas */}
+      {/* 3. Multi-Color Neon Sparks & Energy Trails Canvas (Images 6 & 7) */}
       <canvas ref={sparksCanvasRef} className="bmi-sparks-canvas" aria-hidden="true" />
 
       {/* 4. Dedicated Confetti Canvas */}
       <canvas ref={confettiCanvasRef} className="bmi-confetti-canvas" aria-hidden="true" />
 
-      {/* 5. Top Header Bar with Concentric Neon Cloud Logo (from Image 2) */}
+      {/* 5. Top Header Bar with Concentric Neon Cloud Emblem (Image 2) */}
       <header
         className="w-full max-w-5xl px-3 sm:px-6 py-2 sm:py-3 flex items-center justify-between z-20"
         onClick={(e) => e.stopPropagation()}
@@ -579,7 +730,7 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
         {/* GDG Chapter Title with Concentric Neon Cloud Emblem */}
         <div className="flex items-center gap-2.5">
           <div className="w-10 h-8 flex items-center justify-center shrink-0">
-            <ConcentricNeonCloud size={40} />
+            <ConcentricNeonCloud size={42} />
           </div>
           <div className="hidden min-[420px]:block text-left">
             <p className="text-[11px] font-black tracking-wider uppercase text-slate-800 leading-tight">
@@ -625,10 +776,10 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
         </button>
       </header>
 
-      {/* 6. Main Stage (ZERO BACKGROUND — MULTI-COLOR NEON TUBE TYPOGRAPHY & LIGHTING) */}
+      {/* 6. Main Stage (ZERO BACKGROUND — ILLUMINATED NEON TUBE TYPOGRAPHY MATCHING LAST IMAGE) */}
       <main className="bmi-experience-stage w-full">
-        {/* Scene Tag Pill with Google Quad-Color Dots & Multi-Neon Glow */}
-        <div className="mb-6 sm:mb-10 flex justify-center">
+        {/* Scene Tag Pill with Google Quad-Color Dots & Neon Glow */}
+        <div className="mb-4 sm:mb-8 flex justify-center">
           <div
             className={`bmi-scene-tag-clean ${
               activeScene.isGold ? 'bmi-scene-tag-gold-clean' : 'bmi-scene-tag-multi'
@@ -645,35 +796,26 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
           </div>
         </div>
 
+        {/* Continuous-Line Neon Technology Illustration (Images 1, 5, 6) */}
+        {!isFinalScreen && (
+          <div className="mb-3 sm:mb-5 animate-pulse">
+            <NeonTechIllustration type={activeCaption?.illustration} />
+          </div>
+        )}
+
         {/* ===================================================================
-            CINEMATIC SENTENCE PRESENTATION (BLENDER & PREMIERE PRO STYLE REVEAL)
-            - 3D perspective zoom & snap
-            - Multi-color neon tube outline typography
-            - Electric neon ignition strike
+            CINEMATIC CAPTION REVEAL (BLENDER / PREMIERE PRO PERSPECTIVE MOTION)
+            - Illuminated neon tube lettering matching Last Image Reference
+            - Quick 1–2s transitions
+            - Word-by-word / Letter-assembly zoom-in
             =================================================================== */}
         <div className="w-full max-w-4xl flex flex-col items-center justify-center text-center px-4 relative z-10">
-          {/* Active sentence container with key to trigger neon ignition animation on every line change */}
           <div
-            key={`${currentSceneIndex}-${currentSentenceIndex}`}
-            className="bmi-neon-ignite w-full flex flex-col items-center justify-center"
+            key={`${currentSceneIndex}-${currentCaptionIndex}`}
+            className="bmi-neon-premiere-reveal w-full flex flex-col items-center justify-center"
           >
-            {/* Contextual Icon for Scene 6 Metrics */}
-            {currentSceneIndex === 5 && (
-              <div className="mb-4 sm:mb-6 flex items-center justify-center">
-                {currentSentenceIndex === 0 && (
-                  <Users className="w-12 h-12 text-amber-500 drop-shadow-[0_0_20px_rgba(255,184,0,0.95)]" />
-                )}
-                {currentSentenceIndex === 1 && (
-                  <Award className="w-12 h-12 text-cyan-400 drop-shadow-[0_0_20px_rgba(0,240,255,0.95)]" />
-                )}
-                {currentSentenceIndex === 2 && (
-                  <Trophy className="w-12 h-12 text-emerald-400 drop-shadow-[0_0_22px_rgba(0,255,136,1)]" />
-                )}
-              </div>
-            )}
-
             {/* Climax defining moment badge */}
-            {isClimaxSentence && !isFinalScreen && (
+            {isClimaxCaption && !isFinalScreen && (
               <div className="flex items-center gap-2 mb-3 sm:mb-4 animate-pulse">
                 <span className="w-2 h-2 rounded-full bg-[#00F0FF] shadow-[0_0_8px_#00F0FF]" />
                 <span className="text-[11px] sm:text-xs font-black tracking-widest text-cyan-600 uppercase">
@@ -683,23 +825,23 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
               </div>
             )}
 
-            {/* Final Screen Grand Composition (Frame 4 / Image 2 Concentric Neon Cloud) */}
+            {/* Final Screen Grand Finale (Matching Frame 4 & Images 1–7) */}
             {isFinalScreen ? (
               <div className="w-full flex flex-col items-center justify-center space-y-4 sm:space-y-6">
-                {/* Prominent Concentric Neon Cloud Emblem (Image 2 style) */}
+                {/* Concentric Neon Cloud Emblem (Image 2 aesthetic) */}
                 <div className="mb-2 sm:mb-4 animate-pulse">
-                  <ConcentricNeonCloud size={110} />
+                  <ConcentricNeonCloud size={118} />
                 </div>
 
-                <h2 className="text-xl sm:text-3xl md:text-4xl font-black uppercase tracking-widest bmi-neon-cyan">
+                <h2 className="text-xl sm:text-3xl md:text-4xl font-black uppercase tracking-widest bmi-neon-lastref-cyan">
                   GDG ON-CAMPUS NECN
                 </h2>
 
-                <p className="text-xs sm:text-sm md:text-base font-bold uppercase tracking-[0.25em] text-purple-700/90 bmi-neon-purple">
+                <p className="text-xs sm:text-sm md:text-base font-bold uppercase tracking-[0.25em] text-purple-700/90 bmi-neon-lastref-violet">
                   • ONE TEAM • ONE COMMUNITY • ONE GOLDEN MILESTONE •
                 </p>
 
-                <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight text-center bmi-neon-rainbow-climax bmi-streak-effect flex items-center justify-center gap-3 sm:gap-6">
+                <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight text-center bmi-neon-lastref-rainbow bmi-streak-effect flex items-center justify-center gap-3 sm:gap-6">
                   <span className="text-cyan-400 text-3xl sm:text-5xl">✦</span>
                   <span>WE MADE IT HAPPEN</span>
                   <span className="text-pink-400 text-3xl sm:text-5xl">✦</span>
@@ -716,20 +858,29 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
                 </div>
               </div>
             ) : (
-              /* Standard & Climax Sentences with Natural Stacked Multi-Color Neon Lines */
+              /* Standard & Climax Sentences with Last Image Neon Tube Outlines */
               <h1 className="w-full max-w-3xl font-black uppercase tracking-tight text-center">
                 {activeLine.split('\n').map((line, idx, arr) => {
-                  const lineClass = getLineNeonClass(idx, arr.length, isClimaxSentence);
+                  const lineClass = getLineNeonClass(idx, arr.length, isClimaxCaption);
                   return (
                     <span
                       key={idx}
                       className={`block leading-[1.12] my-1 sm:my-2 ${
-                        isClimaxSentence
+                        isClimaxCaption
                           ? 'text-3xl sm:text-5xl md:text-6xl lg:text-7xl'
                           : 'text-2xl sm:text-4xl md:text-5xl'
                       } ${lineClass} bmi-streak-effect`}
                     >
-                      {line}
+                      {/* Animate words individually with Premiere Pro stagger */}
+                      {line.split(' ').map((word, wIdx) => (
+                        <span
+                          key={wIdx}
+                          className="bmi-word-pop inline-block mx-1.5"
+                          style={{ animationDelay: `${wIdx * 0.08}s` }}
+                        >
+                          {word}
+                        </span>
+                      ))}
                     </span>
                   );
                 })}
@@ -738,9 +889,9 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
           </div>
 
           {/* Subdued Line Tracker */}
-          <div className="mt-10 sm:mt-14 flex items-center gap-2 text-xs font-mono font-bold text-slate-400">
+          <div className="mt-8 sm:mt-12 flex items-center gap-2 text-xs font-mono font-bold text-slate-400">
             <span>
-              SENTENCE 0{currentSentenceIndex + 1} OF 0{activeScene.lines.length}
+              CAPTION 0{currentCaptionIndex + 1} OF 0{activeScene.captions.length}
             </span>
             <span className="text-slate-300">•</span>
             <span className="text-cyan-600 flex items-center gap-1 font-sans">
