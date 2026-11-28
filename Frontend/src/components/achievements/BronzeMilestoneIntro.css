@@ -1,50 +1,48 @@
 /* =========================================================================
-   GDG ON CAMPUS NECN — FULL-SCREEN CINEMATIC NEON GOLD CELEBRATION
-   EXACTLY MATCHING THE REFERENCE IMAGE (media_1795861002889_69e74b9a.jpg)
-   - Deep cinematic dark vignette studio wall
-   - Real hollow glass neon tube lettering (NO solid dark fill, 100% transparent interior)
-   - Clean, uncluttered layout: Top tag -> Center neon typography -> Bottom indicator
-   - ZERO rectangular box smudges or colored drop-shadow smudges
-   - Authentic multi-color neon palettes (Pink/Magenta, Electric Cyan, Violet, Lime, 24K Gold)
+   GDG ON CAMPUS NECN — FULL-SCREEN LUXURY NEON GOLD CELEBRATION
+   - Pure Full-Screen Immersive Neon Experience (NO scene tags, NO caption counters, NO headers)
+   - Exactly matches the reference image (media_1795861002889_69e74b9a.jpg)
+   - 100% Hollow, glowing rounded glass neon tube typography
+   - Deep cinematic luxury vignette ambient wall
+   - Smooth optical gas ionization & luminous neon breathing
    ========================================================================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Nunito:wght@800;900&family=Plus+Jakarta+Sans:wght@800;900&display=swap');
 
-/* Main Full-Screen Overlay */
+/* Main Full-Screen Luxury Stage */
 .bmi-overlay {
   position: fixed;
   inset: 0;
   z-index: 99999;
-  background: radial-gradient(circle at 50% 50%, #200B26 0%, #110515 50%, #060109 100%);
+  background: radial-gradient(circle at 50% 50%, #1A0720 0%, #0E0312 50%, #050108 100%);
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   overflow: hidden;
   user-select: none;
   cursor: pointer;
-  padding: max(20px, env(safe-area-inset-top, 20px)) 20px max(20px, env(safe-area-inset-bottom, 20px));
-  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 24px;
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .bmi-overlay.bmi-exiting {
   opacity: 0;
-  transform: scale(1.03);
+  transform: scale(1.04);
   pointer-events: none;
 }
 
-/* Subtle ambient dark wall texture / vignette depth */
+/* Subtle Deep Wall Vignette & Light Depth */
 .bmi-ambient-wall {
   position: absolute;
   inset: 0;
   background: 
-    radial-gradient(ellipse at 50% 50%, rgba(255, 0, 127, 0.08) 0%, transparent 60%),
-    radial-gradient(circle at 50% 25%, rgba(0, 240, 255, 0.04) 0%, transparent 55%);
+    radial-gradient(ellipse at 50% 50%, rgba(255, 0, 127, 0.09) 0%, transparent 65%),
+    radial-gradient(circle at 50% 25%, rgba(0, 240, 255, 0.05) 0%, transparent 60%);
   pointer-events: none;
   z-index: 1;
 }
 
-/* Dedicated Confetti Canvas for Gold Reveal */
+/* Confetti Layer for Gold Celebrations */
 .bmi-confetti-canvas {
   position: fixed;
   inset: 0;
@@ -54,145 +52,35 @@
   z-index: 100005;
 }
 
-/* Subtle floating ambient embers */
-.bmi-sparks-canvas {
-  position: fixed;
-  inset: 0;
-  width: 100% !important;
-  height: 100% !important;
-  pointer-events: none;
-  z-index: 2;
-}
-
 /* -------------------------------------------------------------------------
-   TOP HEADER BAR
+   FULL-SCREEN CENTER STAGE
+   No headers, no footers, no extra labels — pure cinematic focus
    ------------------------------------------------------------------------- */
-.bmi-top-header {
-  position: relative;
-  z-index: 20;
-  width: 100%;
-  max-width: 1100px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 12px;
-}
-
-.bmi-header-branding {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.bmi-header-title {
-  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.85);
-  line-height: 1.2;
-}
-
-.bmi-header-sub {
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #FFD700;
-  text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
-}
-
-.bmi-skip-btn {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 6px 14px;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  backdrop-filter: blur(8px);
-  transition: all 0.25s ease;
-  cursor: pointer;
-}
-
-.bmi-skip-btn:hover {
-  background: rgba(255, 255, 255, 0.14);
-  color: #FFFFFF;
-  border-color: rgba(255, 255, 255, 0.35);
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-}
-
-/* -------------------------------------------------------------------------
-   MAIN STAGE (EXACT REFERENCE IMAGE COMPOSITION)
-   - Top Scene Tag (like 'NEON TEXT EFFECT')
-   - Center Glowing Neon Typography (like 'NEON')
-   - Bottom Action Indicator (like 'EDITABLE VECTOR TEXT EFFECT')
-   ------------------------------------------------------------------------- */
-.bmi-main-stage {
+.bmi-fullscreen-stage {
   position: relative;
   z-index: 10;
   width: 100%;
-  max-width: 1000px;
-  margin: auto 0;
+  max-width: 1200px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 20px 10px;
+  margin: auto;
 }
 
-/* Top Scene Tag (Reference: "NEON TEXT EFFECT") */
-.bmi-reference-tag {
-  font-family: 'Comfortaa', 'Plus Jakarta Sans', system-ui, sans-serif;
-  font-size: clamp(11px, 2.2vw, 14px);
-  font-weight: 700;
-  letter-spacing: 0.35em;
+/* Big, Full-Screen Rounded Neon Typography */
+.bmi-luxury-neon-text {
+  display: block;
+  font-family: 'Comfortaa', 'Nunito', system-ui, sans-serif;
+  font-size: clamp(2.6rem, 7.5vw, 6.2rem);
+  font-weight: 800;
   text-transform: uppercase;
-  color: #FFAAD4;
-  text-shadow: 0 0 10px rgba(255, 0, 127, 0.75), 0 0 20px rgba(255, 0, 127, 0.4);
-  margin-bottom: 24px;
-  transition: color 0.4s ease, text-shadow 0.4s ease;
-}
-
-.bmi-reference-tag.tag-gold {
-  color: #FFE082;
-  text-shadow: 0 0 10px rgba(255, 184, 0, 0.8), 0 0 20px rgba(255, 145, 0, 0.5);
-}
-
-.bmi-reference-tag.tag-cyan {
-  color: #80F8FF;
-  text-shadow: 0 0 10px rgba(0, 240, 255, 0.8), 0 0 20px rgba(0, 200, 255, 0.5);
-}
-
-/* Bottom Progress / Action (Reference: "EDITABLE VECTOR TEXT EFFECT") */
-.bmi-reference-sub {
-  font-family: 'Comfortaa', 'Plus Jakarta Sans', system-ui, sans-serif;
-  font-size: clamp(10px, 1.8vw, 12px);
-  font-weight: 700;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: #FFAAD4;
-  text-shadow: 0 0 8px rgba(255, 0, 127, 0.6);
-  margin-top: 32px;
-  opacity: 0.9;
-  transition: color 0.4s ease;
-}
-
-.bmi-reference-sub.sub-gold {
-  color: #FFE082;
-  text-shadow: 0 0 8px rgba(255, 184, 0, 0.6);
-}
-
-.bmi-reference-sub.sub-cyan {
-  color: #80F8FF;
-  text-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
+  letter-spacing: 0.055em;
+  line-height: 1.16;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  margin: 4px 0;
 }
 
 /* -------------------------------------------------------------------------
@@ -201,224 +89,208 @@
    - 100% Transparent hollow interior showing the dark ambient background
    - Stroke contoured onto rounded letterforms
    - Multi-stage optical glow (white filament core + colored gas bloom)
-   - Cast shadow directly onto the back wall (NO rectangular blur smudges)
+   - Deep cast shadow directly onto the back wall (NO rectangular blur smudges)
    ------------------------------------------------------------------------- */
 
-/* Shared Neon Foundation */
-.bmi-neon-tube-base {
-  display: block;
-  font-family: 'Comfortaa', 'Nunito', system-ui, sans-serif;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.055em;
-  color: transparent !important;
-  -webkit-text-fill-color: transparent !important;
-  margin: 6px 0;
-  line-height: 1.18;
-}
-
-/* 1. Hot Pink / Magenta Neon Tube (EXACT Reference Image "NEON") */
-.bmi-neon-tube-pink {
-  -webkit-text-stroke: 2.8px #FF66AA;
+/* 1. Hot Pink / Magenta Neon Tube (Reference Image "NEON") */
+.bmi-tube-pink {
+  -webkit-text-stroke: 3px #FF66AA;
   text-shadow:
     0 0 2px #FFFFFF,
     0 0 5px #FFFFFF,
-    0 0 12px #FF007F,
-    0 0 25px #FF007F,
-    0 0 50px #FF007F,
-    0 0 85px #D9006C,
-    0 0 130px rgba(255, 0, 127, 0.5);
-  filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.85));
+    0 0 14px #FF007F,
+    0 0 28px #FF007F,
+    0 0 55px #FF007F,
+    0 0 95px #D9006C,
+    0 0 145px rgba(255, 0, 127, 0.55);
+  filter: drop-shadow(0 16px 28px rgba(0, 0, 0, 0.9));
 }
 
 /* 2. Electric Cyan Neon Tube */
-.bmi-neon-tube-cyan {
-  -webkit-text-stroke: 2.8px #80F8FF;
+.bmi-tube-cyan {
+  -webkit-text-stroke: 3px #80F8FF;
   text-shadow:
     0 0 2px #FFFFFF,
     0 0 5px #FFFFFF,
-    0 0 12px #00F0FF,
-    0 0 25px #00C8FF,
-    0 0 50px #0099FF,
-    0 0 85px #0066CC,
-    0 0 130px rgba(0, 240, 255, 0.5);
-  filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.85));
+    0 0 14px #00F0FF,
+    0 0 28px #00C8FF,
+    0 0 55px #0099FF,
+    0 0 95px #0066CC,
+    0 0 145px rgba(0, 240, 255, 0.55);
+  filter: drop-shadow(0 16px 28px rgba(0, 0, 0, 0.9));
 }
 
 /* 3. Neon Violet / Purple Tube */
-.bmi-neon-tube-violet {
-  -webkit-text-stroke: 2.8px #D8B4FE;
+.bmi-tube-violet {
+  -webkit-text-stroke: 3px #D8B4FE;
   text-shadow:
     0 0 2px #FFFFFF,
     0 0 5px #FFFFFF,
-    0 0 12px #A855F7,
-    0 0 25px #9333EA,
-    0 0 50px #7E22CE,
-    0 0 85px #6B21A8,
-    0 0 130px rgba(168, 85, 247, 0.5);
-  filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.85));
+    0 0 14px #A855F7,
+    0 0 28px #9333EA,
+    0 0 55px #7E22CE,
+    0 0 95px #6B21A8,
+    0 0 145px rgba(168, 85, 247, 0.55);
+  filter: drop-shadow(0 16px 28px rgba(0, 0, 0, 0.9));
 }
 
-/* 4. Electric Lime Neon Tube */
-.bmi-neon-tube-lime {
-  -webkit-text-stroke: 2.8px #A7F3D0;
-  text-shadow:
-    0 0 2px #FFFFFF,
-    0 0 5px #FFFFFF,
-    0 0 12px #00FF88,
-    0 0 25px #10B981,
-    0 0 50px #059669,
-    0 0 85px #047857,
-    0 0 130px rgba(0, 255, 136, 0.5);
-  filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.85));
-}
-
-/* 5. 24K Gold Neon Tube (Scene 5 "WE REACHED GOLD!" & Scene 6) */
-.bmi-neon-tube-gold {
-  -webkit-text-stroke: 3.2px #FFE082;
+/* 4. 24K Luxury Gold Neon Tube (Gold Reveal & Milestone) */
+.bmi-tube-gold {
+  -webkit-text-stroke: 3.4px #FFE082;
   text-shadow:
     0 0 2px #FFFFFF,
     0 0 6px #FFF59D,
-    0 0 14px #FFD700,
-    0 0 30px #FFB800,
-    0 0 60px #FF8F00,
-    0 0 100px #FF6F00,
-    0 0 150px rgba(255, 145, 0, 0.6);
-  filter: drop-shadow(0 16px 28px rgba(0, 0, 0, 0.9));
-  animation: bmiGoldTubePulse 2.8s ease-in-out infinite;
+    0 0 16px #FFD700,
+    0 0 34px #FFB800,
+    0 0 68px #FF8F00,
+    0 0 115px #FF6F00,
+    0 0 165px rgba(255, 145, 0, 0.65);
+  filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.92));
+  animation: bmiGoldPulse 3s ease-in-out infinite;
 }
 
-@keyframes bmiGoldTubePulse {
+@keyframes bmiGoldPulse {
   0%, 100% {
     text-shadow:
       0 0 2px #FFFFFF,
       0 0 6px #FFF59D,
-      0 0 14px #FFD700,
-      0 0 30px #FFB800,
-      0 0 60px #FF8F00,
-      0 0 100px #FF6F00,
-      0 0 150px rgba(255, 145, 0, 0.6);
+      0 0 16px #FFD700,
+      0 0 34px #FFB800,
+      0 0 68px #FF8F00,
+      0 0 115px #FF6F00,
+      0 0 165px rgba(255, 145, 0, 0.65);
   }
   50% {
     text-shadow:
       0 0 3px #FFFFFF,
       0 0 10px #FFF59D,
-      0 0 22px #FFD700,
-      0 0 42px #FFB800,
-      0 0 80px #FF8F00,
-      0 0 130px #FF6F00,
-      0 0 180px rgba(255, 145, 0, 0.8);
+      0 0 24px #FFD700,
+      0 0 46px #FFB800,
+      0 0 88px #FF8F00,
+      0 0 140px #FF6F00,
+      0 0 195px rgba(255, 145, 0, 0.85);
   }
 }
 
-/* 6. Concentric Multi-Color Rainbow Neon Tube (Grand Finale) */
-.bmi-neon-tube-rainbow {
-  -webkit-text-stroke: 2.8px #FFFFFF;
+/* 5. Concentric Rainbow Neon Tube (Grand Climax) */
+.bmi-tube-rainbow {
+  -webkit-text-stroke: 3px #FFFFFF;
   text-shadow:
     0 0 2px #FFFFFF,
     0 0 6px #FFFFFF,
-    0 0 16px #00F0FF,
-    0 0 32px #A855F7,
-    0 0 55px #FF007F,
-    0 0 90px #FFD700,
-    0 0 140px rgba(0, 240, 255, 0.6);
-  filter: drop-shadow(0 16px 28px rgba(0, 0, 0, 0.9));
-  animation: bmiRainbowTubePulse 3.2s ease-in-out infinite;
+    0 0 18px #00F0FF,
+    0 0 36px #A855F7,
+    0 0 62px #FF007F,
+    0 0 100px #FFD700,
+    0 0 155px rgba(0, 240, 255, 0.65);
+  filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.92));
+  animation: bmiRainbowPulse 3.2s ease-in-out infinite;
 }
 
-@keyframes bmiRainbowTubePulse {
+@keyframes bmiRainbowPulse {
   0%, 100% {
     text-shadow:
       0 0 2px #FFFFFF,
       0 0 6px #FFFFFF,
-      0 0 16px #00F0FF,
-      0 0 32px #A855F7,
-      0 0 55px #FF007F,
-      0 0 90px #FFD700,
-      0 0 140px rgba(0, 240, 255, 0.6);
+      0 0 18px #00F0FF,
+      0 0 36px #A855F7,
+      0 0 62px #FF007F,
+      0 0 100px #FFD700,
+      0 0 155px rgba(0, 240, 255, 0.65);
   }
   50% {
     text-shadow:
       0 0 3px #FFFFFF,
       0 0 9px #FFFFFF,
-      0 0 22px #00F0FF,
-      0 0 42px #FF007F,
-      0 0 75px #FFD700,
-      0 0 115px #00FF88,
-      0 0 170px rgba(255, 0, 127, 0.8);
+      0 0 24px #00F0FF,
+      0 0 46px #FF007F,
+      0 0 80px #FFD700,
+      0 0 125px #00FF88,
+      0 0 185px rgba(255, 0, 127, 0.85);
   }
 }
 
 /* -------------------------------------------------------------------------
-   SMOOTH NEON IGNITION & FADE TRANSITION
-   Subtle gas ionization flicker on entry -> steady luminous glow
+   SMOOTH CINEMATIC TRANSITIONS
+   Natural gas ignition strike on entry -> steady luxury radiance
    ------------------------------------------------------------------------- */
-@keyframes neonIgniteIn {
+@keyframes luxuryNeonIgnite {
   0% {
     opacity: 0;
-    transform: scale(0.96);
-    filter: brightness(0.3) drop-shadow(0 15px 25px rgba(0, 0, 0, 0.85));
+    transform: scale(0.95);
+    filter: brightness(0.3) drop-shadow(0 16px 28px rgba(0, 0, 0, 0.85));
   }
   20% {
-    opacity: 0.9;
-    filter: brightness(2.2) drop-shadow(0 15px 25px rgba(0, 0, 0, 0.85));
+    opacity: 0.92;
+    filter: brightness(2.1) drop-shadow(0 16px 28px rgba(0, 0, 0, 0.85));
   }
   32% {
-    opacity: 0.45;
-    filter: brightness(0.7) drop-shadow(0 15px 25px rgba(0, 0, 0, 0.85));
+    opacity: 0.5;
+    filter: brightness(0.75) drop-shadow(0 16px 28px rgba(0, 0, 0, 0.85));
   }
   44% {
     opacity: 1;
-    filter: brightness(1.8) drop-shadow(0 15px 25px rgba(0, 0, 0, 0.85));
+    filter: brightness(1.75) drop-shadow(0 16px 28px rgba(0, 0, 0, 0.85));
   }
   60% {
-    transform: scale(1.008);
-    filter: brightness(1.1) drop-shadow(0 15px 25px rgba(0, 0, 0, 0.85));
+    transform: scale(1.006);
+    filter: brightness(1.1) drop-shadow(0 16px 28px rgba(0, 0, 0, 0.85));
   }
   100% {
     opacity: 1;
     transform: scale(1);
-    filter: brightness(1) drop-shadow(0 15px 25px rgba(0, 0, 0, 0.85));
+    filter: brightness(1) drop-shadow(0 16px 28px rgba(0, 0, 0, 0.85));
   }
 }
 
 .bmi-caption-ignition {
-  animation: neonIgniteIn 0.52s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: luxuryNeonIgnite 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* -------------------------------------------------------------------------
-   CONCENTRIC MULTI-TUBE NEON CLOUD EMBLEM (IMAGE 2 HEART REFERENCE)
+   CONCENTRIC MULTI-TUBE NEON CLOUD EMBLEM
    ------------------------------------------------------------------------- */
 .bmi-concentric-cloud {
   display: inline-block;
   vertical-align: middle;
-  filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.75)) drop-shadow(0 0 20px rgba(255, 0, 127, 0.55));
-  animation: bmiCloudNeonPulse 3.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.75)) drop-shadow(0 0 25px rgba(255, 0, 127, 0.55));
+  animation: bmiCloudGlow 3.5s ease-in-out infinite;
 }
 
-@keyframes bmiCloudNeonPulse {
+@keyframes bmiCloudGlow {
   0%, 100% {
-    filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.75)) drop-shadow(0 0 20px rgba(255, 0, 127, 0.55));
+    filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.75)) drop-shadow(0 0 25px rgba(255, 0, 127, 0.55));
   }
   50% {
-    filter: drop-shadow(0 0 16px rgba(0, 240, 255, 0.95)) drop-shadow(0 0 30px rgba(255, 0, 127, 0.85)) drop-shadow(0 0 45px rgba(255, 215, 0, 0.6));
+    filter: drop-shadow(0 0 18px rgba(0, 240, 255, 0.95)) drop-shadow(0 0 35px rgba(255, 0, 127, 0.85)) drop-shadow(0 0 50px rgba(255, 215, 0, 0.6));
   }
 }
 
-/* -------------------------------------------------------------------------
-   BOTTOM CHAPTER IDENTITY STRIP
-   ------------------------------------------------------------------------- */
-.bmi-bottom-footer {
-  position: relative;
-  z-index: 20;
-  width: 100%;
-  max-width: 1100px;
-  text-align: center;
+/* Final Screen Dashboard Action Button */
+.bmi-enter-btn {
+  padding: 14px 34px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.9) 0%, rgba(168, 85, 247, 0.9) 50%, rgba(255, 0, 127, 0.9) 100%);
+  color: #FFFFFF;
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.25em;
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.35);
-  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.5), 0 12px 24px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bmi-enter-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 45px rgba(255, 0, 127, 0.7), 0 16px 30px rgba(0, 0, 0, 0.7);
+}
+
+.bmi-enter-btn:active {
+  transform: scale(0.96);
 }

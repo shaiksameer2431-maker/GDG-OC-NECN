@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import confetti from 'canvas-confetti';
-import { ChevronRight, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import './BronzeMilestoneIntro.css';
 
 interface BronzeMilestoneIntroProps {
@@ -8,97 +8,60 @@ interface BronzeMilestoneIntroProps {
   onPreload?: () => void;
 }
 
-interface CaptionItem {
+interface LuxuryCaption {
   text: string;
-  theme: 'pink' | 'cyan' | 'violet' | 'lime' | 'gold' | 'rainbow';
+  theme: 'pink' | 'cyan' | 'violet' | 'gold' | 'rainbow';
+  duration: number; // in milliseconds
+  isCelebration?: boolean;
 }
 
-interface SceneData {
-  tag: string;
-  captions: CaptionItem[];
-  isGold: boolean;
-}
+// Master Sequence: Exact Captions and Groups Provided by User
+const LUXURY_CAPTIONS: LuxuryCaption[] = [
+  // ### Group 1
+  { text: 'IT WAS NEVER\nAN EASY JOURNEY.', theme: 'pink', duration: 2500 },
+  { text: 'EVERY CHALLENGE\nMADE US STRONGER.', theme: 'cyan', duration: 2500 },
+  { text: 'BUT WE NEVER\nGAVE UP.', theme: 'pink', duration: 2600 },
 
-// Master Cinematic Caption Sequence (7 Scenes with exact captions requested)
-const CINEMATIC_SCENES: SceneData[] = [
-  // Scene 1 — The Journey
-  {
-    tag: 'SCENE 1 — THE JOURNEY',
-    isGold: false,
-    captions: [
-      { text: 'IT WAS NEVER\nAN EASY JOURNEY.', theme: 'pink' },
-      { text: 'EVERY CHALLENGE\nMADE US STRONGER.', theme: 'cyan' },
-      { text: 'BUT WE NEVER\nGAVE UP.', theme: 'pink' },
-    ],
-  },
-  // Scene 2 — The Struggle
-  {
-    tag: 'SCENE 2 — THE STRUGGLE',
-    isGold: false,
-    captions: [
-      { text: 'COUNTLESS LABS.', theme: 'violet' },
-      { text: 'LATE NIGHTS.', theme: 'pink' },
-      { text: 'ONE GOAL.', theme: 'cyan' },
-      { text: 'WE KEPT MOVING\nFORWARD.', theme: 'pink' },
-    ],
-  },
-  // Scene 3 — The Unity
-  {
-    tag: 'SCENE 3 — THE UNITY',
-    isGold: false,
-    captions: [
-      { text: "WE DIDN'T\nDO IT ALONE.", theme: 'lime' },
-      { text: 'WE LEARNED\nTOGETHER.', theme: 'cyan' },
-      { text: 'EVERY EFFORT\nCOUNTED.', theme: 'pink' },
-    ],
-  },
-  // Scene 4 — The Turning Point
-  {
-    tag: 'SCENE 4 — THE TURNING POINT',
-    isGold: false,
-    captions: [
-      { text: '438 STUDENTS.', theme: 'cyan' },
-      { text: 'ONE COMMUNITY.', theme: 'pink' },
-      { text: 'ONE UNSTOPPABLE\nTEAM.', theme: 'violet' },
-      { text: 'AND FINALLY...', theme: 'cyan' },
-    ],
-  },
-  // Scene 5 — The Gold Reveal (The Climax)
-  {
-    tag: 'SCENE 5 — THE GOLD REVEAL',
-    isGold: true,
-    captions: [
-      { text: 'THE WAIT IS OVER.', theme: 'gold' },
-      { text: 'WE DID IT!', theme: 'gold' },
-      { text: 'WE REACHED\nGOLD!', theme: 'gold' },
-    ],
-  },
-  // Scene 6 — The Achievement
-  {
-    tag: 'SCENE 6 — THE ACHIEVEMENT',
-    isGold: true,
-    captions: [
-      { text: '280 ACHIEVERS.', theme: 'gold' },
-      { text: '2,661\nSKILL BADGES.', theme: 'gold' },
-    ],
-  },
-  // Scene 7 — The Finale & Victory Screen
-  {
-    tag: 'GDG ON-CAMPUS NECN',
-    isGold: true,
-    captions: [
-      { text: 'THIS GOLD BELONGS\nTO EVERYONE.', theme: 'pink' },
-      { text: 'ONE TEAM.', theme: 'cyan' },
-      { text: 'ONE COMMUNITY.', theme: 'violet' },
-      { text: 'ONE GOLDEN\nMILESTONE.', theme: 'gold' },
-      { text: 'WE MADE IT HAPPEN.', theme: 'rainbow' },
-    ],
-  },
+  // ### Group 2
+  { text: 'COUNTLESS LABS.', theme: 'violet', duration: 2200 },
+  { text: 'LATE NIGHTS.', theme: 'violet', duration: 2200 },
+  { text: 'ONE GOAL.', theme: 'cyan', duration: 2200 },
+  { text: 'WE KEPT MOVING\nFORWARD.', theme: 'pink', duration: 2600 },
+
+  // ### Group 3
+  { text: "WE DIDN'T\nDO IT ALONE.", theme: 'cyan', duration: 2400 },
+  { text: 'WE LEARNED\nTOGETHER.', theme: 'cyan', duration: 2400 },
+  { text: 'EVERY EFFORT\nCOUNTED.', theme: 'pink', duration: 2600 },
+
+  // ### Group 4
+  { text: '438 STUDENTS.', theme: 'cyan', duration: 2400 },
+  { text: 'ONE COMMUNITY.', theme: 'pink', duration: 2400 },
+  { text: 'ONE UNSTOPPABLE\nTEAM.', theme: 'cyan', duration: 2500 },
+  { text: 'AND FINALLY...', theme: 'violet', duration: 2300 },
+
+  // ### Group 5 — The Gold Reveal
+  { text: 'THE WAIT IS OVER.', theme: 'gold', duration: 2400 },
+  { text: 'WE DID IT!', theme: 'gold', duration: 2400, isCelebration: true },
+  { text: 'WE REACHED\nGOLD!', theme: 'gold', duration: 3400, isCelebration: true },
+
+  // ### Group 6 — Achievements
+  { text: '280 ACHIEVERS.', theme: 'gold', duration: 2600 },
+  { text: '2,661\nSKILL BADGES.', theme: 'gold', duration: 2800 },
+
+  // ### Group 7 — Finale
+  { text: 'THIS GOLD BELONGS\nTO EVERYONE.', theme: 'pink', duration: 2600 },
+  { text: 'ONE TEAM.', theme: 'cyan', duration: 2200 },
+  { text: 'ONE COMMUNITY.', theme: 'violet', duration: 2200 },
+  { text: 'ONE GOLDEN\nMILESTONE.', theme: 'gold', duration: 2600 },
+  { text: 'WE MADE IT HAPPEN.', theme: 'rainbow', duration: 3500, isCelebration: true },
+
+  // Final Screen: GDG ON-CAMPUS NECN Grand Reveal
+  { text: 'GDG ON-CAMPUS\nNECN', theme: 'gold', duration: 5000, isCelebration: true },
 ];
 
 /**
  * Concentric Multi-Tube Neon Cloud Logo Component
- * Modeled directly on the concentric neon heart reference
+ * Modeled on the concentric neon heart reference
  */
 export const ConcentricNeonCloud: React.FC<{ size?: number; className?: string }> = ({
   size = 54,
@@ -115,7 +78,7 @@ export const ConcentricNeonCloud: React.FC<{ size?: number; className?: string }
       aria-label="Google Cloud Neon Logo"
     >
       <defs>
-        <linearGradient id="bmiNeonCloudGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <linearGradient id="bmiLuxuryCloudGrad" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#00F0FF" />
           <stop offset="28%" stopColor="#3B82F6" />
           <stop offset="55%" stopColor="#A855F7" />
@@ -123,7 +86,7 @@ export const ConcentricNeonCloud: React.FC<{ size?: number; className?: string }
           <stop offset="100%" stopColor="#FF3366" />
         </linearGradient>
 
-        <filter id="bmiNeonGlowFilter" x="-40%" y="-40%" width="180%" height="180%">
+        <filter id="bmiLuxuryGlow" x="-40%" y="-40%" width="180%" height="180%">
           <feGaussianBlur stdDeviation="3.5" result="coloredBlur" />
           <feMerge>
             <feMergeNode in="coloredBlur" />
@@ -133,54 +96,54 @@ export const ConcentricNeonCloud: React.FC<{ size?: number; className?: string }
         </filter>
       </defs>
 
-      {/* Outer Tube Glow */}
+      {/* Outer Tube Ambient Glow */}
       <path
         d="M 38 78 C 24 78 14 66 14 52 C 14 39 24 28 37 27 C 42 15 54 8 68 8 C 84 8 98 19 101 34 C 105 32 110 31 115 31 C 130 31 142 43 142 58 C 142 59 142 60 142 61 C 145 61 146 61 146 61 C 151 61 156 66 156 71 C 156 75 151 78 146 78 Z"
-        stroke="url(#bmiNeonCloudGrad)"
+        stroke="url(#bmiLuxuryCloudGrad)"
         strokeWidth="7"
         strokeLinecap="round"
         strokeLinejoin="round"
         opacity="0.5"
-        filter="url(#bmiNeonGlowFilter)"
+        filter="url(#bmiLuxuryGlow)"
       />
 
-      {/* Outer Tube */}
+      {/* Outer Loop */}
       <path
         d="M 38 78 C 24 78 14 66 14 52 C 14 39 24 28 37 27 C 42 15 54 8 68 8 C 84 8 98 19 101 34 C 105 32 110 31 115 31 C 130 31 142 43 142 58 C 142 59 142 60 142 61 C 145 61 146 61 146 61 C 151 61 156 66 156 71 C 156 75 151 78 146 78 Z"
-        stroke="url(#bmiNeonCloudGrad)"
+        stroke="url(#bmiLuxuryCloudGrad)"
         strokeWidth="3.6"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
 
-      {/* Middle Concentric Loop */}
+      {/* Middle Loop */}
       <path
         d="M 44 71 C 33 71 25 62 25 51 C 25 41 33 33 43 32 C 47 23 57 17 68 17 C 81 17 92 25 94 37 C 98 36 102 35 106 35 C 118 35 128 45 128 57 C 128 58 128 59 128 60 C 132 60 136 63 136 67 C 136 71 132 71 128 71 Z"
-        stroke="url(#bmiNeonCloudGrad)"
+        stroke="url(#bmiLuxuryCloudGrad)"
         strokeWidth="2.8"
         strokeLinecap="round"
         strokeLinejoin="round"
         opacity="0.9"
       />
 
-      {/* Inner Concentric Core */}
+      {/* Inner Core */}
       <path
         d="M 50 64 C 42 64 36 57 36 49 C 36 41 42 35 50 35 C 53 29 60 25 68 25 C 77 25 84 31 86 39 C 89 38 92 37 95 37 C 104 37 111 44 111 53 C 111 59 106 64 100 64 Z"
-        stroke="url(#bmiNeonCloudGrad)"
+        stroke="url(#bmiLuxuryCloudGrad)"
         strokeWidth="2.2"
         strokeLinecap="round"
         strokeLinejoin="round"
         opacity="0.8"
       />
 
-      {/* White-Hot Core Filament */}
+      {/* White-Hot Filament */}
       <path
         d="M 38 78 C 24 78 14 66 14 52 C 14 39 24 28 37 27 C 42 15 54 8 68 8 C 84 8 98 19 101 34 C 105 32 110 31 115 31 C 130 31 142 43 142 58 C 142 59 142 60 142 61 C 145 61 146 61 146 61 C 151 61 156 66 156 71 C 156 75 151 78 146 78 Z"
         stroke="#FFFFFF"
         strokeWidth="1.2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        opacity="0.9"
+        opacity="0.92"
       />
     </svg>
   );
@@ -190,13 +153,12 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
   onComplete,
   onPreload,
 }) => {
-  const [currentSceneIndex, setCurrentSceneIndex] = useState<number>(0);
-  const [currentCaptionIndex, setCurrentCaptionIndex] = useState<number>(0);
+  const [captionIndex, setCaptionIndex] = useState<number>(0);
   const [isExiting, setIsExiting] = useState<boolean>(false);
 
   const confettiCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const partyConfettiRef = useRef<confetti.CreateTypes | null>(null);
-  const captionTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const onCompleteRef = useRef(onComplete);
   const onPreloadRef = useRef(onPreload);
@@ -206,7 +168,7 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
     onPreloadRef.current = onPreload;
   });
 
-  // Multi-Neon Confetti Palette for Gold Reveal
+  // Multi-Neon Confetti Palette
   const multiNeonCelebrationColors = [
     '#00F0FF', // Electric Cyan
     '#FF007F', // Hot Magenta
@@ -230,40 +192,40 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
     };
   }, []);
 
-  // Fire multi-neon confetti on Gold Reveal
-  const fireGoldCelebration = useCallback(() => {
+  // Fire multi-neon confetti on major achievements
+  const fireCelebration = useCallback(() => {
     const party = partyConfettiRef.current;
     if (!party) return;
 
     party({
-      particleCount: 80,
+      particleCount: 85,
       angle: 60,
-      spread: 70,
+      spread: 75,
       origin: { x: 0.1, y: 0.8 },
       colors: multiNeonCelebrationColors,
-      scalar: 1.2,
+      scalar: 1.25,
       startVelocity: 45,
       gravity: 0.8,
-      ticks: 250,
+      ticks: 260,
       disableForReducedMotion: true,
     });
 
     party({
-      particleCount: 80,
+      particleCount: 85,
       angle: 120,
-      spread: 70,
+      spread: 75,
       origin: { x: 0.9, y: 0.8 },
       colors: multiNeonCelebrationColors,
-      scalar: 1.2,
+      scalar: 1.25,
       startVelocity: 45,
       gravity: 0.8,
-      ticks: 250,
+      ticks: 260,
       disableForReducedMotion: true,
     });
 
     setTimeout(() => {
       party({
-        particleCount: 110,
+        particleCount: 115,
         spread: 120,
         origin: { x: 0.5, y: 0.35 },
         colors: multiNeonCelebrationColors,
@@ -278,108 +240,76 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
 
   // Advance to next caption
   const advanceNext = useCallback(() => {
-    const activeScene = CINEMATIC_SCENES[currentSceneIndex];
-    if (!activeScene) return;
+    if (captionIndex < LUXURY_CAPTIONS.length - 1) {
+      const nextIdx = captionIndex + 1;
+      setCaptionIndex(nextIdx);
 
-    if (currentCaptionIndex < activeScene.captions.length - 1) {
-      const nextIdx = currentCaptionIndex + 1;
-      setCurrentCaptionIndex(nextIdx);
-
-      // Trigger celebration on Gold reveals
-      if (currentSceneIndex === 4 && nextIdx === activeScene.captions.length - 1) {
-        fireGoldCelebration();
+      // Preload dashboard data before final screens
+      if (nextIdx >= 14) {
+        onPreloadRef.current?.();
       }
-      if (currentSceneIndex === 6 && nextIdx === activeScene.captions.length - 1) {
-        fireGoldCelebration();
+
+      // Trigger celebratory confetti when reaching major gold moments
+      if (LUXURY_CAPTIONS[nextIdx]?.isCelebration) {
+        fireCelebration();
       }
     } else {
-      if (currentSceneIndex < CINEMATIC_SCENES.length - 1) {
-        const nextSceneIdx = currentSceneIndex + 1;
-        setCurrentSceneIndex(nextSceneIdx);
-        setCurrentCaptionIndex(0);
-
-        if (nextSceneIdx >= 5) {
-          onPreloadRef.current?.();
-        }
-      } else {
-        onPreloadRef.current?.();
-        setIsExiting(true);
-        setTimeout(() => {
-          onCompleteRef.current?.();
-        }, 1000);
-      }
+      // Final exit
+      onPreloadRef.current?.();
+      setIsExiting(true);
+      setTimeout(() => {
+        onCompleteRef.current?.();
+      }, 900);
     }
-  }, [currentSceneIndex, currentCaptionIndex, fireGoldCelebration]);
+  }, [captionIndex, fireCelebration]);
 
-  // Jump directly to specific scene
-  const jumpToScene = useCallback(
-    (sceneIdx: number) => {
-      setCurrentSceneIndex(sceneIdx);
-      setCurrentCaptionIndex(0);
-
-      if (sceneIdx === 4 || sceneIdx === 6) {
-        fireGoldCelebration();
-      }
-      if (sceneIdx >= 5) {
-        onPreloadRef.current?.();
-      }
-    },
-    [fireGoldCelebration]
-  );
-
-  // Auto-advance with cinematic pacing (2.2s for standard, 3.4s for climaxes)
+  // Attractive cinematic timing
   useEffect(() => {
-    if (captionTimerRef.current) clearTimeout(captionTimerRef.current);
+    if (timerRef.current) clearTimeout(timerRef.current);
 
-    const activeScene = CINEMATIC_SCENES[currentSceneIndex];
-    if (!activeScene) return;
+    const currentItem = LUXURY_CAPTIONS[captionIndex];
+    if (!currentItem) return;
 
-    const isLastCaptionOfScene = currentCaptionIndex === activeScene.captions.length - 1;
-    const duration = isLastCaptionOfScene ? 3200 : 2200;
-
-    captionTimerRef.current = setTimeout(advanceNext, duration);
+    timerRef.current = setTimeout(advanceNext, currentItem.duration);
 
     return () => {
-      if (captionTimerRef.current) clearTimeout(captionTimerRef.current);
+      if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [currentSceneIndex, currentCaptionIndex, advanceNext]);
+  }, [captionIndex, advanceNext]);
 
-  // Skip directly to dashboard
-  const handleSkip = useCallback(() => {
-    onPreloadRef.current?.();
-    setIsExiting(true);
-    setTimeout(() => {
-      onCompleteRef.current?.();
-    }, 350);
-  }, []);
+  // Complete immediately on final button click
+  const handleComplete = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      onPreloadRef.current?.();
+      setIsExiting(true);
+      setTimeout(() => {
+        onCompleteRef.current?.();
+      }, 350);
+    },
+    []
+  );
 
-  const activeScene = CINEMATIC_SCENES[currentSceneIndex];
-  const activeCaption = activeScene.captions[currentCaptionIndex];
-  const isFinalScreen = currentSceneIndex === 6 && currentCaptionIndex === activeScene.captions.length - 1;
+  const currentItem = LUXURY_CAPTIONS[captionIndex];
+  const isFinalScreen = captionIndex === LUXURY_CAPTIONS.length - 1;
 
-  // Determine neon tube style matching reference image
-  const getTubeClass = (theme: CaptionItem['theme']): string => {
+  // Map theme to neon tube style
+  const getTubeClass = (theme: LuxuryCaption['theme']): string => {
     switch (theme) {
       case 'pink':
-        return 'bmi-neon-tube-pink';
+        return 'bmi-tube-pink';
       case 'cyan':
-        return 'bmi-neon-tube-cyan';
+        return 'bmi-tube-cyan';
       case 'violet':
-        return 'bmi-neon-tube-violet';
-      case 'lime':
-        return 'bmi-neon-tube-lime';
+        return 'bmi-tube-violet';
       case 'gold':
-        return 'bmi-neon-tube-gold';
+        return 'bmi-tube-gold';
       case 'rainbow':
-        return 'bmi-neon-tube-rainbow';
+        return 'bmi-tube-rainbow';
       default:
-        return 'bmi-neon-tube-pink';
+        return 'bmi-tube-pink';
     }
   };
-
-  const currentTheme = activeCaption?.theme || 'pink';
-  const tagClass = activeScene.isGold ? 'tag-gold' : currentTheme === 'cyan' ? 'tag-cyan' : '';
-  const subClass = activeScene.isGold ? 'sub-gold' : currentTheme === 'cyan' ? 'sub-cyan' : '';
 
   return (
     <div
@@ -387,107 +317,53 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
       role="dialog"
       aria-modal="true"
       aria-label="Google Cloud Gold Milestone Celebration"
-      onClick={advanceNext}
+      onClick={advanceNext} // Click anywhere to step forward
     >
-      {/* 1. Deep Ambient Dark Wall Depth */}
+      {/* 1. Deep Ambient Dark Luxury Wall */}
       <div className="bmi-ambient-wall" aria-hidden="true" />
 
       {/* 2. Confetti Canvas */}
       <canvas ref={confettiCanvasRef} className="bmi-confetti-canvas" aria-hidden="true" />
 
-      {/* 3. Top Header Bar */}
-      <header className="bmi-top-header" onClick={(e) => e.stopPropagation()}>
-        {/* Chapter Branding */}
-        <div className="bmi-header-branding">
-          <ConcentricNeonCloud size={40} />
-          <div>
-            <p className="bmi-header-title">GDG On-Campus NECN</p>
-            <p className="bmi-header-sub">Gold Milestone 2026</p>
-          </div>
-        </div>
-
-        {/* Scene Dot Indicators */}
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          {CINEMATIC_SCENES.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => jumpToScene(idx)}
-              className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                currentSceneIndex === idx
-                  ? 'w-7 bg-pink-500 shadow-[0_0_12px_#FF007F]'
-                  : currentSceneIndex > idx
-                  ? 'w-2 bg-slate-600'
-                  : 'w-2 bg-slate-800'
-              }`}
-              title={`Scene 0${idx + 1}`}
-              aria-label={`Jump to scene 0${idx + 1}`}
-            />
-          ))}
-        </div>
-
-        {/* Skip Button */}
-        <button
-          onClick={handleSkip}
-          className="bmi-skip-btn"
-          title="Proceed to dashboard"
-        >
-          <span>Skip to Leaderboard</span>
-          <ChevronRight className="w-3.5 h-3.5" />
-        </button>
-      </header>
-
-      {/* 4. Main Stage — EXACT Composition of Reference Image (media_1795861002889_69e74b9a.jpg) */}
-      <main className="bmi-main-stage">
-        {/* Top Tag (Exact Reference: "NEON TEXT EFFECT") */}
-        <p className={`bmi-reference-tag ${tagClass}`}>
-          {activeScene.tag}
-        </p>
-
-        {/* Center Glowing Neon Typography (Exact Reference: "NEON") */}
+      {/* 3. Pure Full-Screen Center Stage */}
+      <main className="bmi-fullscreen-stage">
         <div
-          key={`${currentSceneIndex}-${currentCaptionIndex}`}
-          className="bmi-caption-ignition w-full flex flex-col items-center justify-center my-4 sm:my-8"
+          key={captionIndex}
+          className="bmi-caption-ignition w-full flex flex-col items-center justify-center"
         >
           {isFinalScreen ? (
-            /* Grand Finale Reveal */
-            <div className="w-full flex flex-col items-center justify-center space-y-4 sm:space-y-6">
+            /* Grand Finale Reveal: GDG ON-CAMPUS NECN */
+            <div className="w-full flex flex-col items-center justify-center space-y-5 sm:space-y-7">
               <div className="mb-2 animate-pulse">
-                <ConcentricNeonCloud size={105} />
+                <ConcentricNeonCloud size={115} />
               </div>
 
-              <h2 className="bmi-neon-tube-base bmi-neon-tube-cyan text-2xl sm:text-4xl md:text-5xl font-black">
+              <h2 className="bmi-luxury-neon-text bmi-tube-cyan text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black">
                 GDG ON-CAMPUS NECN
               </h2>
 
-              <p className="text-xs sm:text-sm font-bold uppercase tracking-[0.25em] text-purple-300/90 text-shadow-[0_0_8px_#A855F7]">
+              <p className="text-xs sm:text-sm md:text-base font-bold uppercase tracking-[0.25em] text-purple-300/90 text-shadow-[0_0_10px_#A855F7]">
                 • ONE TEAM • ONE COMMUNITY • ONE GOLDEN MILESTONE •
               </p>
 
-              <h1 className="bmi-neon-tube-base bmi-neon-tube-rainbow text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black">
+              <h1 className="bmi-luxury-neon-text bmi-tube-rainbow text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black">
                 WE MADE IT HAPPEN
               </h1>
 
-              <div className="mt-6 pt-2" onClick={(e) => e.stopPropagation()}>
-                <button
-                  onClick={handleSkip}
-                  className="px-8 py-3.5 rounded-full bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 text-white font-black text-sm tracking-wide shadow-[0_0_24px_rgba(0,240,255,0.65)] hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2 cursor-pointer"
-                >
+              <div className="mt-8 pt-3">
+                <button onClick={handleComplete} className="bmi-enter-btn">
                   <span>Enter Chapter Leaderboard & Dashboard</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             </div>
           ) : (
-            /* Standard and Climax Captions */
-            <h1 className="w-full max-w-4xl text-center">
-              {activeCaption?.text.split('\n').map((line, lIdx) => (
+            /* Standard and Climax Captions (100% Full-Screen Centered Neon Text) */
+            <h1 className="w-full max-w-5xl text-center">
+              {currentItem.text.split('\n').map((line, idx) => (
                 <span
-                  key={lIdx}
-                  className={`bmi-neon-tube-base ${getTubeClass(activeCaption.theme)} ${
-                    activeScene.isGold
-                      ? 'text-3xl sm:text-5xl md:text-6xl lg:text-7xl'
-                      : 'text-3xl sm:text-5xl md:text-6xl'
-                  }`}
+                  key={idx}
+                  className={`bmi-luxury-neon-text ${getTubeClass(currentItem.theme)}`}
                 >
                   {line}
                 </span>
@@ -495,17 +371,7 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
             </h1>
           )}
         </div>
-
-        {/* Bottom Subtitle / Counter (Exact Reference: "EDITABLE VECTOR TEXT EFFECT") */}
-        <p className={`bmi-reference-sub ${subClass}`}>
-          CAPTION 0{currentCaptionIndex + 1} OF 0{activeScene.captions.length} • TAP ANYWHERE TO ADVANCE
-        </p>
       </main>
-
-      {/* 5. Bottom Chapter Identity Strip */}
-      <footer className="bmi-bottom-footer">
-        <span>Narayana Engineering College, Nellore • Google Cloud Learn with Communities</span>
-      </footer>
     </div>
   );
 };
