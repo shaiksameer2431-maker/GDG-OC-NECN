@@ -38,7 +38,7 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
   // Animated counter up to totalStudents
   useEffect(() => {
     let animId: number;
-    const target = stats.totalStudents || 438;
+    const target = stats.totalRegistered;
     const startTime = performance.now();
     const duration = 1800;
 
@@ -52,7 +52,7 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
     };
     animId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(animId);
-  }, [stats.totalStudents]);
+  }, [stats.totalRegistered]);
 
   // Scroll spy & reveal animations
   useEffect(() => {
@@ -298,13 +298,14 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
 
             {/* Script Text */}
             <div className="luxury-script text-2xl sm:text-3xl text-[#B8922D] font-bold">
-              Same Labs. Bigger Opportunities!
+              One community. Thousands of achievements.
             </div>
 
             {/* Official Campaign Closure Announcement & Community Celebratory Showcase */}
             <div className="pt-2 sm:pt-3 w-full max-w-lg">
               <DeadlineCountdown
                 variant="card"
+                stats={stats}
               />
             </div>
 
@@ -320,10 +321,10 @@ export const Luxury3DView: React.FC<Luxury3DViewProps> = ({
               </div>
               <div>
                 <b className="luxury-gold luxury-serif text-3xl sm:text-4xl block leading-tight font-black">
-                  10
+                  {officialCourses.length || 10}
                 </b>
                 <span className="text-[11px] text-slate-500 tracking-[0.15em] uppercase font-semibold">
-                  Course Curriculum
+                  Learning Modules
                 </span>
               </div>
             </div>
