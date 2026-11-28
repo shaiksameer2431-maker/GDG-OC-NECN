@@ -252,6 +252,73 @@ export default function CloudChampionsScene({
     g.add(sv);
     scene.add(g);
 
+    // Community victory trophy — a polished 3D centerpiece above the cloud.
+    // Built from native Three.js geometry so it remains crisp and lightweight.
+    const victoryTrophy = new THREE.Group();
+    const trophyGold = new THREE.MeshPhysicalMaterial({
+      color: 0xF5C451,
+      metalness: 0.88,
+      roughness: 0.18,
+      clearcoat: 1,
+      clearcoatRoughness: 0.12,
+    });
+    const trophyGoldDark = new THREE.MeshStandardMaterial({
+      color: 0xB77B18,
+      metalness: 0.82,
+      roughness: 0.24,
+    });
+    const cupProfile = [
+      new THREE.Vector2(0.28, 0.02),
+      new THREE.Vector2(0.42, 0.12),
+      new THREE.Vector2(0.58, 0.58),
+      new THREE.Vector2(0.53, 0.82),
+      new THREE.Vector2(0.39, 0.94),
+    ];
+    victoryTrophy.add(new THREE.Mesh(new THREE.LatheGeometry(cupProfile, 48), trophyGold));
+    const cupRim = new THREE.Mesh(new THREE.TorusGeometry(0.39, 0.045, 12, 48), trophyGoldDark);
+    cupRim.position.y = 0.91;
+    victoryTrophy.add(cupRim);
+    [-1, 1].forEach((side) => {
+      const handle = new THREE.Mesh(new THREE.TorusGeometry(0.27, 0.055, 12, 36, Math.PI), trophyGold);
+      handle.position.set(side * 0.52, 0.58, 0);
+      handle.rotation.z = side === -1 ? Math.PI / 2 : -Math.PI / 2;
+      victoryTrophy.add(handle);
+    });
+    const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.105, 0.16, 0.42, 24), trophyGoldDark);
+    stem.position.y = -0.19;
+    victoryTrophy.add(stem);
+    const foot = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.38, 0.16, 32), trophyGold);
+    foot.position.y = -0.47;
+    victoryTrophy.add(foot);
+    const plinth = new THREE.Mesh(new THREE.CylinderGeometry(0.46, 0.5, 0.2, 32), trophyGoldDark);
+    plinth.position.y = -0.64;
+    victoryTrophy.add(plinth);
+
+    // Raised five-point star on the front of the cup.
+    const starShape = new THREE.Shape();
+    for (let i = 0; i < 10; i++) {
+      const radius = i % 2 === 0 ? 0.19 : 0.085;
+      const angle = Math.PI / 2 + (i * Math.PI) / 5;
+      const x = Math.cos(angle) * radius;
+      const y = Math.sin(angle) * radius + 0.48;
+      if (i === 0) starShape.moveTo(x, y);
+      else starShape.lineTo(x, y);
+    }
+    starShape.closePath();
+    const star = new THREE.Mesh(
+      new THREE.ExtrudeGeometry(starShape, { depth: 0.045, bevelEnabled: true, bevelThickness: 0.018, bevelSize: 0.012, bevelSegments: 2 }),
+      new THREE.MeshStandardMaterial({ color: 0xFFF4C2, metalness: 0.55, roughness: 0.2 })
+    );
+    star.position.z = 0.39;
+    victoryTrophy.add(star);
+    victoryTrophy.position.set(0.35, 3.35, 0.55);
+    victoryTrophy.scale.setScalar(0.72);
+    scene.add(victoryTrophy);
+
+    const trophyGlow = new THREE.PointLight(0xFFD56A, 2.1, 8);
+    trophyGlow.position.set(0.35, 3.6, 2.1);
+    scene.add(trophyGlow);
+
     // Orbiting Google-colour spheres with wide safety clearance around cloud.
     const orbs: THREE.Mesh[] = [];
     for (let j = 0; j < 4; j++) {
@@ -405,6 +472,9 @@ export default function CloudChampionsScene({
       const s = time * 0.001;
       if (!reduceMotion) {
         edgeMaterial.uniforms.u.value = s * 1.4;
+        victoryTrophy.rotation.y = Math.sin(s * 0.75) * 0.2;
+        victoryTrophy.position.y = 3.35 + Math.sin(s * 1.35) * 0.1;
+        victoryTrophy.rotation.z = Math.sin(s * 0.55) * 0.035;
         lp.position.y = -2.2 + Math.sin(s * 1.2) * 0.1;
         sv.position.y = -2.1 + Math.cos(s) * 0.1;
         rings.forEach((r, i) => {
