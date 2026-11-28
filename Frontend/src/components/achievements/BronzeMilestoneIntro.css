@@ -9,15 +9,15 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Nunito:wght@800;900&family=Plus+Jakarta+Sans:wght@800;900&display=swap');
 
-/* Main Full-Screen Luxury Stage with Exact Uploaded Fluid Gradient Background */
+/* Main Full-Screen Luxury Stage with Official Coherent Photonics Hero Graphics */
 .bmi-overlay {
   position: fixed;
   inset: 0;
   z-index: 99999;
-  background-color: #0E0312;
+  background-color: #05020B;
   background: 
-    radial-gradient(ellipse at 50% 50%, rgba(10, 2, 18, 0.32) 0%, rgba(6, 1, 14, 0.55) 100%),
-    url('../../assets/neon-celebration-bg.jpg') center center / cover no-repeat;
+    radial-gradient(ellipse at 50% 50%, rgba(5, 2, 11, 0.22) 0%, rgba(3, 1, 8, 0.48) 100%),
+    url('../../assets/coherent-photonics-bg.jpg') center center / cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,11 +34,11 @@
   pointer-events: none;
 }
 
-/* Subtle Deep Vignette Overlay to enhance contrast and text glow */
+/* Subtle Optical Laser Vignette to maximize neon tube glow and legibility */
 .bmi-ambient-wall {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(5, 1, 10, 0.45) 100%);
+  background: radial-gradient(circle at 50% 50%, transparent 45%, rgba(3, 1, 8, 0.5) 100%);
   pointer-events: none;
   z-index: 1;
 }
