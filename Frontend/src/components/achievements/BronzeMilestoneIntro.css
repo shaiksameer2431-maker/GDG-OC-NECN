@@ -67,7 +67,7 @@
 
 /* -------------------------------------------------------------------------
    VOLUMETRIC GOD RAYS & LIGHT BEAMS (FROM VIDEO REFERENCE)
-   Rotating golden light rays and lens flare centered behind the captions
+   Rotating multi-color light rays and lens flare centered behind the captions
    ------------------------------------------------------------------------- */
 .bmi-volumetric-container {
   position: absolute;
@@ -86,38 +86,168 @@
 .bmi-volumetric-rays {
   position: absolute;
   inset: 0;
-  background: conic-gradient(
-    from 0deg,
-    rgba(255, 184, 0, 0.14) 0deg,
-    transparent 15deg,
-    rgba(255, 215, 0, 0.20) 30deg,
-    transparent 45deg,
-    rgba(255, 145, 0, 0.16) 60deg,
-    transparent 75deg,
-    rgba(255, 215, 0, 0.22) 90deg,
-    transparent 105deg,
-    rgba(255, 184, 0, 0.14) 120deg,
-    transparent 135deg,
-    rgba(255, 215, 0, 0.20) 150deg,
-    transparent 165deg,
-    rgba(255, 145, 0, 0.16) 180deg,
-    transparent 195deg,
-    rgba(255, 215, 0, 0.22) 210deg,
-    transparent 225deg,
-    rgba(255, 184, 0, 0.14) 240deg,
-    transparent 255deg,
-    rgba(255, 215, 0, 0.20) 270deg,
-    transparent 285deg,
-    rgba(255, 145, 0, 0.16) 300deg,
-    transparent 315deg,
-    rgba(255, 215, 0, 0.22) 330deg,
-    transparent 345deg,
-    rgba(255, 184, 0, 0.14) 360deg
-  );
   mask-image: radial-gradient(circle, rgba(0, 0, 0, 1) 18%, rgba(0, 0, 0, 0.45) 50%, transparent 72%);
   -webkit-mask-image: radial-gradient(circle, rgba(0, 0, 0, 1) 18%, rgba(0, 0, 0, 0.45) 50%, transparent 72%);
   border-radius: 50%;
   animation: bmiRotateRays 40s linear infinite;
+  transition: opacity 1s ease;
+}
+
+/* Default / Gold Theme Rays */
+.bmi-rays-gold {
+  background: conic-gradient(
+    from 0deg,
+    rgba(255, 184, 0, 0.16) 0deg,
+    transparent 15deg,
+    rgba(255, 215, 0, 0.22) 30deg,
+    transparent 45deg,
+    rgba(255, 145, 0, 0.18) 60deg,
+    transparent 75deg,
+    rgba(255, 215, 0, 0.24) 90deg,
+    transparent 105deg,
+    rgba(255, 184, 0, 0.16) 120deg,
+    transparent 135deg,
+    rgba(255, 215, 0, 0.22) 150deg,
+    transparent 165deg,
+    rgba(255, 145, 0, 0.18) 180deg,
+    transparent 195deg,
+    rgba(255, 215, 0, 0.24) 210deg,
+    transparent 225deg,
+    rgba(255, 184, 0, 0.16) 240deg,
+    transparent 255deg,
+    rgba(255, 215, 0, 0.22) 270deg,
+    transparent 285deg,
+    rgba(255, 145, 0, 0.18) 300deg,
+    transparent 315deg,
+    rgba(255, 215, 0, 0.24) 330deg,
+    transparent 345deg,
+    rgba(255, 184, 0, 0.16) 360deg
+  );
+}
+
+/* Cyan & Magenta Theme Rays (Image 3 / Image 4) */
+.bmi-rays-cyan-magenta {
+  background: conic-gradient(
+    from 0deg,
+    rgba(0, 240, 255, 0.18) 0deg,
+    transparent 20deg,
+    rgba(255, 0, 127, 0.18) 45deg,
+    transparent 65deg,
+    rgba(168, 85, 247, 0.18) 90deg,
+    transparent 110deg,
+    rgba(0, 240, 255, 0.20) 135deg,
+    transparent 155deg,
+    rgba(255, 0, 127, 0.18) 180deg,
+    transparent 200deg,
+    rgba(168, 85, 247, 0.18) 225deg,
+    transparent 245deg,
+    rgba(0, 240, 255, 0.20) 270deg,
+    transparent 290deg,
+    rgba(255, 0, 127, 0.18) 315deg,
+    transparent 335deg,
+    rgba(0, 240, 255, 0.18) 360deg
+  );
+}
+
+/* Amber & Pink Theme Rays */
+.bmi-rays-amber-pink {
+  background: conic-gradient(
+    from 0deg,
+    rgba(255, 184, 0, 0.18) 0deg,
+    transparent 22deg,
+    rgba(255, 20, 147, 0.18) 45deg,
+    transparent 68deg,
+    rgba(255, 145, 0, 0.20) 90deg,
+    transparent 112deg,
+    rgba(255, 20, 147, 0.18) 135deg,
+    transparent 158deg,
+    rgba(255, 184, 0, 0.18) 180deg,
+    transparent 202deg,
+    rgba(255, 20, 147, 0.18) 225deg,
+    transparent 248deg,
+    rgba(255, 145, 0, 0.20) 270deg,
+    transparent 292deg,
+    rgba(255, 20, 147, 0.18) 315deg,
+    transparent 338deg,
+    rgba(255, 184, 0, 0.18) 360deg
+  );
+}
+
+/* Lime & Cyan Theme Rays */
+.bmi-rays-lime-cyan {
+  background: conic-gradient(
+    from 0deg,
+    rgba(0, 255, 136, 0.18) 0deg,
+    transparent 22deg,
+    rgba(0, 240, 255, 0.18) 45deg,
+    transparent 68deg,
+    rgba(16, 185, 129, 0.18) 90deg,
+    transparent 112deg,
+    rgba(0, 240, 255, 0.20) 135deg,
+    transparent 158deg,
+    rgba(0, 255, 136, 0.18) 180deg,
+    transparent 202deg,
+    rgba(0, 240, 255, 0.18) 225deg,
+    transparent 248deg,
+    rgba(16, 185, 129, 0.18) 270deg,
+    transparent 292deg,
+    rgba(0, 240, 255, 0.20) 315deg,
+    transparent 338deg,
+    rgba(0, 255, 136, 0.18) 360deg
+  );
+}
+
+/* Blue & Magenta Theme Rays */
+.bmi-rays-blue-magenta {
+  background: conic-gradient(
+    from 0deg,
+    rgba(59, 130, 246, 0.18) 0deg,
+    transparent 20deg,
+    rgba(244, 63, 94, 0.18) 45deg,
+    transparent 65deg,
+    rgba(147, 51, 234, 0.18) 90deg,
+    transparent 110deg,
+    rgba(59, 130, 246, 0.20) 135deg,
+    transparent 155deg,
+    rgba(244, 63, 94, 0.18) 180deg,
+    transparent 200deg,
+    rgba(147, 51, 234, 0.18) 225deg,
+    transparent 245deg,
+    rgba(59, 130, 246, 0.20) 270deg,
+    transparent 290deg,
+    rgba(244, 63, 94, 0.18) 315deg,
+    transparent 335deg,
+    rgba(59, 130, 246, 0.18) 360deg
+  );
+}
+
+/* Showcase & Rainbow Spectrum Rays (Full spectrum from Image 2 & Image 7) */
+.bmi-rays-showcase,
+.bmi-rays-rainbow {
+  background: conic-gradient(
+    from 0deg,
+    rgba(0, 240, 255, 0.20) 0deg,
+    transparent 15deg,
+    rgba(59, 130, 246, 0.18) 35deg,
+    transparent 50deg,
+    rgba(168, 85, 247, 0.20) 70deg,
+    transparent 85deg,
+    rgba(255, 0, 127, 0.22) 105deg,
+    transparent 120deg,
+    rgba(255, 184, 0, 0.20) 140deg,
+    transparent 155deg,
+    rgba(0, 255, 136, 0.18) 175deg,
+    transparent 190deg,
+    rgba(0, 240, 255, 0.20) 210deg,
+    transparent 225deg,
+    rgba(168, 85, 247, 0.20) 245deg,
+    transparent 260deg,
+    rgba(255, 0, 127, 0.22) 280deg,
+    transparent 295deg,
+    rgba(255, 184, 0, 0.20) 315deg,
+    transparent 330deg,
+    rgba(0, 240, 255, 0.20) 360deg
+  );
 }
 
 @keyframes bmiRotateRays {
@@ -130,10 +260,10 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: min(520px, 85vw);
-  height: 290px;
-  background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.26) 0%, rgba(255, 145, 0, 0.14) 42%, transparent 75%);
-  filter: blur(32px);
+  width: min(540px, 86vw);
+  height: 300px;
+  background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.22) 0%, rgba(0, 240, 255, 0.12) 35%, rgba(255, 0, 127, 0.08) 60%, transparent 75%);
+  filter: blur(34px);
   pointer-events: none;
   animation: bmiPulseFlare 4s ease-in-out infinite;
 }
@@ -161,26 +291,25 @@
 }
 
 /* -------------------------------------------------------------------------
-   ELECTRIC NEON IGNITION STRIKE ANIMATION (MATCHING VIDEO REFERENCE)
-   Dynamic scale snap + rapid electric neon strike flicker
+   BLENDER & PREMIERE PRO STYLE 3D PERSPECTIVE ZOOM + NEON IGNITION STRIKE
    ------------------------------------------------------------------------- */
 @keyframes neonIgniteIn {
   0% {
     opacity: 0;
-    transform: scale(1.1);
-    filter: brightness(0.6) blur(10px);
+    transform: perspective(900px) rotateX(6deg) scale(1.12);
+    filter: brightness(0.55) blur(10px);
   }
   14% {
     opacity: 0.95;
-    filter: brightness(2.2) blur(3px);
+    filter: brightness(2.4) blur(3px);
   }
   24% {
     opacity: 0.35;
-    filter: brightness(0.9) blur(6px);
+    filter: brightness(0.85) blur(6px);
   }
   34% {
     opacity: 1;
-    filter: brightness(2.4) blur(1px);
+    filter: brightness(2.6) blur(1px);
   }
   46% {
     opacity: 0.8;
@@ -188,35 +317,106 @@
   }
   60% {
     opacity: 1;
-    transform: scale(1.02);
-    filter: brightness(1.5) blur(0px);
+    transform: perspective(900px) rotateX(1deg) scale(1.02);
+    filter: brightness(1.4) blur(0px);
   }
   100% {
     opacity: 1;
-    transform: scale(1);
+    transform: perspective(900px) rotateX(0deg) scale(1);
     filter: brightness(1) blur(0px);
   }
 }
 
 .bmi-neon-ignite {
-  animation: neonIgniteIn 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: neonIgniteIn 0.68s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
 }
 
 /* -------------------------------------------------------------------------
-   GOLDEN NEON TUBE OUTLINE TYPOGRAPHY (FROM VIDEO REFERENCE)
-   Hollow tube styling + sharp neon outline + warm multi-layered glow
+   CONCENTRIC MULTI-TUBE NEON CLOUD LOGO (IMAGE 2 AESTHETIC)
+   Multi-line concentric glowing neon arcs
    ------------------------------------------------------------------------- */
-.bmi-neon-video-text {
+.bmi-concentric-cloud {
+  display: inline-block;
+  vertical-align: middle;
+  filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.75)) drop-shadow(0 0 20px rgba(255, 0, 127, 0.55));
+  animation: bmiConcentricCloudGlow 4s ease-in-out infinite;
+  transition: transform 0.3s ease;
+}
+
+.bmi-concentric-cloud:hover {
+  transform: scale(1.08);
+}
+
+@keyframes bmiConcentricCloudGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.75)) drop-shadow(0 0 22px rgba(255, 0, 127, 0.55));
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(0, 240, 255, 0.95)) drop-shadow(0 0 32px rgba(255, 0, 127, 0.85)) drop-shadow(0 0 45px rgba(168, 85, 247, 0.6));
+  }
+}
+
+/* -------------------------------------------------------------------------
+   MULTIPLE NEON COLOR PALETTES (FROM USER REFERENCES)
+   ------------------------------------------------------------------------- */
+
+/* 1. Electric Cyan (Image 3 "NEXUS" / Image 4) */
+.bmi-neon-cyan {
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   font-weight: 900;
   letter-spacing: 0.055em;
-  line-height: 1.15;
   text-transform: uppercase;
   background: transparent !important;
-  color: #1A0D00;
+  color: #031D2E;
+  -webkit-text-stroke: 2.2px #00F0FF;
+  paint-order: stroke fill;
+  text-shadow: 
+    0 0 3px #FFFFFF,
+    0 0 8px #80F8FF,
+    0 0 18px #00F0FF,
+    0 0 34px #00B4D8,
+    0 0 60px rgba(0, 240, 255, 0.75),
+    0 0 95px rgba(0, 180, 216, 0.4);
+  filter: drop-shadow(0 2px 6px rgba(15, 23, 42, 0.3)) drop-shadow(0 0 16px rgba(0, 240, 255, 0.85));
+  display: inline-block;
+  max-width: 100%;
+}
+
+/* 2. Hot Magenta / Neon Pink (Image 1 Guitar / Image 3 "FLOW") */
+.bmi-neon-magenta,
+.bmi-neon-pink {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  background: transparent !important;
+  color: #2D0518;
+  -webkit-text-stroke: 2.2px #FF007F;
+  paint-order: stroke fill;
+  text-shadow: 
+    0 0 3px #FFFFFF,
+    0 0 8px #FF80BF,
+    0 0 18px #FF007F,
+    0 0 34px #D9046E,
+    0 0 60px rgba(255, 0, 127, 0.75),
+    0 0 95px rgba(217, 4, 110, 0.4);
+  filter: drop-shadow(0 2px 6px rgba(15, 23, 42, 0.3)) drop-shadow(0 0 16px rgba(255, 0, 127, 0.85));
+  display: inline-block;
+  max-width: 100%;
+}
+
+/* 3. Solar Amber / Golden Flame (Video Reference & Image 6) */
+.bmi-neon-amber,
+.bmi-neon-gold {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  background: transparent !important;
+  color: #1F1000;
   -webkit-text-stroke: 2.2px #FFB800;
   paint-order: stroke fill;
   text-shadow: 
@@ -224,55 +424,178 @@
     0 0 8px #FFE082,
     0 0 18px #FFB300,
     0 0 34px #FF8F00,
-    0 0 60px rgba(255, 111, 0, 0.7),
-    0 0 95px rgba(255, 111, 0, 0.35);
-  filter: drop-shadow(0 2px 6px rgba(15, 23, 42, 0.28)) drop-shadow(0 0 16px rgba(255, 179, 0, 0.8));
+    0 0 60px rgba(255, 111, 0, 0.75),
+    0 0 95px rgba(255, 111, 0, 0.4);
+  filter: drop-shadow(0 2px 6px rgba(15, 23, 42, 0.3)) drop-shadow(0 0 16px rgba(255, 179, 0, 0.85));
+  display: inline-block;
+  max-width: 100%;
+}
+
+/* 4. Electric Lime / Emerald Neon (Image 6 Cigarette & Image 7 Streaks) */
+.bmi-neon-lime {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  background: transparent !important;
+  color: #032410;
+  -webkit-text-stroke: 2.2px #00FF88;
+  paint-order: stroke fill;
+  text-shadow: 
+    0 0 3px #FFFFFF,
+    0 0 8px #A7F3D0,
+    0 0 18px #00FF88,
+    0 0 34px #10B981,
+    0 0 60px rgba(0, 255, 136, 0.75),
+    0 0 95px rgba(16, 185, 129, 0.4);
+  filter: drop-shadow(0 2px 6px rgba(15, 23, 42, 0.3)) drop-shadow(0 0 16px rgba(0, 255, 136, 0.85));
+  display: inline-block;
+  max-width: 100%;
+}
+
+/* 5. Electric Cobalt Blue (Image 2 & Image 5 AI hand) */
+.bmi-neon-blue {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  background: transparent !important;
+  color: #051533;
+  -webkit-text-stroke: 2.2px #3B82F6;
+  paint-order: stroke fill;
+  text-shadow: 
+    0 0 3px #FFFFFF,
+    0 0 8px #93C5FD,
+    0 0 18px #3B82F6,
+    0 0 34px #1D4ED8,
+    0 0 60px rgba(59, 130, 246, 0.75),
+    0 0 95px rgba(29, 78, 216, 0.4);
+  filter: drop-shadow(0 2px 6px rgba(15, 23, 42, 0.3)) drop-shadow(0 0 16px rgba(59, 130, 246, 0.85));
+  display: inline-block;
+  max-width: 100%;
+}
+
+/* 6. Neon Purple / Violet (Image 2 & Image 4) */
+.bmi-neon-purple {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  background: transparent !important;
+  color: #1A0830;
+  -webkit-text-stroke: 2.2px #A855F7;
+  paint-order: stroke fill;
+  text-shadow: 
+    0 0 3px #FFFFFF,
+    0 0 8px #D8B4FE,
+    0 0 18px #A855F7,
+    0 0 34px #7E22CE,
+    0 0 60px rgba(168, 85, 247, 0.75),
+    0 0 95px rgba(126, 34, 206, 0.4);
+  filter: drop-shadow(0 2px 6px rgba(15, 23, 42, 0.3)) drop-shadow(0 0 16px rgba(168, 85, 247, 0.85));
   display: inline-block;
   max-width: 100%;
 }
 
 /* -------------------------------------------------------------------------
-   CLIMAX DEFINING SENTENCE (GOLD REVEAL & CLIMAX IN VIDEO REFERENCE)
-   Thicker golden neon tube + radiant expanding aura + pulse
+   CLIMAX STYLING (DUAL-TONE, 24K GOLD & RAINBOW NEON)
    ------------------------------------------------------------------------- */
-.bmi-neon-video-climax {
+
+/* Dual Climax (Cyan + Magenta energy) */
+.bmi-neon-dual-climax {
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   font-weight: 900;
   letter-spacing: 0.065em;
-  line-height: 1.12;
   text-transform: uppercase;
   background: transparent !important;
-  color: #1A0800;
-  -webkit-text-stroke: 3px #FFD700;
+  color: #0E0720;
+  -webkit-text-stroke: 2.8px #00F0FF;
   paint-order: stroke fill;
   text-shadow: 
     0 0 5px #FFFFFF,
-    0 0 12px #FFF59D,
-    0 0 28px #FFC107,
-    0 0 50px #FF8F00,
-    0 0 85px rgba(255, 111, 0, 0.85),
-    0 0 130px rgba(255, 111, 0, 0.5);
-  filter: drop-shadow(0 3px 8px rgba(15, 23, 42, 0.35)) drop-shadow(0 0 24px rgba(255, 193, 7, 0.9));
+    0 0 12px #80F8FF,
+    0 0 26px #00F0FF,
+    0 0 48px #FF007F,
+    0 0 80px rgba(255, 0, 127, 0.85),
+    0 0 120px rgba(168, 85, 247, 0.5);
+  filter: drop-shadow(0 3px 8px rgba(15, 23, 42, 0.35)) drop-shadow(0 0 24px rgba(0, 240, 255, 0.9));
   animation: bmiClimaxPulse 2.4s ease-in-out infinite;
   display: inline-block;
   max-width: 100%;
 }
 
-/* Final Screen Header & Subline */
-.bmi-neon-video-header {
+/* 24K Gold Climax (Scene 5 "WE REACHED GOLD!") */
+.bmi-neon-gold-climax {
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  -webkit-text-stroke: 1.6px #FFB800;
+  font-weight: 900;
+  letter-spacing: 0.065em;
+  text-transform: uppercase;
+  background: transparent !important;
+  color: #1C0A00;
+  -webkit-text-stroke: 3.2px #FFD700;
   paint-order: stroke fill;
   text-shadow: 
-    0 0 4px #FFFFFF,
-    0 0 12px #FFB300,
-    0 0 24px #FF8F00;
-  filter: drop-shadow(0 2px 4px rgba(15, 23, 42, 0.25));
+    0 0 5px #FFFFFF,
+    0 0 14px #FFF59D,
+    0 0 28px #FFC107,
+    0 0 52px #FF8F00,
+    0 0 85px rgba(255, 111, 0, 0.9),
+    0 0 130px rgba(255, 111, 0, 0.55);
+  filter: drop-shadow(0 3px 8px rgba(15, 23, 42, 0.35)) drop-shadow(0 0 24px rgba(255, 193, 7, 0.95));
+  animation: bmiClimaxPulse 2.4s ease-in-out infinite;
+  display: inline-block;
+  max-width: 100%;
 }
 
-.bmi-neon-video-subline {
+/* Concentric Rainbow Neon Climax (Grand Final Screen "✦ WE MADE IT HAPPEN ✦") */
+.bmi-neon-rainbow-climax {
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  text-shadow: 0 0 10px rgba(255, 184, 0, 0.6);
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #00F0FF 0%, #3B82F6 28%, #A855F7 55%, #FF007F 82%, #FFD700 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 2.2px rgba(255, 255, 255, 0.9);
+  paint-order: stroke fill;
+  filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.9)) drop-shadow(0 0 24px rgba(255, 0, 127, 0.8)) drop-shadow(0 0 40px rgba(255, 215, 0, 0.6));
+  animation: bmiRainbowPulse 3s ease-in-out infinite;
+  display: inline-block;
+  max-width: 100%;
+}
+
+@keyframes bmiRainbowPulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.9)) drop-shadow(0 0 24px rgba(255, 0, 127, 0.8)) drop-shadow(0 0 40px rgba(255, 215, 0, 0.6));
+  }
+  50% {
+    transform: scale(1.04);
+    filter: drop-shadow(0 0 18px rgba(0, 240, 255, 1)) drop-shadow(0 0 34px rgba(255, 0, 127, 0.95)) drop-shadow(0 0 60px rgba(255, 215, 0, 0.85));
+  }
+}
+
+/* Multi-neon scene tag */
+.bmi-scene-tag-multi {
+  border-color: #00F0FF;
+  color: #0F172A;
+  box-shadow: 0 0 14px rgba(0, 240, 255, 0.45), 0 0 28px rgba(255, 0, 127, 0.25);
+  animation: bmiNeonBorderMultiCycle 6s ease-in-out infinite;
+}
+
+@keyframes bmiNeonBorderMultiCycle {
+  0%, 100% {
+    border-color: #00F0FF;
+    box-shadow: 0 0 14px rgba(0, 240, 255, 0.45);
+  }
+  33% {
+    border-color: #A855F7;
+    box-shadow: 0 0 14px rgba(168, 85, 247, 0.45);
+  }
+  66% {
+    border-color: #FF007F;
+    box-shadow: 0 0 14px rgba(255, 0, 127, 0.45);
+  }
 }
 
 @keyframes bmiClimaxPulse {
