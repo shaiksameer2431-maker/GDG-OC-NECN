@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import confetti from 'canvas-confetti';
-import { Trophy, Award, Users, Sparkles, ArrowRight, ChevronRight, CheckCircle2 } from 'lucide-react';
+import { Trophy, Award, Users, Sparkles, ArrowRight, ChevronRight } from 'lucide-react';
 import './BronzeMilestoneIntro.css';
 
 interface BronzeMilestoneIntroProps {
@@ -74,7 +74,7 @@ const CINEMATIC_SCENES: SceneData[] = [
     ],
     isGold: true,
   },
-  // Scene 6 — Achievement Showcase (handled with dedicated metric pods)
+  // Scene 6 — Achievement Showcase
   {
     tag: 'SCENE 6 — ACHIEVEMENT SHOWCASE',
     lines: [
@@ -117,13 +117,7 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
   // Scene & Sentence Tracking
   const [currentSceneIndex, setCurrentSceneIndex] = useState<number>(0);
   const [currentSentenceIndex, setCurrentSentenceIndex] = useState<number>(0);
-  const [sentenceVisible, setSentenceVisible] = useState<boolean>(true);
   const [isExiting, setIsExiting] = useState<boolean>(false);
-
-  // Animated counters for Scene 6
-  const [countAchievers, setCountAchievers] = useState<number>(0);
-  const [countBadges, setCountBadges] = useState<number>(0);
-  const [countTarget, setCountTarget] = useState<number>(0);
 
   const confettiCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const partyConfettiRef = useRef<confetti.CreateTypes | null>(null);
@@ -170,9 +164,9 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
 
     // Cannon 1 (Left)
     party({
-      particleCount: 50,
+      particleCount: 60,
       angle: 60,
-      spread: 55,
+      spread: 60,
       origin: { x: 0.1, y: 0.8 },
       colors: goldCelebrationColors,
       scalar: 1.15,
@@ -184,9 +178,9 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
 
     // Cannon 2 (Right)
     party({
-      particleCount: 50,
+      particleCount: 60,
       angle: 120,
-      spread: 55,
+      spread: 60,
       origin: { x: 0.9, y: 0.8 },
       colors: goldCelebrationColors,
       scalar: 1.15,
@@ -199,89 +193,48 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
     // Apex Starburst (Center)
     setTimeout(() => {
       party({
-        particleCount: 65,
-        spread: 95,
+        particleCount: 75,
+        spread: 100,
         origin: { x: 0.5, y: 0.35 },
         colors: goldCelebrationColors,
         scalar: 1.25,
-        startVelocity: 30,
+        startVelocity: 32,
         gravity: 0.72,
         ticks: 260,
         disableForReducedMotion: true,
       });
-    }, 350);
+    }, 320);
   }, []);
-
-  // Animate counters when entering Scene 6
-  useEffect(() => {
-    if (currentSceneIndex !== 5) return;
-
-    const duration = 2000;
-    const startTime = performance.now();
-    const targetAch = 280;
-    const targetBad = 2661;
-    const targetPct = 112;
-
-    const animateCounters = (now: number) => {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const ease = 1 - Math.pow(1 - progress, 3);
-
-      setCountAchievers(Math.round(targetAch * ease));
-      setCountBadges(Math.round(targetBad * ease));
-      setCountTarget(Math.round(targetPct * ease));
-
-      if (progress < 1) {
-        requestAnimationFrame(animateCounters);
-      }
-    };
-
-    requestAnimationFrame(animateCounters);
-  }, [currentSceneIndex]);
 
   // Advance to next sentence or next scene
   const advanceNext = useCallback(() => {
     const activeScene = CINEMATIC_SCENES[currentSceneIndex];
     if (!activeScene) return;
 
-    // In Scene 6, showcase the metric pods as a single grand scene
-    if (currentSceneIndex === 5) {
-      if (currentSceneIndex < CINEMATIC_SCENES.length - 1) {
-        setSentenceVisible(false);
-        setTimeout(() => {
-          setCurrentSceneIndex((prev) => prev + 1);
-          setCurrentSentenceIndex(0);
-          setSentenceVisible(true);
-        }, 300);
-      } else {
-        onPreloadRef.current?.();
-        setIsExiting(true);
-        setTimeout(() => onCompleteRef.current?.(), 1000);
-      }
-      return;
-    }
-
     if (currentSentenceIndex < activeScene.lines.length - 1) {
       // Step to next sentence within the same scene
-      setSentenceVisible(false);
-      setTimeout(() => {
-        setCurrentSentenceIndex((prev) => prev + 1);
-        setSentenceVisible(true);
+      const nextIdx = currentSentenceIndex + 1;
+      setCurrentSentenceIndex(nextIdx);
 
-        // Climax sentence in Scene 5 ("WE REACHED GOLD!") triggers gold confetti
-        if (currentSceneIndex === 4 && currentSentenceIndex + 1 === activeScene.lines.length - 1) {
-          fireGoldCelebration();
-        }
-      }, 260);
+      // Climax sentence in Scene 5 ("WE REACHED GOLD!") triggers gold confetti
+      if (currentSceneIndex === 4 && nextIdx === activeScene.lines.length - 1) {
+        fireGoldCelebration();
+      }
+      // Climax sentence in Final Scene ("WE MADE IT HAPPEN!") triggers gold confetti
+      if (currentSceneIndex === 7 && nextIdx === activeScene.lines.length - 1) {
+        fireGoldCelebration();
+      }
     } else {
       // Finished all sentences in this scene -> advance to next scene
       if (currentSceneIndex < CINEMATIC_SCENES.length - 1) {
-        setSentenceVisible(false);
-        setTimeout(() => {
-          setCurrentSceneIndex((prev) => prev + 1);
-          setCurrentSentenceIndex(0);
-          setSentenceVisible(true);
-        }, 320);
+        const nextSceneIdx = currentSceneIndex + 1;
+        setCurrentSceneIndex(nextSceneIdx);
+        setCurrentSentenceIndex(0);
+
+        // Preload when entering the final scenes
+        if (nextSceneIdx >= 6) {
+          onPreloadRef.current?.();
+        }
       } else {
         // Reached end of final screen -> preload & exit
         onPreloadRef.current?.();
@@ -295,36 +248,27 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
 
   // Jump directly to specific scene
   const jumpToScene = useCallback((sceneIdx: number) => {
-    setSentenceVisible(false);
-    setTimeout(() => {
-      setCurrentSceneIndex(sceneIdx);
-      setCurrentSentenceIndex(0);
-      setSentenceVisible(true);
+    setCurrentSceneIndex(sceneIdx);
+    setCurrentSentenceIndex(0);
 
-      if (sceneIdx === 4) {
-        fireGoldCelebration();
-      }
-    }, 280);
+    if (sceneIdx === 4 || sceneIdx === 7) {
+      fireGoldCelebration();
+    }
+    if (sceneIdx >= 6) {
+      onPreloadRef.current?.();
+    }
   }, [fireGoldCelebration]);
 
   // Automated sentence pacing:
-  // Non-climax sentences pause for ~2.2s; Climax sentences pause for ~3.6s
+  // Non-climax sentences: 2.3s; Climax sentences: 3.6s
   useEffect(() => {
     if (sentenceTimerRef.current) clearTimeout(sentenceTimerRef.current);
 
     const activeScene = CINEMATIC_SCENES[currentSceneIndex];
     if (!activeScene) return;
 
-    // Special duration for Scene 6 (metric pods)
-    if (currentSceneIndex === 5) {
-      sentenceTimerRef.current = setTimeout(advanceNext, 5600);
-      return () => {
-        if (sentenceTimerRef.current) clearTimeout(sentenceTimerRef.current);
-      };
-    }
-
     const isLastSentenceOfScene = currentSentenceIndex === activeScene.lines.length - 1;
-    const duration = isLastSentenceOfScene ? 3600 : 2200;
+    const duration = isLastSentenceOfScene ? 3600 : 2300;
 
     sentenceTimerRef.current = setTimeout(advanceNext, duration);
 
@@ -346,9 +290,6 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
   const activeLine = activeScene.lines[currentSentenceIndex] || '';
   const isClimaxSentence = currentSentenceIndex === activeScene.lines.length - 1;
 
-  // Split words for neon word-level borders
-  const words = activeLine.split(' ');
-
   return (
     <div
       className={`bmi-overlay ${isExiting ? 'bmi-exiting' : ''}`}
@@ -357,7 +298,7 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
       aria-label="Google Cloud Gold Milestone Cinematic Celebration"
       onClick={advanceNext} // Click anywhere to step forward
     >
-      {/* 1. EXACT Same Background Ambient Radial Glow (Preserved from existing Intro Design) */}
+      {/* 1. EXACT Same Background Ambient Radial Glow */}
       <div className="bmi-bg-radial" aria-hidden="true" />
 
       {/* 2. Dedicated High-Z-Index Confetti Canvas */}
@@ -366,7 +307,7 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
       {/* 3. Top Header Bar (Chapter Identity & Navigation) */}
       <header
         className="w-full max-w-5xl px-3 sm:px-6 py-2 sm:py-3 flex items-center justify-between z-20"
-        onClick={(e) => e.stopPropagation()} // Prevent accidental trigger when clicking buttons
+        onClick={(e) => e.stopPropagation()}
       >
         {/* GDG Chapter Title */}
         <div className="flex items-center gap-2">
@@ -415,11 +356,11 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
         </button>
       </header>
 
-      {/* 4. Main Stage (Open, Transparent, Sentence-by-Sentence with Neon Text Borders) */}
+      {/* 4. Main Stage (ZERO BACKGROUND — SENTENCE-BY-SENTENCE FADE WITH NEON BORDER TYPOGRAPHY) */}
       <main className="bmi-experience-stage w-full">
-        {/* Scene Tag Pill with Google Quad-Color Dots & Neon Border */}
-        <div className="mb-8 flex justify-center">
-          <div className={`bmi-scene-tag ${activeScene.isGold ? 'bmi-scene-tag-gold' : ''}`}>
+        {/* Scene Tag Pill with Google Quad-Color Dots & Clean Neon Outline */}
+        <div className="mb-8 sm:mb-12 flex justify-center">
+          <div className={`bmi-scene-tag-clean ${activeScene.isGold ? 'bmi-scene-tag-gold-clean' : ''}`}>
             <div className="flex items-center gap-1" aria-hidden="true">
               <span className="w-1.5 h-1.5 rounded-full bg-[#4285F4]" />
               <span className="w-1.5 h-1.5 rounded-full bg-[#EA4335]" />
@@ -432,133 +373,79 @@ export const BronzeMilestoneIntro: React.FC<BronzeMilestoneIntroProps> = ({
         </div>
 
         {/* ===================================================================
-            SCENES 1, 2, 3, 4, 5, 7, 8: SENTENCE-BY-SENTENCE CINEMATIC PRESENTATION
+            ALL SCENES (1 to 8): UNIFIED SENTENCE-BY-SENTENCE FADE PRESENTATION
+            ZERO BACKGROUND BOXES — NATURAL TYPOGRAPHY WITH NEON BORDERS
             =================================================================== */}
-        {currentSceneIndex !== 5 && (
+        <div className="w-full max-w-4xl flex flex-col items-center justify-center text-center px-4">
+          {/* Active sentence container with key to trigger fade animation on every sentence change */}
           <div
-            className={`w-full max-w-3xl flex flex-col items-center justify-center text-center transition-all duration-300 transform ${
-              sentenceVisible ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-3'
-            }`}
+            key={`${currentSceneIndex}-${currentSentenceIndex}`}
+            className="bmi-sentence-fade w-full flex flex-col items-center justify-center"
           >
-            {/* If NOT Climax: Sleek Neon Sentence Pod */}
-            {!isClimaxSentence ? (
-              <div className="bmi-sentence-pill">
-                <h1 className="text-xl sm:text-2xl md:text-3xl font-black font-sans uppercase tracking-tight bmi-neon-text-cyan bmi-streak-effect">
-                  {words.map((word, wIdx) => (
-                    <span key={wIdx} className="bmi-neon-word-box">
-                      {word}
-                    </span>
-                  ))}
-                </h1>
-              </div>
-            ) : (
-              /* If CLIMAX / MAIN CONTEXT: Massive Special Effect with Pulsing Gold Aura & Neon Halo */
-              <div className="bmi-climax-special-effect">
-                <div className="flex items-center gap-2 mb-2" aria-hidden="true">
-                  <span className="w-2 h-2 rounded-full bg-[#FBBC04] animate-ping" />
-                  <span className="text-[10px] sm:text-xs font-black tracking-widest text-amber-600 uppercase">
-                    ★ THE DEFINING MOMENT ★
-                  </span>
-                  <span className="w-2 h-2 rounded-full bg-[#FBBC04] animate-ping" />
-                </div>
-
-                <h1 className="text-2xl sm:text-4xl md:text-5xl font-black font-sans uppercase tracking-tight bmi-neon-text-gold bmi-streak-effect">
-                  {words.map((word, wIdx) => (
-                    <span key={wIdx} className="bmi-neon-word-box bmi-neon-word-box-gold">
-                      {word}
-                    </span>
-                  ))}
-                </h1>
-
-                {/* Subtitle tag on final screen */}
-                {currentSceneIndex === 7 && (
-                  <div className="mt-6 pt-4 border-t border-amber-300/60" onClick={(e) => e.stopPropagation()}>
-                    <button
-                      onClick={handleSkip}
-                      className="px-8 py-3.5 rounded-full bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 text-slate-950 font-black text-sm tracking-wide shadow-[0_0_24px_rgba(251,188,4,0.6)] hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2 cursor-pointer"
-                    >
-                      <span>Enter Chapter Leaderboard & Dashboard</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
-                  </div>
+            {/* Contextual Icon for Scene 6 Metrics (zero boxes, pure floating glow) */}
+            {currentSceneIndex === 5 && (
+              <div className="mb-4 sm:mb-6 flex items-center justify-center">
+                {currentSentenceIndex === 0 && (
+                  <Users className="w-10 h-10 sm:w-12 sm:h-12 text-amber-500 drop-shadow-[0_0_16px_rgba(255,184,0,0.85)]" />
+                )}
+                {currentSentenceIndex === 1 && (
+                  <Award className="w-10 h-10 sm:w-12 sm:h-12 text-blue-500 drop-shadow-[0_0_16px_rgba(59,130,246,0.85)]" />
+                )}
+                {currentSentenceIndex === 2 && (
+                  <Trophy className="w-10 h-10 sm:w-12 sm:h-12 text-amber-400 drop-shadow-[0_0_18px_rgba(251,188,4,0.95)]" />
+                )}
+                {currentSentenceIndex === 3 && (
+                  <Sparkles className="w-10 h-10 sm:w-12 sm:h-12 text-yellow-400 drop-shadow-[0_0_20px_rgba(251,188,4,1)]" />
                 )}
               </div>
             )}
 
-            {/* Sentence Index Indicator */}
-            <div className="mt-8 flex items-center gap-2 text-xs font-mono font-bold text-slate-500">
-              <span>LINE 0{currentSentenceIndex + 1} OF 0{activeScene.lines.length}</span>
-              <span className="text-slate-300">•</span>
-              <span className="text-amber-600 flex items-center gap-1">
-                <span>Tap or Click to Advance</span>
-                <ChevronRight className="w-3 h-3" />
-              </span>
-            </div>
+            {/* Climax tag if it's the main context sentence */}
+            {isClimaxSentence && (
+              <div className="flex items-center gap-2 mb-3 sm:mb-4 animate-pulse">
+                <span className="w-2 h-2 rounded-full bg-[#FBBC04] shadow-[0_0_8px_#FBBC04]" />
+                <span className="text-[11px] sm:text-xs font-black tracking-widest text-amber-600 uppercase">
+                  ★ THE DEFINING MOMENT ★
+                </span>
+                <span className="w-2 h-2 rounded-full bg-[#FBBC04] shadow-[0_0_8px_#FBBC04]" />
+              </div>
+            )}
+
+            {/* Natural, Whole Sentence with Neon Border Typography (Zero background box, zero word splitting) */}
+            <h1
+              className={`w-full max-w-3xl font-black uppercase tracking-tight text-center ${
+                isClimaxSentence
+                  ? 'bmi-neon-text-climax bmi-streak-effect text-3xl sm:text-5xl md:text-6xl lg:text-7xl'
+                  : 'bmi-neon-text bmi-streak-effect text-2xl sm:text-4xl md:text-5xl'
+              }`}
+            >
+              {activeLine}
+            </h1>
+
+            {/* Final screen call-to-action button */}
+            {currentSceneIndex === 7 && isClimaxSentence && (
+              <div className="mt-8 pt-4" onClick={(e) => e.stopPropagation()}>
+                <button
+                  onClick={handleSkip}
+                  className="px-8 py-3.5 rounded-full bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 text-slate-950 font-black text-sm tracking-wide shadow-[0_0_28px_rgba(251,188,4,0.65)] hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2 cursor-pointer"
+                >
+                  <span>Enter Chapter Leaderboard & Dashboard</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            )}
           </div>
-        )}
 
-        {/* ===================================================================
-            SCENE 6: ACHIEVEMENT SHOWCASE WITH METRIC PODS
-            =================================================================== */}
-        {currentSceneIndex === 5 && (
-          <div
-            className={`w-full max-w-3xl flex flex-col items-center justify-center text-center transition-all duration-400 transform ${
-              sentenceVisible ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-3'
-            }`}
-          >
-            <h2 className="text-xl sm:text-2xl font-black text-slate-800 uppercase tracking-tight mb-4 bmi-neon-text-cyan">
-              OUR HISTORIC GOLD CHAPTER MILESTONES
-            </h2>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 my-2 w-full">
-              {/* Pod 1: 280 Achievers */}
-              <div className="bmi-metric-pod flex flex-col items-center text-center">
-                <div className="p-2 rounded-xl bg-amber-500/10 mb-1">
-                  <Users className="w-5 h-5 text-amber-600" />
-                </div>
-                <span className="text-3xl sm:text-4xl font-black font-mono text-slate-900 tracking-tight">
-                  {countAchievers}
-                </span>
-                <span className="text-[11px] font-black tracking-widest text-amber-700 uppercase mt-1">
-                  280 ACHIEVERS
-                </span>
-              </div>
-
-              {/* Pod 2: 2,661 Skill Badges */}
-              <div className="bmi-metric-pod flex flex-col items-center text-center">
-                <div className="p-2 rounded-xl bg-blue-500/10 mb-1">
-                  <Award className="w-5 h-5 text-blue-600" />
-                </div>
-                <span className="text-3xl sm:text-4xl font-black font-mono text-slate-900 tracking-tight">
-                  {countBadges.toLocaleString()}
-                </span>
-                <span className="text-[11px] font-black tracking-widest text-blue-700 uppercase mt-1">
-                  2,661 SKILL BADGES
-                </span>
-              </div>
-
-              {/* Pod 3: 112% of Target */}
-              <div className="bmi-metric-pod flex flex-col items-center text-center">
-                <div className="p-2 rounded-xl bg-emerald-500/10 mb-1">
-                  <Trophy className="w-5 h-5 text-emerald-600" />
-                </div>
-                <span className="text-3xl sm:text-4xl font-black font-mono text-slate-900 tracking-tight">
-                  {countTarget}%
-                </span>
-                <span className="text-[11px] font-black tracking-widest text-emerald-700 uppercase mt-1">
-                  112% OF TARGET
-                </span>
-              </div>
-            </div>
-
-            {/* Special Climax Pill for Scene 6 */}
-            <div className="mt-4 bmi-climax-special-effect py-3 px-6">
-              <span className="text-sm sm:text-base font-black tracking-widest uppercase bmi-neon-text-gold">
-                ONE INCREDIBLE MILESTONE.
-              </span>
-            </div>
+          {/* Subdued Line Tracker */}
+          <div className="mt-10 sm:mt-14 flex items-center gap-2 text-xs font-mono font-bold text-slate-400">
+            <span>SENTENCE 0{currentSentenceIndex + 1} OF 0{activeScene.lines.length}</span>
+            <span className="text-slate-300">•</span>
+            <span className="text-amber-600 flex items-center gap-1 font-sans">
+              <span>Click anywhere to advance</span>
+              <ChevronRight className="w-3 h-3" />
+            </span>
           </div>
-        )}
+        </div>
       </main>
 
       {/* 5. Bottom Chapter Identity Strip */}
